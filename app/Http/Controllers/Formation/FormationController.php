@@ -8,7 +8,10 @@ use Illuminate\Http\Request;
 
 class FormationController extends Controller
 {
-    private $formation;
+    /**
+     * @var Formation $formation
+     */
+    private Formation $formation;
 
     public function __construct(Formation $formation)
     {

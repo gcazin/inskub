@@ -20,7 +20,7 @@ class SearchController extends Controller
      *
      * @var Article
      */
-    protected $article;
+    protected Article $article;
 
     /**
      * Constructeur

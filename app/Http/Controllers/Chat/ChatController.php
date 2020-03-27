@@ -12,24 +12,26 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\View;
 use Illuminate\Validation\ValidationException;
 use Musonza\Chat\Chat;
+use Musonza\Chat\Models\Conversation;
+use phpDocumentor\Reflection\Types\Integer;
 use Throwable;
 
 class ChatController extends Controller {
 
     /**
-     * @var \App\User $user
+     * @var User $user
      */
-    protected $user;
+    protected User $user;
 
     /**
      * @var AuthManager $auth
      */
-    protected $auth;
+    protected AuthManager $auth;
 
     /**
      * @var Chat $chat
      */
-    protected $chat;
+    protected Chat $chat;
 
     /**
      * Constructeur
@@ -59,49 +61,56 @@ class ChatController extends Controller {
             ->get()
             ->toArray()['data'];
 
+
         $conversations = Arr::pluck($conversations, 'conversation');
 
-        $data = [
+        /*$conversations = [
             'conversations' => array_map('intval', $conversations),
-            'participant' => [
-                'id' => auth()->user()->id,
+            'participants' => [
+                'id' => $this->auth->user()->id,
+                'type' => get_class(auth()->user())
             ]
-        ];
+        ];*/
 
-        dd($data);
+        //dd($conversations);
 
-        return view('chat.index', compact('data'));
+        return view('chat.index', compact('conversations'));
     }
 
     /**
      * Conversation
      *
-     * @param string $id
+     * @param int $id
+     *
      * @return Factory|\Illuminate\View\View
+     *
+     * TODO: Cet enfer est à finir
      */
-    /*public function chat($id = '')
+    public function chat(int $id)
     {
-        $this->talk->setAuthUserId($this->auth->user()->id);
-        $conversations = $this->talk->getMessagesByUserId($id, 0, 999);
-        $user = '';
-        $messages = [];
-        if(!$conversations) {
-            $user = User::find($id);
-        } else {
-            $user = $conversations->withUser;
-            $messages = $conversations->messages;
-        }
-        if (count($messages) > 0) {
-            $messages = $messages->sortBy('id');
+        $user = $this->user->find($this->auth->user()->id);
 
-            foreach($messages as $chat) {
-                if ($this->auth->user()->id !== $chat->user_id) {
-                    $this->talk->makeSeen($chat->id);
-                }
-            }
+        $messages = $this->chat
+            ->conversation($this->chat->conversations()->getById($id))
+            ->setParticipant($user)
+            ->getMessages()
+            ->toArray()['data'];
+
+        $participant_query = $this->chat
+            ->conversations()
+            ->setPaginationParams(['sorting' => 'desc'])
+            ->setParticipant($user)
+            ->get()
+            ->toArray()['data'];
+
+        $participants_explode = Arr::pluck(Arr::pluck($participant_query, 'conversation'), 'participants')[0];
+
+        foreach($participants_explode as $participant) {
+            $participants[] = $participant['messageable_id'];
         }
-        return view('chat.index', compact(['messages', 'user']));
-    }*/
+
+        return view('chat.conversation', compact('messages', 'participants'));
+    }
 
     /**
      * Création d'un chat

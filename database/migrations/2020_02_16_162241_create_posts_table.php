@@ -17,9 +17,11 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->longText('content');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('visibility_id');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('visibility_id')->references('id')->on('visibility_posts');
         });
     }
 

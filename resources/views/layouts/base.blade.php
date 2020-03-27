@@ -44,7 +44,7 @@
         $user = (new \App\User());
     @endphp
     @if(!isset($header))
-        @include("partials.nav", compact('user', $user))
+        @include("partials.menu", compact('user', $user))
     @else
         <div class="bg-blue-500 shadow text-white">
             <div class="w-11/12 mx-auto">
@@ -54,35 +54,12 @@
     @endif
 </header>
 <main class="@if(isset($flip_wave) && $flip_wave == true) flip-wave @else {{ null }} @endif content">
-    <div class="pt-5 pb-16 @if(isset($full_width) && $full_width == false) w-11/12 mx-auto @else w-full @endif">
+    <div class="pt-5 pb-24 mb:pb-16 @if(isset($full_width) && $full_width == false) w-11/12 mx-auto @else w-full @endif">
         @yield('content')
     </div>
 </main>
 
-<div class="nav-mobile w-11/12 mx-auto lg:hidden fixed bottom-0 right-0 left-0 bg-white border-t-2 border-gray-300">
-    <div class="flex justify-between text-center text-gray-600">
-        <a href="{{ route('index') }}" class="px-2 py-2 flex-1 focus:text-blue-700">
-            <i class="fas fa-home"></i>
-            <span class="text-sm block" style="font-size: 0.775rem">Accueil</span>
-        </a>
-        <a href="#" class="px-2 py-2 flex-1 focus:text-blue-700">
-            <i class="fas fa-briefcase"></i>
-            <span class="text-sm block" style="font-size: 0.775rem">Découvrir</span>
-        </a>
-        <a href="{{ route('create.post') }}" class="px-2 py-2 flex-1 focus:text-blue-700">
-            <i class="far fa-plus-square"></i>
-            <span class="text-sm block" style="font-size: 0.775rem">Publier</span>
-        </a>
-        <a href="{{ route('chat.index') }}" class="px-2 py-2 flex-1 focus:text-blue-700">
-            <i class="far fa-comment"></i>
-            <span class="text-sm block" style="font-size: 0.775rem">Messages</span>
-        </a>
-        <a href="{{ route('edit') }}" class="px-2 py-2 flex-1 focus:text-blue-700">
-            <i class="far fa-user-circle"></i>
-            <span class="text-sm block" style="font-size: 0.775rem">Profil</span>
-        </a>
-    </div>
-</div>
+@include('partials.mobile-menu')
 
 <footer id="footer" class="relative footer bg-blue-500 text-white pb-20 hidden lg:visible"> <!-- mt-10 -->
     <div class="w-4/5 m-auto flex flex-col lg:flex-row">
@@ -105,11 +82,29 @@
     </div>
     <p class="text-center text-white">Copyright 2019. {{ config('app.name') }} tous droits réservés.</p>
 </footer>
-@if(View::hasSection('script'))
-    @yield('script')
-@endif
 <script src="{{ asset('js/app.js') }}"></script>
 <script src="{{ asset('js/nav.js') }}"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+@yield('script')
+<script>
+    let search = document.getElementById('search')
+    let searchMenu = document.getElementById('search-menu')
+
+    let timeout = null;
+    search.addEventListener('keyup', function (e) {
+        clearTimeout(timeout);
+
+        timeout = setTimeout(function () {
+            if(search.length > 0) {
+                searchMenu.classList.remove('hidden')
+                searchMenu.classList.toggle('block')
+            } else {
+                searchMenu.classList.toggle('hidden')
+            }
+        }, 1000);
+    });
+
+</script>
+@livewireScripts
 </body>
 </html>

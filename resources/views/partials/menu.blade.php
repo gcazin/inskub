@@ -11,16 +11,7 @@
 
 <div class="lg:py-0">
     <nav class="flex items-center justify-between flex-wrap w-11/12 m-auto py-5 lg:py-0">
-        <div class="flex-1 bg-gray-200 block lg:hidden flex text-gray-600 rounded">
-            <div class="order-2">
-                <input type="search" name="search" placeholder="Chercher" class="bg-transparent h-10 px-1 rounded-full text-sm focus:outline-none">
-            </div>
-            <div class="w-1/12 ml-2 order-1 flex justify-center">
-                <button type="submit">
-                    <i class="fas fa-search text-gray-500"></i>
-                </button>
-            </div>
-        </div>
+        <livewire:search-users>
         @auth
         <div class="ml-2 block lg:hidden flex justify-end">
             <button id="userButton" class="flex items-center focus:outline-none text-gray-600 hover:text-blue-500">

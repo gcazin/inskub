@@ -19,14 +19,14 @@ class CategoryController extends Controller
      *
      * @var Article
      */
-    protected $article;
+    protected Article $article;
 
     /**
      * Instanciation Catégorie
      *
      * @var Category
      */
-    protected $category;
+    protected Category $category;
 
     /**
      * Constructeur

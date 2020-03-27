@@ -20077,7 +20077,7 @@ input.tag-input {
 
 .btn {
   font-weight: 700;
-  border-radius: 9999px;
+  border-radius: 0.25rem;
   border-width: 1px;
   border-color: transparent;
   border-style: solid;
@@ -20196,11 +20196,18 @@ input.tag-input {
 *
  */
 
-label {
-  color: #718096;
+.form-group {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
-.input, textarea {
+label {
+  color: #718096;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.input, textarea, select {
   border-width: 1px;
   border-color: #e2e8f0;
   border-radius: 0.25rem;
@@ -20208,8 +20215,6 @@ label {
   padding-bottom: 0.5rem;
   padding-left: 1rem;
   padding-right: 1rem;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
   display: block;
   width: 100%;
   -webkit-appearance: none;

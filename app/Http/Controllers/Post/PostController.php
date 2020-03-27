@@ -9,7 +9,10 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    private $post;
+    /**
+     * @var Post $post
+     */
+    private Post $post;
 
     public function __construct(Post $post)
     {
@@ -28,7 +31,7 @@ class PostController extends Controller
         return view('post.create');
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         $post = Post::all()->find($id);
         return view('post.show', compact('post'));
@@ -39,9 +42,10 @@ class PostController extends Controller
         $post = $this->post;
         $post->content = $request->get('content');
         $post->user_id = auth()->user()->id;
+        $post->visibility_id = $request->get('visibility_id');
         $post->save();
 
-        return redirect(route('home'));
+        return redirect(route('index'));
     }
 
     public function like($id)

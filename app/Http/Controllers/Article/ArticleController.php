@@ -19,7 +19,7 @@ class ArticleController extends Controller {
      *
      * @var Article
      */
-    protected $article;
+    protected Article $article;
 
     /**
      * Constructeur

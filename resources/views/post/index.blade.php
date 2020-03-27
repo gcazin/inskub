@@ -48,11 +48,9 @@
                                 </button>
                             </form>
                             <div class="flex-1">
-                                <button class="w-full no-underline text-blue px-2 py-2 items-center hover:bg-grey-lighter">
-                                    <a href="#" class="text-gray-700">
-                                        <i class="fas fa-share"></i>
-                                        <span class="text-gray-700">Partager</span>
-                                    </a>
+                                <button class="shareButton w-full no-underline text-blue px-2 py-2 items-center hover:bg-grey-lighter">
+                                    <i class="fas fa-share"></i>
+                                    <span class="text-gray-700">Partager</span>
                                 </button>
                             </div>
                         </footer>
@@ -61,4 +59,24 @@
             </div>
         @endforeach
     @endauth
+@endsection
+
+@section('script')
+    <script>
+        let shareButton = document.querySelector('.shareButton');
+
+        shareButton.addEventListener('click', event => {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'WebShare API Demo',
+                    url: 'https://codepen.io/ayoisaiah/pen/YbNazJ'
+                }).then(() => {
+                    console.log('Thanks for sharing!');
+                })
+                    .catch(console.error);
+            } else {
+                shareDialog.classList.add('is-open');
+            }
+        });
+    </script>
 @endsection
