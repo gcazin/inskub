@@ -48,7 +48,7 @@
     @else
         <div class="bg-blue-500 shadow text-white">
             <div class="w-11/12 mx-auto">
-                <a class="text-4xl" href="{{ route('index') }}"><i class="fas fa-arrow-circle-left"></i></a>
+                <a class="text-4xl" href="{{ route('post.index') }}"><i class="fas fa-arrow-circle-left"></i></a>
             </div>
         </div>
     @endif
@@ -82,6 +82,8 @@
     </div>
     <p class="text-center text-white">Copyright 2019. {{ config('app.name') }} tous droits réservés.</p>
 </footer>
+@livewireScripts
+
 <script src="{{ asset('js/app.js') }}"></script>
 <script src="{{ asset('js/nav.js') }}"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -105,6 +107,6 @@
     });
 
 </script>
-@livewireScripts
+<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
 </body>
 </html>

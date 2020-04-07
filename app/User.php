@@ -66,4 +66,26 @@ class User extends \Illuminate\Foundation\Auth\User
         return asset('/storage/avatars/' . $user->avatar);
     }
 
+    /**
+     * @param $id Identifiant de l'utilisateur
+     *
+     * @return int
+     */
+    public static function getNumberFollowers($id): int
+    {
+        $user = User::find($id);
+        return count($user->followers()->get());
+    }
+
+    /**
+     * @param $id Identifiant de l'utilisateur
+     *
+     * @return int
+     */
+    public static function getNumberFollowings($id): int
+    {
+        $user = User::find($id);
+        return count($user->followings()->get());
+    }
+
 }

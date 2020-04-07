@@ -25,7 +25,7 @@
                         <div class="flex-1 text-right">{{ count($post->replies) }} commentaire{{ (count($post->replies) > 0) ? 's' : null }}</div>
                     </div>
                     <footer class="border-t border-grey-lighter text-sm flex justify-between">
-                        <form action="{{ route('like.post', $post->id) }}" method="post" class="flex-1">
+                        <form action="{{ route('post.like', $post->id) }}" method="post" class="flex-1">
                             @csrf
                             <button type="submit" class="w-full block no-underline text-blue px-2 py-2 items-center hover:bg-grey-lighter">
                                 @if($post->isLikedBy(auth()->user()->id))
@@ -37,7 +37,7 @@
                                 @endif
                             </button>
                         </form>
-                        <form action="{{ route('like.post', $post->id) }}" method="post" class="flex-1">
+                        <form action="{{ route('post.like', $post->id) }}" method="post" class="flex-1">
                             @csrf
                             <button type="submit" class="w-full no-underline text-blue px-2 py-2 items-center hover:bg-grey-lighter">
                                 <i class="far fa-comment"></i>
@@ -65,14 +65,15 @@
                     <div class="" >
                         <img class="rounded-full" height="30" width="30" src="{{ auth()->user()->getAvatar($post->user_id) }}" alt="">
                     </div>
-                    <div class="flex-1 px-2 bg-gray-200 ml-3 rounded-lg shadow-sm">
+                    <div class="flex-1 p-2 bg-gray-100 ml-3 rounded-lg shadow-sm">
+                        <p class="text-sm font-bold">{{ \App\User::find($reply->user_id)->name }}</p>
                         <p>{{ $reply->message }}</p>
                     </div>
                 </div>
                 @endforeach
             </div>
             <div class="reply pb-2 w-11/12 mx-auto">
-                <form action="{{ route('store.reply-post', $post->id) }}" method="post">
+                <form action="{{ route('post.reply', $post->id) }}" method="post">
                     @csrf
                     <div class="flex">
                         <div class="self-center mr-2">

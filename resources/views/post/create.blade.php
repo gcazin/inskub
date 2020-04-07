@@ -1,7 +1,7 @@
 @extends('layouts.base', ['full_width' => false])
 
 @section('content')
-    <form action="{{ route('store.post') }}" method="post">
+    <form action="{{ route('post.create') }}" method="post">
         @csrf
         <div class="form-group">
             <label for="content">Contenu</label>

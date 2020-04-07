@@ -45,7 +45,7 @@ class PostController extends Controller
         $post->visibility_id = $request->get('visibility_id');
         $post->save();
 
-        return redirect(route('index'));
+        return redirect(route('post.index'));
     }
 
     public function like($id)

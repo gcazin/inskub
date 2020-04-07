@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Post;
 use App\User;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Contracts\View\Factory;
@@ -19,14 +20,14 @@ class UserController extends Controller
      *
      * @var AuthManager
      */
-    protected $auth;
+    protected AuthManager $auth;
 
     /**
      * Instance User
      *
      * @var UserRepository
      */
-    protected $user;
+    protected UserRepository $user;
 
     /**
      * Constructor
@@ -39,6 +40,20 @@ class UserController extends Controller
         $this->user = $user;
         $this->auth = $auth;
         $this->middleware('auth');
+    }
+
+    /**
+     * Page de profil
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function index(int $id)
+    {
+        $user = $this->user->find($id);
+        $posts = Post::all()->where('user_id', $id);
+        return view('auth.profile', compact('user', 'posts'));
     }
 
     /**

@@ -9,9 +9,12 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\View;
 use Illuminate\Validation\ValidationException;
 use Musonza\Chat\Chat;
+use Musonza\Chat\Facades\ChatFacade;
+use Musonza\Chat\Http\Controllers\ConversationController;
 use Musonza\Chat\Models\Conversation;
 use phpDocumentor\Reflection\Types\Integer;
 use Throwable;
@@ -61,20 +64,15 @@ class ChatController extends Controller {
             ->get()
             ->toArray()['data'];
 
-
         $conversations = Arr::pluck($conversations, 'conversation');
 
-        /*$conversations = [
-            'conversations' => array_map('intval', $conversations),
-            'participants' => [
-                'id' => $this->auth->user()->id,
-                'type' => get_class(auth()->user())
-            ]
-        ];*/
+        foreach($conversations as $conversation) {
+            $inbox[] = $conversation['id']; // Récupération des id de conversations
+        }
 
-        //dd($conversations);
+        $user = User::all();
 
-        return view('chat.index', compact('conversations'));
+        return view('chat.index', compact('inbox', 'user'));
     }
 
     /**

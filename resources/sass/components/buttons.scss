@@ -3,6 +3,12 @@
 *
  */
 
+*[class*="btn"] {
+    @apply transition-all duration-100;
+    &:focus {
+        @apply outline-none;
+    }
+}
 .btn {
     // shadow
     @apply font-bold rounded border border-transparent border-solid inline-block;
@@ -35,6 +41,13 @@
     }
 }
 
+.btn[class*='btn-outline'][disabled] {
+    @apply cursor-default border border-gray-500 text-gray-700;
+    &:hover, &:focus {
+        @apply bg-white;
+    }
+}
+
 /**
 * Outline buttons
  */
@@ -42,6 +55,12 @@
     @apply bg-transparent border shadow-none;
     &:hover {
         @apply text-white;
+    }
+}
+.btn-outline-secondary {
+    @apply border-gray-500 text-gray-700;
+    &:hover {
+        @apply bg-gray-500;
     }
 }
 .btn-outline-blue {

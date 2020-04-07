@@ -20,11 +20,11 @@ class ReplyPostController extends Controller
     public function store(Request $request, $id)
     {
         $reply = new Reply_post();
-        $reply->message = $request->input('chat');
+        $reply->message = $request->input('message');
         $reply->post_id = $id;
         $reply->user_id = auth()->user()->id;
         $reply->save();
 
-        return redirect(route('show.post', $id));
+        return redirect(route('post.show', $id));
     }
 }

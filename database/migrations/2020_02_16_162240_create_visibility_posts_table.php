@@ -31,6 +31,7 @@ class CreateVisibilityPostsTable extends Migration
         foreach($visibilities as $visibility) {
             DB::table('visibility_posts')->insert([
                 'type' => $visibility,
+                'description' => 'Default'
             ]);
         }
     }

@@ -18,7 +18,7 @@
           </svg>
                     </button>
                 </form>
-                <small class="text-gray-700 block text-right"><a class="link" href="{{ route('home') }}">recherche avancée</a></small>
+                <small class="text-gray-700 block text-right"><a class="link" href="{{ route('post.index') }}">recherche avancée</a></small>
             </div>
             <div class="box mb-3 lg:mb-0 mt-3">
                 <h3 class="text-xl lg:text-2xl text-indigo-800 mb-1">Catégories</h3>

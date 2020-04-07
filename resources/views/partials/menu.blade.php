@@ -10,7 +10,7 @@
 @endphp
 
 <div class="lg:py-0">
-    <nav class="flex items-center justify-between flex-wrap w-11/12 m-auto py-5 lg:py-0">
+    <nav class="flex items-center justify-between flex-wrap w-11/12 m-auto py-3">
         <livewire:search-users>
         @auth
         <div class="ml-2 block lg:hidden flex justify-end">
@@ -20,17 +20,17 @@
         </div>
         @endauth
         <div class="hidden lg:block flex items-center flex-shrink-0 text-black mr-6">
-            <a href="{{ route('index') }}" class="pb-1 font-medium text-2xl tracking-tight text-gray-700 dark:text-gray-200"><img class="h-8 inline-block align-baseline" src="{{ asset('storage/images/logo.png') }}" class="h-8" alt="Logo"><span class="align-text-bottom">TomorrowInsurance</span></a>
+            <a href="{{ route('post.index') }}" class="pb-1 font-medium text-2xl tracking-tight text-gray-700 dark:text-gray-200"><img class="h-8 inline-block align-baseline" src="{{ asset('storage/images/logo.png') }}" class="h-8" alt="Logo"><span class="align-text-bottom">TomorrowInsurance</span></a>
         </div>
-        <div id="main-nav" class="w-full text-xl font-medium hidden lg:inline flex-grow lg:flex lg:items-center lg:w-auto">
-            <div class="text-base lg:flex-grow">
+        <div id="main-nav" class="w-full text-xl font-medium hidden lg:inline flex-grow lg:flex lg:justify-end lg:w-auto">
+            <!--<div class="text-base lg:flex-grow">
                 <a href="{{ route('article.index') }}" class="navbar-items nav {{ routeName('post.index') }} dark:text-gray-400 dark-hover:text-gray-600 py-4">
                     Articles
                 </a>
                 <a href="{{ route('listing-agents') }}" class="navbar-items nav {{ routeName('threads') }} dark:text-gray-400 dark-hover:text-gray-600 py-4">
                     Agents généraux
                 </a>
-            </div>
+            </div>-->
             <div class="w-full lg:w-1/2 pr-0 mt-2 md:mt-0">
                 <div class="flex relative inline-block items-center justify-end sm:mt-3 lg:mt-0">
                     @auth
@@ -57,13 +57,13 @@
                             <!-- Dropdown -->
                             <div id="userMenu" class="bg-white border border-blue-100 dark:border-gray-800 border-solid dark:bg-gray-700 rounded shadow-md mt-5 absolute pin-t pin-r min-w-full overflow-auto z-30 invisible shadow" style="right: 30%; width: 180px">
                                 <ul class="list-reset font-normal">
-                                    <li><a href="{{ route('edit') }}" class="px-4 py-3 block text-black dark:text-gray-300 hover:text-blue-500 dark-hover:bg-gray-800 no-underline hover:no-underline transition-100">Mon compte</a></li>
-                                    <li><a href="{{ route('options') }}" class="px-4 py-3 block text-black dark:text-gray-300 hover:text-blue-500 dark-hover:bg-gray-800 no-underline hover:no-underline transition-100">Réglages</a></li>
+                                    <li><a href="{{ route('user.edit', auth()->id()) }}" class="px-4 py-3 block text-black dark:text-gray-300 hover:text-blue-500 dark-hover:bg-gray-800 no-underline hover:no-underline transition-100">Mon compte</a></li>
+                                    <li><a href="{{ route('user.options') }}" class="px-4 py-3 block text-black dark:text-gray-300 hover:text-blue-500 dark-hover:bg-gray-800 no-underline hover:no-underline transition-100">Réglages</a></li>
                                     @if(auth()->user()->role_id === 1)
                                         <li><a href="{{ route('admin.index') }}" class="px-4 py-3 block text-black dark:text-gray-300 hover:text-blue-500 dark-hover:bg-gray-800 no-underline hover:no-underline transition-100">Administration</a></li>
                                     @endif
                                     <li><hr class="border-t mx-2 border-gray-200 dark:border-gray-600"></li>
-                                    <li><a href="{{ route('logout') }}" class="px-4 py-3 block text-black hover:text-red-500 dark-hover:bg-gray-800 no-underline hover:no-underline transition-100">Déconnexion</a></li>
+                                    <li><a href="{{ route('user.logout') }}" class="px-4 py-3 block text-black hover:text-red-500 dark-hover:bg-gray-800 no-underline hover:no-underline transition-100">Déconnexion</a></li>
                                 </ul>
                             </div>
                         </div>

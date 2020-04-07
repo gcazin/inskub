@@ -15,7 +15,7 @@ class CreateReplyPostsTable extends Migration
     {
         Schema::create('reply_posts', function (Blueprint $table) {
             $table->id();
-            $table->longText('chat');
+            $table->longText('message');
             $table->unsignedBigInteger('post_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();

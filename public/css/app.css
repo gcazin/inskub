@@ -20075,6 +20075,15 @@ input.tag-input {
 *
  */
 
+*[class*=btn] {
+  transition-property: all;
+  transition-duration: 100ms;
+}
+
+*[class*=btn]:focus {
+  outline: 0;
+}
+
 .btn {
   font-weight: 700;
   border-radius: 0.25rem;
@@ -20125,6 +20134,17 @@ input.tag-input {
   background-color: #f7fafc;
 }
 
+.btn[class*=btn-outline][disabled] {
+  cursor: default;
+  border-width: 1px;
+  border-color: #a0aec0;
+  color: #4a5568;
+}
+
+.btn[class*=btn-outline][disabled]:hover, .btn[class*=btn-outline][disabled]:focus {
+  background-color: #fff;
+}
+
 /**
 * Outline buttons
  */
@@ -20137,6 +20157,15 @@ input.tag-input {
 
 *[class*=btn-outline]:hover {
   color: #fff;
+}
+
+.btn-outline-secondary {
+  border-color: #a0aec0;
+  color: #4a5568;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #a0aec0;
 }
 
 .btn-outline-blue {
