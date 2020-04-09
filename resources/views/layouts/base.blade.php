@@ -36,6 +36,8 @@
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    @livewireScripts
+
 </head>
 <body class="bg-gray-100 font-sans flex-col h-full dark:bg-gray-900 dark:text-white">
 <header class="nav bg-white dark:bg-gray-800 border lg:border-none border-gray-200">
@@ -82,8 +84,6 @@
     </div>
     <p class="text-center text-white">Copyright 2019. {{ config('app.name') }} tous droits réservés.</p>
 </footer>
-@livewireScripts
-
 <script src="{{ asset('js/app.js') }}"></script>
 <script src="{{ asset('js/nav.js') }}"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>

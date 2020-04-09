@@ -10,12 +10,14 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Validation\ValidationException;
 use Musonza\Chat\Chat;
 use Musonza\Chat\Facades\ChatFacade;
 use Musonza\Chat\Http\Controllers\ConversationController;
 use Musonza\Chat\Models\Conversation;
+use phpDocumentor\Reflection\DocBlock\Tags\Author;
 use phpDocumentor\Reflection\Types\Integer;
 use Throwable;
 
@@ -52,7 +54,7 @@ class ChatController extends Controller {
     }
 
     /**
-     * Index de la messagerie privée
+     * Boite de réception de la messagerie privée
      *
      * @return Factory|View
      */
@@ -66,13 +68,36 @@ class ChatController extends Controller {
 
         $conversations = Arr::pluck($conversations, 'conversation');
 
-        foreach($conversations as $conversation) {
-            $inbox[] = $conversation['id']; // Récupération des id de conversations
+        $chat = $this->chat->conversations();
+
+        return view('chat.index', compact('conversations', 'chat'));
+    }
+
+    /**
+     * Conversation entre deux personnes
+     *
+     * @param $user
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Musonza\Chat\Exceptions\DirectMessagingExistsException
+     * @throws \Musonza\Chat\Exceptions\InvalidDirectMessageNumberOfParticipants
+     */
+    public function createDirectConversation($user)
+    {
+        $conversationExist = $this->chat->conversations()->between(User::find(1), User::find($user))->exists;
+        if($conversationExist) {
+            return redirect()->route('chat.chat', User::find($user));
         }
+        $this->chat->createConversation([$this->user->find($this->auth->id()),User::find($user)])->makeDirect();
+        return redirect()->route('chat.index');
+    }
 
-        $user = User::all();
+    /**
+     * Conversation de groupes à plus de deux utilisateurs
+     */
+    public function createGroupConversation()
+    {
 
-        return view('chat.index', compact('inbox', 'user'));
     }
 
     /**
@@ -81,8 +106,6 @@ class ChatController extends Controller {
      * @param int $id
      *
      * @return Factory|\Illuminate\View\View
-     *
-     * TODO: Cet enfer est à finir
      */
     public function chat(int $id)
     {
@@ -94,20 +117,27 @@ class ChatController extends Controller {
             ->getMessages()
             ->toArray()['data'];
 
-        $participant_query = $this->chat
-            ->conversations()
-            ->setPaginationParams(['sorting' => 'desc'])
+        $participants = $this->chat->conversations()->setPaginationParams(['sorting' => 'desc'])
             ->setParticipant($user)
+            ->limit(1)
+            ->page(1)
             ->get()
-            ->toArray()['data'];
-
-        $participants_explode = Arr::pluck(Arr::pluck($participant_query, 'conversation'), 'participants')[0];
-
-        foreach($participants_explode as $participant) {
-            $participants[] = $participant['messageable_id'];
-        }
+            ->toArray()['data'][0]['conversation']['participants'];
 
         return view('chat.conversation', compact('messages', 'participants'));
+    }
+
+    public function addParticipants(Request $request)
+    {
+        $conversation_id = (int) $request->conversation_id;
+        foreach($request->participants as $participant) {
+            $this->chat
+                ->conversation(Conversation::find($conversation_id))
+                ->addParticipants([User::find($participant)])
+                ->makePrivate();
+        }
+
+        return redirect()->back();
     }
 
     /**

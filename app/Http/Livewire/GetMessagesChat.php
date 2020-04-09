@@ -13,14 +13,15 @@ class GetMessagesChat extends Component
 
     public $addedMessageVisible = false;
 
-    protected $listeners = ['postAdded' => 'submit'];
+    protected $listeners = ['postAdded' => 'mount'];
 
     public function mount($conversationId)
     {
+        $conversation = Conversation::find($conversationId);
         $this->messages = Chat::conversation(Conversation::find($conversationId))
             ->setParticipant(User::find(auth()->id()))
             ->getMessages()
-            ->toArray();
+            ->toArray()['data'];
 
         $this->addedMessageVisible = true;
     }

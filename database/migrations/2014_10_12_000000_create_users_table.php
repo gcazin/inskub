@@ -31,7 +31,7 @@ class CreateUsersTable extends Migration
             $table->foreign('role_id')->references('id')->on('roles');
         });
 
-        $roles = ['admin', 'salarié', 'entreprise', 'école', 'étudiant'];
+        $roles = ['admin', 'salarie', 'entreprise', 'ecole', 'etudiant'];
 
         $i = 1;
         foreach($roles as $role) {

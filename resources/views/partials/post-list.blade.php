@@ -7,10 +7,10 @@
                     <div class="pt-1 flex-grow">
                         <div class="flex items-center justify-center">
                             <div class="mr-3">
-                                <img class="rounded-full" height="40" width="40" src="{{ auth()->user()->getAvatar($post->user_id) }}">
+                                <img class="rounded-full" height="40" width="40" src="{{ \App\User::getAvatar($post->user_id) }}">
                             </div>
                             <div class="flex-1 my-1">
-                                <span class="font-bold">{{ App\User::find($post->user_id)->username }}</span>
+                                <a href="{{ route('user.profile', $post->user_id) }}" class="font-bold">{{ App\User::find($post->user_id)->username }}</a>
                                 <div class="text-xs text-gray-600 flex items-center">
                                     <span>{{ $post->created_at->diffForHumans() }}</span>
                                     <span class="ml-1 text-sm">

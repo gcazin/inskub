@@ -1,6 +1,6 @@
 <div>
     <div class="py-2 relative overflow-y-auto" id="conversation">
-        @foreach($messages['data'] as $message)
+        @foreach($messages as $message)
             <div class="flex @if($message['is_sender'] === auth()->user()->id) justify-end @endif" id="message-{{$message['id']}}">
                 <div class="bull py-3 w-8/12">
                     <div class="flex @if($message['is_sender'] === auth()->user()->id) justify-end @endif">
@@ -17,3 +17,11 @@
         @endforeach
     </div>
 </div>
+
+<script>
+    document.addEventListener('livewire:available', function () {
+        window.livewire.on('showMessages', function () {
+            console.log('salut')
+        });
+    });
+</script>

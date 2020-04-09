@@ -8,25 +8,23 @@
                 <h1 class="text-xl text-gray-700 mb-3">Espace conversations</h1>
             </div>
             <!-- Liste des gens à qui ont a envoyés un chat -->
-            @if(count($inbox) > 0)
-                @foreach($inbox as $conversations)
-                    @php
-                    $participants = \Musonza\Chat\Models\Conversation::find($conversations)->getParticipants();
-                    @endphp
-                    @foreach($participants as $id => $participant)
-                        @if($participant->id === auth()->id())
-                            @php
-                            unset($participant->id);
-                            @endphp
-                        @else
-                        <a class="flex hover:bg-blue-100 bg-white border-b border-gray-200 border-solid" href="{{ route('chat.chat', $conversations) }}">
+            @if(count($conversations) > 0)
+                @foreach($conversations as $conversation)
+                    @if(session()->has('conversationExist'))
+                        <div class="alert alert-warning">
+                            La conversation avec cette personne existe déjà
+                        </div>
+                    @else
+                        <a class="flex hover:bg-blue-100 bg-white border-b border-gray-200 border-solid" href="{{ route('chat.chat', $conversation['id']) }}">
                             <div class="flex flex-row px-2 pt-4 pb-5 relative w-full">
-
                                 <div class="w-2/12 lg:w-1/12 self-center">
-                                    <img src="{{ \App\User::getAvatar($participant->id) }}" class="mx-auto h-10 rounded-full" alt="">
+                                    <img src="" class="mx-auto h-10 rounded-full" alt="">
                                 </div>
                                 <div class="w-8/12 ml-1">
-                                    <div class="author text-gray-700 font-bold">{{ \App\User::find($participant->id)->username }}</div>
+                                    @foreach($conversation['participants'] as $participant)
+                                        {{ \App\User::find($participant['messageable_id'])->username }}{{ $loop->last ? '' : ',' }}
+                                    @endforeach
+                                    <div class="author text-gray-700 font-bold"></div>
                                     <div class="author truncate text-gray-500 truncate">{{--$inbox->thread->chat--}}</div>
                                 </div>
                                 <div class="w-2/12 text-sm text-gray-500 text-right hidden lg:block">
@@ -43,11 +41,10 @@
 
                             </div>
                         </a>
-                        @endif
-                    @endforeach
+                    @endif
                 @endforeach
             @elseif(count($conversations) <= 0)
-                <div>Aucune conversation</div>
+                <div class="alert alert-info">Vous n'avez encore conversé avec personne pour l'instant</div>
             @endif
         </div>
     </div>

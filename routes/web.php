@@ -54,10 +54,12 @@ Route::namespace('Auth')->group(function() {
     Route::post('mot-de-passe/reinitialisation', 'ResetPasswordController@reset');
 });
 
-Route::namespace('Chat')->group(function() {
+Route::namespace('Chat')->name('chat.')->group(function() {
     // Messagerie privée
-    Route::get('/chat', 'ChatController@index')->name('chat.index');
-    Route::get('/chat/{id}', 'ChatController@chat')->name('chat.chat');
+    Route::get('/chat', 'ChatController@index')->name('index');
+    Route::get('/chat/create/{id}', 'ChatController@createDirectConversation')->name('createConversation');
+    Route::get('/chat/{id}', 'ChatController@chat')->name('chat');
+    Route::post('/chat/{id}', 'ChatController@addParticipants')->name('addParticipants');
 });
 
 Route::namespace('Follow')->group(function() {

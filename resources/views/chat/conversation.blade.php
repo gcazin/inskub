@@ -2,13 +2,43 @@
 
 @section('content')
     <!-- Chat  -->
-    <div class="flex flex-col -mt-5 w-full lg:w-8/12 bg-white">
+    <div class="flex flex-col -mt-5 w-full lg:w-full bg-white">
         <div class="w-11/12 mx-auto flex flex-col" style="height: 81vh">
-            <div class="border-b border-solid border-gray-200 text-gray-600 items-center flex" style="height: 50px">
-                Conversation avec @foreach($participants as $key => $value) {{ ($key === auth()->id()) ? \App\User::find($value)->username : null }} @endforeach
+            <div class="flex justify-between items-center border-b border-solid border-gray-200 text-gray-600" style="height: 50px">
+                <div>
+                    Conversation avec
+                    @foreach($participants as $participant)
+                        {{ \App\User::find($participant['messageable_id'])->username }}{{ ($loop->last) ? '.' : ',' }}
+                    @endforeach
+                </div>
+                <div>
+                    <button class="modal-open" class="text-lg"><ion-icon class="align-middle" name="settings-outline"></ion-icon></button>
+                    @component('partials.modal')
+                        @slot('title')
+                            Réglages
+                        @endslot
+                        <form action="{{ route('chat.addParticipants', request()->route('id')) }}" method="post">
+                            @csrf
+                            <div class="form-group">
+                                <label for="participants">Ajouter des participants</label>
+                                <input type="hidden" name="conversation_id" value="{{ request()->route('id') }}">
+                                <select id="participants" name="participants[]" class="input" multiple>
+                                    @foreach(\App\User::all() as $user)
+                                        <option value="{{ $user->id }}">{{ $user->username }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @slot('footer')
+                                <button class="modal-close btn btn-light">Fermer</button>
+                                <button type="submit" class="btn btn-blue ml-1">Sauvegarder</button>
+                        </form>
+
+                        @endslot
+                    @endcomponent
+                </div>
             </div>
             <div class="flex-1 py-2 relative overflow-y-auto" id="conversation">
-                <livewire:get-messages-chat :conversationId="@request()->route('id')">
+                @include('partials.messages-list')
             </div>
 
             <!-- Champ de saisie pour écrire un chat -->
@@ -17,6 +47,8 @@
             </div>
         </div>
     </div>
+
+
 @endsection
 
 @section('script')
@@ -26,15 +58,7 @@
         let conversation = document.getElementById('conversation')
 
         conversation.clientHeight = conversation.clientHeight + top_menu + bottom_menu
-    </script>
-    <script>
-        document.addEventListener('livewire:available', function () {
-            window.livewire.on('postAdded', function () {
-                console.log('salut')
-            });
-        });
-    </script>
-    <script>
+
         var messageBody = document.querySelector('#conversation');
         messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
     </script>
