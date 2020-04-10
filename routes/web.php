@@ -58,6 +58,7 @@ Route::namespace('Chat')->name('chat.')->group(function() {
     // Messagerie privée
     Route::get('/chat', 'ChatController@index')->name('index');
     Route::get('/chat/create/{id}', 'ChatController@createDirectConversation')->name('createConversation');
+    Route::get('/chat/create-groups', 'ChatController@createGroupConversation')->name('createGroupConversation');
     Route::get('/chat/{id}', 'ChatController@chat')->name('chat');
     Route::post('/chat/{id}', 'ChatController@addParticipants')->name('addParticipants');
 });

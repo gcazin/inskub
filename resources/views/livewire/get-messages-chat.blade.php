@@ -1,27 +1,28 @@
-<div>
+<div wire:poll>
     <div class="py-2 relative overflow-y-auto" id="conversation">
         @foreach($messages as $message)
-            <div class="flex @if($message['is_sender'] === auth()->user()->id) justify-end @endif" id="message-{{$message['id']}}">
+            <div class="flex @if($message['is_sender'] === 1) justify-end @endif" id="message-{{$message['id']}}">
                 <div class="bull py-3 w-8/12">
-                    <div class="flex @if($message['is_sender'] === auth()->user()->id) justify-end @endif">
-                        <div class="w-11/12 @if($message['is_sender'] === auth()->user()->id) {{'bg-blue-300'}} @else {{'bg-gray-100'}} @endif rounded-lg px-5 py-2">
-                            <p>{{$message['body']}}</p>
-                            <div class="text-right">
-                                <small class="text-sm text-gray-600">{{--$message->humans_time--}}</small>
-                                <a href="#" class="talkDeleteMessage" data-message-id="{{$message['id']}}" title="Delete Message"><i class="fa fa-close"></i></a>
-                            </div>
+                    <div class="flex @if($message['is_sender'] === 1) justify-end @endif">
+                        @if(!$direct && $message['is_sender'] === 0)
+                            <img class="h-10 rounded-full mr-2" src="{{ \App\User::getAvatar($message['sender']['id']) }}" alt="">
+                        @endif
+                        <div class="w-11/12 @if($message['is_sender'] === 1) {{'bg-blue-500'}} @else {{'bg-gray-200'}} @endif rounded-lg px-5 py-2">
+                            <p class="@if($message['is_sender'] === 1) {{'text-white'}} @else {{''}} @endif">{{$message['body']}}</p>
+                            <!--<div class="text-right">
+                                <a href="#" data-message-id="{{$message['id']}}" title="Delete Message"><i class="fa fa-close"></i></a>
+                            </div>-->
+
                         </div>
+                            <small class="block text-sm text-gray-600 @if($message['is_sender'] === 1) float-right @endif">
+                                {{ \Carbon\Carbon::make($message['created_at'])->diffForHumans() }}
+                            </small>
                     </div>
                 </div>
             </div>
         @endforeach
     </div>
 </div>
-
 <script>
-    document.addEventListener('livewire:available', function () {
-        window.livewire.on('showMessages', function () {
-            console.log('salut')
-        });
-    });
+
 </script>

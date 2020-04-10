@@ -9,25 +9,24 @@ use Musonza\Chat\Models\Conversation;
 
 class GetMessagesChat extends Component
 {
+    public $conversation;
     public $messages;
+    public $isDirect;
 
-    public $addedMessageVisible = false;
+    protected $listeners = ['messageAdded' => '$refresh'];
 
-    protected $listeners = ['postAdded' => 'mount'];
-
-    public function mount($conversationId)
+    public function mount($conversation)
     {
-        $conversation = Conversation::find($conversationId);
-        $this->messages = Chat::conversation(Conversation::find($conversationId))
-            ->setParticipant(User::find(auth()->id()))
-            ->getMessages()
-            ->toArray()['data'];
-
-        $this->addedMessageVisible = true;
+        $this->conversation = Conversation::find($conversation);
     }
 
     public function render()
     {
-        return view('livewire.get-messages-chat');
+        $this->messages = Chat::conversation($this->conversation)
+            ->setParticipant(User::find(auth()->id()))
+            ->getMessages()
+            ->toArray()['data'];
+        $this->isDirect = $this->conversation->direct_message;
+        return view('livewire.get-messages-chat', ['messages' => $this->messages, 'direct' => $this->isDirect]);
     }
 }

@@ -16,16 +16,27 @@
                         </div>
                     @else
                         <a class="flex hover:bg-blue-100 bg-white border-b border-gray-200 border-solid" href="{{ route('chat.chat', $conversation['id']) }}">
-                            <div class="flex flex-row px-2 pt-4 pb-5 relative w-full">
+                            <div class="flex flex-row px-2 py-4 relative w-full">
                                 <div class="w-2/12 lg:w-1/12 self-center">
-                                    <img src="" class="mx-auto h-10 rounded-full" alt="">
+                                    <div class="relative mx-auto">
+                                        @foreach($conversation['participants'] as $participant)
+                                            <img src="{{ \App\User::getAvatar($participant['messageable_id']) }}"
+                                                 class="h-10 rounded-full absolute" alt=""
+                                                 @if($loop->first)
+                                                 style="top: -15px;right: 5px; z-index: 1"
+                                                 @else
+                                                 style="top: -22px;right: 16px;"
+                                                @endif
+                                            >
+                                        @endforeach
+                                    </div>
                                 </div>
-                                <div class="w-8/12 ml-1">
+                                <div class="w-8/12 ml-3">
                                     @foreach($conversation['participants'] as $participant)
                                         {{ \App\User::find($participant['messageable_id'])->username }}{{ $loop->last ? '' : ',' }}
                                     @endforeach
                                     <div class="author text-gray-700 font-bold"></div>
-                                    <div class="author truncate text-gray-500 truncate">{{--$inbox->thread->chat--}}</div>
+                                    <div class="author truncate text-gray-500 truncate">{{ $conversation['last_message']['body'] ?? 'Aucun message à afficher' }}</div>
                                 </div>
                                 <div class="w-2/12 text-sm text-gray-500 text-right hidden lg:block">
                                     <div class="date">{{-- $inbox->thread->humans_time --}}</div>

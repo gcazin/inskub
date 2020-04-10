@@ -21,17 +21,20 @@ class CreateVisibilityPostsTable extends Migration
             $table->timestamps();
         });
 
-        $visibilities = ['public', 'followers', 'private'];
+        $visibilities = [
+            'Public' => 'Tout le monde pourra voir votre publication',
+            'Abonnés' => 'Votre publication ne sera visible que pour vos abonnés',
+            'Privée' => 'Votre publication ne sera visible que par vous'];
 
         /*
          * Tout le monde sur ou en dehors de TomorrowInsurance
          * Vos abonnées sur TomorrowInsurance
          * Moi uniquement
          */
-        foreach($visibilities as $visibility) {
+        foreach($visibilities as $type => $description) {
             DB::table('visibility_posts')->insert([
-                'type' => $visibility,
-                'description' => 'Default'
+                'type' => $type,
+                'description' => $description
             ]);
         }
     }

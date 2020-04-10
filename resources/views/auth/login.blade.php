@@ -9,15 +9,19 @@
             <h1 class="text-3xl mb-5">Connexion</h1>
             <form method="POST" action="{{ route('login') }}">
                 @csrf
-                <label for="email">{{ __('Adresse mail') }}</label>
-                <input class="input" name="email" id="email" type="email" placeholder="jane@example.com">
+                <div class="form-group">
+                    <label for="email">{{ __('Adresse mail') }}</label>
+                    <input class="input" name="email" id="email" type="email" placeholder="jane@example.com">
+                </div>
                 @error('email')
                 <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                 @enderror
-                <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Mot de passe') }}</label>
-                <input id="password" type="password" class="input" name="password" required autocomplete="current-password">
+                <div class="form-group">
+                    <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Mot de passe') }}</label>
+                    <input id="password" type="password" class="input" name="password" required autocomplete="current-password">
+                </div>
                 @error('password')
                 <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

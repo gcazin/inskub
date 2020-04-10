@@ -10,15 +10,19 @@
             <form method="POST" action="{{ route('register') }}">
                 @csrf
 
-                <label for="role_id">Type de compte</label>
-                <select name="role_id" class="input" id="role_id" onchange="selectedValue()">
-                    @foreach(\App\Role::all()->except(1) as $role)
-                        <option value="{{ $role->id }}" @if($role->id === 2) selected @endif>{{ $role->display_name }}</option>
-                    @endforeach
-                </select>
+                <div class="form-group">
+                    <label for="role_id">Type de compte</label>
+                    <select name="role_id" id="role_id" onchange="selectedValue()" autofocus>
+                        @foreach(\App\Role::all()->except(1) as $role)
+                            <option value="{{ $role->id }}" @if($role->id === 2) selected @endif>{{ $role->display_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Pseudo') }}</label>
-                <input id="name" type="text" class="input" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                <div class="form-group">
+                    <label for="name">{{ __('Pseudo') }}</label>
+                    <input id="name" type="text" name="name" value="{{ old('name') }}" required autocomplete="name">
+                </div>
 
                 @error('name')
                 <span class="error" role="alert">
@@ -26,8 +30,10 @@
                     </span>
                 @enderror
 
-                <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Adresse mail') }}</label>
-                <input id="email" type="email" class="input" name="email" value="{{ old('email') }}" required autocomplete="email">
+                <div class="form-group">
+                    <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Adresse mail') }}</label>
+                    <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email">
+                </div>
 
                 @error('email')
                 <span class="error" role="alert">
@@ -35,8 +41,10 @@
                     </span>
                 @enderror
 
-                <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Mot de passe') }}</label>
-                <input id="password" type="password" class="input" name="password" required autocomplete="new-password">
+                <div class="form-group">
+                    <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Mot de passe') }}</label>
+                    <input id="password" type="password" class="input" name="password" required autocomplete="new-password">
+                </div>
 
                 @error('password')
                 <span class="error" role="alert">
@@ -44,22 +52,26 @@
                     </span>
                 @enderror
 
-                <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirmation du mot de passe') }}</label>
-                <input id="password-confirm" type="password" class="input" name="password_confirmation" required autocomplete="new-password">
+                <div class="form-group">
+                    <label for="password-confirm">{{ __('Confirmation du mot de passe') }}</label>
+                    <input id="password-confirm" type="password" name="password_confirmation" required autocomplete="new-password">
+                </div>
 
-                <label for="departement">Département</label>
-                <select name="departement" id="departement" class="input">
-                    @for($i = 0; $i < 101; $i++)
-                        <option value="{{ $i }}" @if($i == 0) selected @endif>{{ $i }}</option>
-                    @endfor
-                </select>
+                <div class="form-group">
+                    <label for="departement">Département</label>
+                    <select name="departement" id="departement" class="input">
+                        @for($i = 0; $i < 101; $i++)
+                            <option value="{{ $i }}" @if($i == 0) selected @endif>{{ $i }}</option>
+                        @endfor
+                    </select>
+                </div>
 
-                <div class="hidden" id="tel-container">
+                <div class="form-group hidden" id="tel-container">
                     <label for="tel">Téléphone</label>
                     <input type="text" name="tel" id="tel" class="input" placeholder="Numéro de téléphone">
                 </div>
 
-                <div class="hidden" id="adresse-container">
+                <div class="form-group hidden" id="adresse-container">
                     <label for="adresse">Adresse</label>
                     <input type="text" name="adresse" id="adresse" class="input" placeholder="Adresse">
                 </div>

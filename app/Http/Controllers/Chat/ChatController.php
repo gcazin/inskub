@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -76,28 +77,40 @@ class ChatController extends Controller {
     /**
      * Conversation entre deux personnes
      *
-     * @param $user
+     * @param $id
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      * @throws \Musonza\Chat\Exceptions\DirectMessagingExistsException
      * @throws \Musonza\Chat\Exceptions\InvalidDirectMessageNumberOfParticipants
      */
-    public function createDirectConversation($user)
+    public function createDirectConversation($id): RedirectResponse
     {
-        $conversationExist = $this->chat->conversations()->between(User::find(1), User::find($user))->exists;
-        if($conversationExist) {
-            return redirect()->route('chat.chat', User::find($user));
+        $conversation = $this->chat->conversations()->between(User::find($this->auth->id()), User::find($id));
+
+        if($this->auth->id() === (int) $id) {
+            return redirect()->back()->with('conversationHimself', 'Vous ne pouvez pas créer de conversation avec vous-même.');
         }
-        $this->chat->createConversation([$this->user->find($this->auth->id()),User::find($user)])->makeDirect();
+
+        if($conversation !== null) {
+            return redirect()->route('chat.chat', $conversation->id);
+        }
+
+        $this->chat->createConversation([User::find($this->auth->id()), User::find($id)])->makeDirect();
         return redirect()->route('chat.index');
     }
 
     /**
      * Conversation de groupes à plus de deux utilisateurs
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
      */
-    public function createGroupConversation()
+    public function createGroupConversation(): RedirectResponse
     {
+        $this->chat->createConversation([User::find($this->auth->id()), User::find(2), User::find(3), User::find(4)]);
 
+        return redirect()->route('chat.index');
     }
 
     /**
@@ -109,7 +122,7 @@ class ChatController extends Controller {
      */
     public function chat(int $id)
     {
-        $user = $this->user->find($this->auth->user()->id);
+        $user = User::find($this->auth->user()->id);
 
         $messages = $this->chat
             ->conversation($this->chat->conversations()->getById($id))
@@ -130,6 +143,7 @@ class ChatController extends Controller {
     public function addParticipants(Request $request)
     {
         $conversation_id = (int) $request->conversation_id;
+
         foreach($request->participants as $participant) {
             $this->chat
                 ->conversation(Conversation::find($conversation_id))

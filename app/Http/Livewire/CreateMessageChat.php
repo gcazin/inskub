@@ -23,6 +23,8 @@ class CreateMessageChat extends Component
             ->to(Conversation::find($this->conversation))
             ->send();
 
+        $this->message = '';
+
         $this->emit('messageAdded');
     }
 

@@ -20081,7 +20081,9 @@ input.tag-input {
 }
 
 *[class*=btn]:focus {
+  border-color: #80bdff;
   outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 .btn {
@@ -20230,13 +20232,18 @@ input.tag-input {
   margin-bottom: 0.5rem;
 }
 
-label {
+.form-group > label {
   color: #718096;
   display: block;
   margin-bottom: 0.25rem;
 }
 
-.input, textarea, select {
+.form-group input, .form-group textarea, .form-group select, .form-group button {
+  transition-property: border-color;
+  transition-duration: 500ms;
+}
+
+.form-group input, .form-group textarea {
   border-width: 1px;
   border-color: #e2e8f0;
   border-radius: 0.25rem;
@@ -20253,8 +20260,27 @@ label {
   color: #4a5568;
 }
 
-.input:focus, .textarea:focus {
-  border-color: #4299e1;
+.form-group select {
+  background-color: #fff;
+  border-width: 1px;
+  border-color: #e2e8f0;
+  border-radius: 0.25rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  display: block;
+  width: 100%;
+  line-height: 1.5;
+  color: #4a5568;
+}
+
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+  background-color: #fff;
+  color: #718096;
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 .custom-label input:checked + svg {

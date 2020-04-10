@@ -15,7 +15,9 @@
                     @if(auth()->id() === request()->route('id'))
                         <a class="text-gray-700" href="{{ route('user.edit') }}"><ion-icon class="align-bottom text-lg" name="settings-outline"></ion-icon></a>
                     @else
-                        <a class="btn btn-blue" href="{{ route('chat.createConversation', $user->id) }}">Envoyer un message privée</a>
+                        <a class="btn btn-blue" href="{{ route('chat.createConversation', $user->id) }}">
+                            <ion-icon name="chatbubble-outline"></ion-icon>
+                        </a>
                     @endif
 
                 </div>

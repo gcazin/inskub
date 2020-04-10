@@ -1,24 +1,27 @@
 @extends('layouts.base', ['full_width' => false])
 
 @section('content')
-    <form action="{{ route('post.create') }}" method="post">
-        @csrf
-        <div class="form-group">
-            <label for="content">Contenu</label>
-            <textarea class="border-0 p-3 w-full" name="content" id="content" placeholder="Votre message"></textarea>
-        </div>
-        <div class="form-group">
-            <select id="visibility" name="visibility_id" id="visibility_id">
-                @foreach(\App\VisibilityPost::all() as $visibilityPost)
-                    <option data-description="{{ $visibilityPost->description }}" value="{{ $visibilityPost->id }}">{{ $visibilityPost->type }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="form-group">
-            <span id="description" class="text-sm text-gray-600"></span>
-        </div>
-        <button class="btn btn-blue btn-block" type="submit">Publier</button>
-    </form>
+    <h1 class="text-xl text-gray-700 mb-2">Publier un contenu</h1>
+    <div class="bg-white px-2 pt-1 pb-4 shadow rounded">
+        <form action="{{ route('post.create') }}" method="post">
+            @csrf
+            <div class="form-group">
+                <label for="content">Contenu</label>
+                <textarea class="p-3 w-full" name="content" id="content" placeholder="Votre message"></textarea>
+            </div>
+            <div class="form-group">
+                <select id="visibility" name="visibility_id" id="visibility_id">
+                    @foreach(\App\VisibilityPost::all() as $visibilityPost)
+                        <option data-description="{{ $visibilityPost->description }}" value="{{ $visibilityPost->id }}">{{ $visibilityPost->type }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <span id="description" class="text-sm text-gray-600"></span>
+            </div>
+            <button class="btn btn-blue btn-block" type="submit">Publier</button>
+        </form>
+    </div>
 @endsection
 
 @section('script')

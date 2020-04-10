@@ -48,7 +48,7 @@
     @if(!isset($header))
         @include("partials.menu", compact('user', $user))
     @else
-        <div class="bg-blue-500 shadow text-white">
+        <div class="bg-blue-400 shadow text-white">
             <div class="w-11/12 mx-auto">
                 <a class="text-4xl" href="{{ route('post.index') }}"><i class="fas fa-arrow-circle-left"></i></a>
             </div>

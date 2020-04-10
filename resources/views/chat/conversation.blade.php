@@ -3,7 +3,7 @@
 @section('content')
     <!-- Chat  -->
     <div class="flex flex-col -mt-5 w-full lg:w-full bg-white">
-        <div class="w-11/12 mx-auto flex flex-col" style="height: 81vh">
+        <div class="w-11/12 mx-auto flex flex-col" style="height: 77vh">
             <div class="flex justify-between items-center border-b border-solid border-gray-200 text-gray-600" style="height: 50px">
                 <div>
                     Conversation avec
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="flex-1 py-2 relative overflow-y-auto" id="conversation">
-                @include('partials.messages-list')
+                <livewire:get-messages-chat :conversation="@request()->route('id')">
             </div>
 
             <!-- Champ de saisie pour écrire un chat -->
@@ -59,7 +59,11 @@
 
         conversation.clientHeight = conversation.clientHeight + top_menu + bottom_menu
 
-        var messageBody = document.querySelector('#conversation');
-        messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+        window.livewire.on('messageAdded', () => {
+            window.livewire.hook('afterDomUpdate', () => {
+                var messageBody = document.querySelector('#conversation');
+                messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+            });
+        })
     </script>
 @endsection

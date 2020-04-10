@@ -9,6 +9,9 @@ use Overtrue\LaravelFollow\Traits\CanBeFollowed;
 use Overtrue\LaravelFollow\Traits\CanFollow;
 use Overtrue\LaravelFollow\Traits\CanLike;
 
+/**
+ * @method static find($id)
+ */
 class User extends \Illuminate\Foundation\Auth\User
 {
     use Notifiable, Messageable, CanFollow, CanBeFollowed, CanLike;
