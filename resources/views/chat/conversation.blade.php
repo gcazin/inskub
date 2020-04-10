@@ -59,6 +59,9 @@
 
         conversation.clientHeight = conversation.clientHeight + top_menu + bottom_menu
 
+        var messageBody = document.querySelector('#conversation');
+        messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+
         window.livewire.on('messageAdded', () => {
             window.livewire.hook('afterDomUpdate', () => {
                 var messageBody = document.querySelector('#conversation');
