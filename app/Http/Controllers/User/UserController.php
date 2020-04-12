@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Post;
@@ -51,9 +51,9 @@ class UserController extends Controller
      */
     public function index(int $id)
     {
-        $user = $this->user->find($id);
+        $user = User::findOrFail($id);
         $posts = Post::all()->where('user_id', $id);
-        return view('auth.profile', compact('user', 'posts'));
+        return view('user.profile', compact('user', 'posts'));
     }
 
     /**
@@ -64,7 +64,7 @@ class UserController extends Controller
     public function options(): View
     {
         $user = $this->auth->user();
-        return view('auth.options', compact('user', $user));
+        return view('user.options', compact('user', $user));
     }
 
     /**
@@ -75,29 +75,29 @@ class UserController extends Controller
     public function edit(): View
     {
         $user = $this->auth->user();
-        return view('auth.edit', compact('user', $user));
+        return view('user.edit', compact('user', $user));
     }
 
     /**
      * Page "Réglages avancées"
      *
-     * @return Factory|View
      */
-    public function advanced(): View
+    /*public function advanced(): View
     {
         $user = $this->auth->user();
         return view('auth.advanced', compact('user', $user));
-    }
+    }*/
 
     /**
      * Mise à jour du profil
      *
      * @param Request $request
-     * @return Factory|View
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request)
     {
-        $user = $this->user->find($this->auth->user()->id);
+        $user = $this->user->findOrFail($this->auth->user()->id);
         $user->name = $request->input('name');
         $user->email = $request->input('email');
 
@@ -127,8 +127,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('edit')
-            ->with('success','Votre compte à bien été mis à jour');
+        return redirect()->route('user.edit')->with('success','Votre compte à bien été mis à jour');
     }
 
     public function destroy($id)

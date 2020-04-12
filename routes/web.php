@@ -29,17 +29,6 @@ Route::namespace('Post')->name('post.')->group(function() {
 
 // Utilisateur
 Route::namespace('Auth')->group(function() {
-    // CRUD de la classe User
-    Route::resource('user', 'UserController')->except(['index', 'show', 'create']);
-    // Partie "Mon compte"
-    Route::name('user.')->group(function() {
-        Route::get('/profil/{id}', 'UserController@index')->name('profile');
-        Route::get('/mon-compte', 'UserController@edit')->name('edit');
-        Route::get('/options', 'UserController@options')->name('options');
-        Route::get('/avances', 'UserController@advanced')->name('advanced');
-        Route::get('/deconnexion', 'LoginController@logout')->name('logout');
-    });
-
     // Connexion
     Route::get('/connexion', 'LoginController@showLoginForm')->name('login');
     Route::post('/connexion', 'LoginController@login');
@@ -52,6 +41,30 @@ Route::namespace('Auth')->group(function() {
     Route::post('mot-de-passe/email', 'ForgotPasswordController@sendResetLinkEmail');
     Route::get('mot-de-passe/reinitialisation/{token}', 'ResetPasswordController@showResetForm');
     Route::post('mot-de-passe/reinitialisation', 'ResetPasswordController@reset');
+
+    Route::get('/deconnexion', 'LoginController@logout')->name('user.logout');
+});
+
+Route::namespace('User')->name('user.')->group(function() {
+    // Partie "Mon compte"
+    Route::get('/profil/{id}', 'UserController@index')->name('profile');
+
+    Route::prefix('profil')->group(function() {
+
+        /**
+         * Crud des formations de l'utilisateur
+         */
+        Route::name('formation.')->prefix('formation')->group(function() {
+            Route::get('/create', 'UserFormationController@create')->name('create');
+        });
+
+        /**
+         * Gestion du compte
+         */
+        Route::get('/mon-compte', 'UserController@edit')->name('edit');
+        Route::get('/options', 'UserController@options')->name('options');
+        Route::get('/avances', 'UserController@advanced')->name('advanced');
+    });
 });
 
 Route::namespace('Chat')->name('chat.')->group(function() {
@@ -67,10 +80,9 @@ Route::namespace('Follow')->group(function() {
     Route::post('/follow/add', 'FollowerController@add')->name('follower.add');
 });
 
-Route::namespace('Formation')->group(function() {
-    Route::get('/formation/creation', 'FormationController@create')->name('create.formation');
-    Route::post('/formation/creation', 'FormationController@store')->name('store.formation');
-    Route::get('/formation/list', 'FormationController@show')->name('show.formation');
+Route::namespace('Formation')->prefix('formation')->name('formation.')->group(function() {
+    Route::get('/create', 'FormationController@create')->name('create');
+    Route::post('/create', 'FormationController@store');
 });
 
 // Administration

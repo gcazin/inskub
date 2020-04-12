@@ -11,6 +11,9 @@
 *
  */
 
+.container {
+    @apply w-11/12 mx-auto;
+}
 .content {
     @apply mx-auto flex-1 relative;
 }

@@ -34,14 +34,22 @@
                     <input type="file" class="hidden" name="avatar" id="avatar" aria-describedby="fileHelp">
                 </label>
             </div>
-            <label for="name">Changer votre pseudo:</label>
-            <input name="name" type="text" id="name" class="input" value="{{ $user->name }}">
-            <label for="email">Changer votre adresse mail:</label>
-            <input name="email" type="email" id="email" class="input" value="{{ $user->email }}">
-            <label for="email">Nouveau mot de passe:</label>
-            <input name="password" type="password" id="password" class="input" autocomplete="false">
-            <label for="email">Confirmation du nouveau mot de passe:</label>
-            <input name="password_confirmation" type="password" id="confirm_password" class="input">
+            <div class="form-group">
+                <label for="name">Changer votre pseudo:</label>
+                <input name="name" type="text" id="name" class="input" value="{{ $user->name }}">
+            </div>
+            <div class="form-group">
+                <label for="email">Changer votre adresse mail:</label>
+                <input name="email" type="email" id="email" class="input" value="{{ $user->email }}">
+            </div>
+            <div class="form-group">
+                <label for="email">Nouveau mot de passe:</label>
+                <input name="password" type="password" id="password" class="input" autocomplete="false">
+            </div>
+            <div class="form-group">
+                <label for="email">Confirmation du nouveau mot de passe:</label>
+                <input name="password_confirmation" type="password" id="confirm_password" class="input">
+            </div>
             <hr class="dark:border-gray-700">
             <div class="p-3 dark:bg-gray-800 text-right rounded-b">
                 <button class="btn btn-green" type="submit">Sauvegarder</button>

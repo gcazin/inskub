@@ -12,10 +12,10 @@
             <div class="w-11/12 mx-auto">
                 <div class="flex justify-between">
                     <p class="text-xl font-light">{{ ucfirst($user->first_name) }} {{ ucfirst($user->last_name) }}</p>
-                    @if(auth()->id() === request()->route('id'))
+                    @if(auth()->id() === (int) request()->route('id'))
                         <a class="text-gray-700" href="{{ route('user.edit') }}"><ion-icon class="align-bottom text-lg" name="settings-outline"></ion-icon></a>
                     @else
-                        <a class="btn btn-blue" href="{{ route('chat.createConversation', $user->id) }}">
+                        <a class="text-xl" href="{{ route('chat.createConversation', $user->id) }}">
                             <ion-icon name="chatbubble-outline"></ion-icon>
                         </a>
                     @endif
@@ -29,6 +29,19 @@
         </div>
     </div>
     <!-- Post -->
-    <h1 class="px-4 text-gray-700 text-lg">{{ (auth()->id() === request()->route('id')) ? 'Vos publications' : 'Les publications de '. \App\User::find(request()->route('id'))->username }}</h1>
-    @include('partials.post-list')
+    <div class="w-11/12 mx-auto">
+        <div class="card shadow bg-white shadow rounded">
+            <div class="card__header flex items-center justify-between px-3 py-2">
+                <div class="card__header--title">
+                    <h2 class="text-gray-800">Ajouter des formations</h2>
+                </div>
+                <div class="card__header--button">
+                    <a class="btn btn-blue btn-sm" href="{{ route('user.formation.create') }}">
+                        <ion-icon class="text-xl" name="add-circle-outline"></ion-icon>
+                    </a>
+                </div>
+            </div>
+            <div class="card__body"></div>
+        </div>
+    </div>
 @endsection

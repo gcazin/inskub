@@ -8,11 +8,12 @@
 @import "components/navbar";
 @import "components/footer";
 
-@import "components/sections";
+@import "components/section";
 
-@import "components/buttons";
-@import "components/inputs";
-@import "components/alerts";
+@import "components/button";
+@import "components/input";
+@import "components/alert";
+@import "components/card";
 
 .mode-dark {
     @import "dark-mode";
