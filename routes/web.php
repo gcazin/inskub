@@ -56,6 +56,15 @@ Route::namespace('User')->name('user.')->group(function() {
          */
         Route::name('formation.')->prefix('formation')->group(function() {
             Route::get('/create', 'UserFormationController@create')->name('create');
+            Route::post('/create', 'UserFormationController@store');
+        });
+
+        /**
+         * Crud des expériences de l'utilisateur
+         */
+        Route::name('experience.')->prefix('experience')->group(function() {
+            Route::get('/create', 'UserExperienceController@create')->name('create');
+            Route::post('/create', 'UserExperienceController@store');
         });
 
         /**

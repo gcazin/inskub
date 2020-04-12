@@ -2,27 +2,32 @@
 
 @section('content')
     <div class="w-11/12 lg:w-8/12 mx-auto">
-        <h1 class="text-xl mb-2 text-gray-800">Ajouter une formation</h1>
+        <h1 class="text-xl mb-2 text-gray-800">Ajouter une expérience</h1>
         <div class="card">
 
             <!-- Form -->
             <div class="card__body px-3 py-2">
-                <form action="{{ route('user.formation.create') }}" method="post">
+                <form action="{{ route('user.experience.create') }}" method="post">
                     @csrf
 
                     <div class="form-group">
-                        <label for="name">Ecole</label>
-                        <input type="text" name="school" id="school" placeholder="Université de...">
+                        <label for="title">Titre</label>
+                        <input type="text" name="title" id="title" placeholder="Intitulé du poste">
                     </div>
 
                     <div class="form-group">
-                        <label for="degree">Diplôme</label>
-                        <input type="text" name="degree" id="degree" placeholder="Licence...">
+                        <label for="enterprise">Entreprise</label>
+                        <input type="text" name="enterprise" id="enterprise" placeholder="Entreprise concernée...">
                     </div>
 
                     <div class="form-group">
-                        <label for="study_area">Domaine d'étude</label>
-                        <input type="text" name="study_area" id="study_area" placeholder="Assurance en...">
+                        <label for="location">Localisation</label>
+                        <input type="text" name="location" id="location" placeholder="Paris...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sector">Secteur</label>
+                        <input type="text" name="sector" id="sector" placeholder="Assurance...">
                     </div>
 
                     <div class="flex">
@@ -50,7 +55,7 @@
         </div>
 
         <div class="mt-5">
-            @include('user.partials.formations-list')
+            @include('user.partials.experiences-list')
         </div>
     </div>
 @endsection
