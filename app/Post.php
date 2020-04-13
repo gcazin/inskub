@@ -9,6 +9,10 @@ class Post extends Model
 {
     use CanBeLiked;
 
+    protected $fillable = [
+        'content', 'user_id', 'visibility_id',
+    ];
+
     /**
      * Get the comments for the blog post.
      */

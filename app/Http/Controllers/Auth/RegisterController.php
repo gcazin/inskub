@@ -49,12 +49,12 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
+    protected function validator(array $data): \Illuminate\Contracts\Validation\Validator
     {
         return Validator::make($data, [
             'role_id' => ['required', 'string'],
-            'tags' => ['sometimes'],
-            'name' => ['required', 'string', 'max:25', 'unique:users'],
+            'last_name' => ['required', 'string'],
+            'first_name' => ['required', 'string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -70,24 +70,14 @@ class RegisterController extends Controller
     {
         $user = new User();
         $user->role_id = $data['role_id'];
-        $user->name = $data['name'];
+        $user->first_name = $data['first_name'];
+        $user->last_name = $data['last_name'];
         $user->email = $data['email'];
         $user->password = Hash::make($data['password']);
         $user->departement = $data['departement'];
-        if(! is_null($data['tel']) && ! is_null($data['adresse'])) {
-            $user->tel = $data['tel'];
-            $user->adresse = $data['adresse'];
-        }
+        $user->tel = $data['tel'] ?? null;
+        $user->adresse = $data['adresse'] ?? null;
         $user->save();
-
-        /*if(!is_null($data['skills'])) {
-            for ($i = 0; $i < count($data['skills']); $i++) {
-                $skills = new Skill_pivot();
-                $skills->user_id = $user->id;
-                $skills->skill_id = $data['skills'][$i];
-                $skills->save();
-            }
-        }*/
 
         return $user;
     }

@@ -10,9 +10,19 @@
             <form method="POST" action="{{ route('register') }}">
                 @csrf
 
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <div class="form-group">
                     <label for="role_id">Type de compte</label>
-                    <select name="role_id" id="role_id" onchange="selectedValue()" autofocus>
+                    <select name="role_id" id="role_id" onchange="selectedValue()" autofocus required>
                         @foreach(\App\Role::all()->except(1) as $role)
                             <option value="{{ $role->id }}" @if($role->id === 2) selected @endif>{{ $role->display_name }}</option>
                         @endforeach
@@ -20,48 +30,37 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="name">{{ __('Pseudo') }}</label>
-                    <input id="name" type="text" name="name" value="{{ old('name') }}" required autocomplete="name">
+                    <label for="last_name">{{ __('Nom') }}</label>
+                    <input id="last_name" type="text" name="last_name" value="{{ old('last_name') }}" required autocomplete="last_name">
                 </div>
 
-                @error('name')
-                <span class="error" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                <div class="form-group">
+                    <label for="first_name">{{ __('Prénom') }}</label>
+                    <input id="first_name" type="text" name="first_name" value="{{ old('first_name') }}" required autocomplete="first_name">
+                </div>
+
 
                 <div class="form-group">
-                    <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Adresse mail') }}</label>
+                    <label for="email">{{ __('Adresse mail') }}</label>
                     <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email">
                 </div>
 
-                @error('email')
-                <span class="error" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-
                 <div class="form-group">
-                    <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Mot de passe') }}</label>
-                    <input id="password" type="password" class="input" name="password" required autocomplete="new-password">
+                    <label for="password">{{ __('Mot de passe') }}</label>
+                    <input id="password" type="password" name="password" required autocomplete="new-password">
                 </div>
-
-                @error('password')
-                <span class="error" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
 
                 <div class="form-group">
                     <label for="password-confirm">{{ __('Confirmation du mot de passe') }}</label>
-                    <input id="password-confirm" type="password" name="password_confirmation" required autocomplete="new-password">
+                    <input id="password-confirm" type="password" name="password_confirmation" required>
                 </div>
 
                 <div class="form-group">
                     <label for="departement">Département</label>
-                    <select name="departement" id="departement" class="input">
+                    <select name="departement" id="departement" class="input" required>
+                        <option disabled selected>Choisir votre département</option>
                         @for($i = 0; $i < 101; $i++)
-                            <option value="{{ $i }}" @if($i == 0) selected @endif>{{ $i }}</option>
+                            <option value="{{ $i }}">{{ $i }}</option>
                         @endfor
                     </select>
                 </div>

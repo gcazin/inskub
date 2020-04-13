@@ -22,7 +22,7 @@ class User extends \Illuminate\Foundation\Auth\User
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'avatar', 'password', 'role_id', 'departement',
+        'role_id', 'last_name', 'first_name', 'email', 'password', 'avatar', 'departement'
     ];
 
     /**
@@ -31,7 +31,7 @@ class User extends \Illuminate\Foundation\Auth\User
      * @var array
      */
     protected $hidden = [
-        'remember_token',
+        'password', 'remember_token',
     ];
 
     /**
@@ -49,7 +49,7 @@ class User extends \Illuminate\Foundation\Auth\User
     public static function isAdmin(): bool
     {
         if(Auth::check()) {
-            if (Auth::user()->role_id == 1) {
+            if ((int) Auth::user()->role_id === 1) {
                 return true;
             }
         }

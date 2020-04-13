@@ -20,7 +20,6 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('role_id');
             $table->string('last_name');
             $table->string('first_name');
-            $table->string('username');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -39,7 +38,6 @@ class CreateUsersTable extends Migration
                 'role_id' => $i++,
                 'last_name' => $role,
                 'first_name' => $role,
-                'username' => $role,
                 'email' => ''.$role.'@'.$role.'.fr',
                 'password' => Hash::make('secret'),
             ]);

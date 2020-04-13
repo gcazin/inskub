@@ -12,32 +12,16 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name') }} @empty(!$title) - {{$title}} @else {{ null }} @endempty</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <style>
-        #footer::before {
-            content: '';
-            display: -webkit-box;
-            display: flex;
-            background: url({{ asset('/storage/images/wave-6.svg') }}) 0 1px no-repeat #f7fafc;
-            background-size: auto;
-            background-size: cover;
-            transform: rotateY(180deg);
-            margin-top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1;
-            padding-top: 12rem;
-        }
-        .flip-wave.content::before {
-            transform: rotateY(180deg);
-        }
-    </style>
+    <link rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+          crossorigin="anonymous">
     <script
         src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.0.1/dist/alpine.js" defer></script>
     @livewireScripts
-
 </head>
 <body class="bg-gray-100 font-sans flex-col h-full dark:bg-gray-900 dark:text-white">
 <header class="nav bg-white dark:bg-gray-800 border lg:border-none border-gray-200">

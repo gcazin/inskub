@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePost;
 use App\Post;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -37,7 +36,7 @@ class PostController extends Controller
         return view('post.show', compact('post'));
     }
 
-    public function store(Request $request)
+    public function store(StorePost $request)
     {
         $post = $this->post;
         $post->content = $request->get('content');

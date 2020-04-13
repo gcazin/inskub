@@ -12,17 +12,17 @@
 <div class="lg:py-0">
     <nav class="flex items-center justify-between flex-wrap w-11/12 m-auto py-3">
         <livewire:search-users>
-        @auth
-        <div class="ml-2 block lg:hidden flex justify-end">
-            <button id="userButton" class="flex items-center focus:outline-none text-gray-600 hover:text-blue-500">
-                <img class="w-10 h-10 rounded-full" src="{{ \App\User::getAvatar(auth()->user()->id) }}" alt="Avatar of User">
-            </button>
-        </div>
-        @endauth
-        <div class="hidden lg:block flex items-center flex-shrink-0 text-black mr-6">
-            <a href="{{ route('post.index') }}" class="pb-1 font-medium text-2xl tracking-tight text-gray-700 dark:text-gray-200"><img class="h-8 inline-block align-baseline" src="{{ asset('storage/images/logo.png') }}" class="h-8" alt="Logo"><span class="align-text-bottom">TomorrowInsurance</span></a>
-        </div>
-        <div id="main-nav" class="w-full text-xl font-medium hidden lg:inline flex-grow lg:flex lg:justify-end lg:w-auto">
+            @auth
+                <div class="ml-2 block lg:hidden flex justify-end">
+                    <button id="userButton" class="flex items-center focus:outline-none text-gray-600 hover:text-blue-500">
+                        <img class="w-10 h-10 rounded-full" src="{{ \App\User::getAvatar(auth()->user()->id) }}" alt="Avatar of User">
+                    </button>
+                </div>
+            @endauth
+            <div class="hidden lg:block flex items-center flex-shrink-0 text-black mr-6">
+                <a href="{{ route('post.index') }}" class="pb-1 font-medium text-2xl tracking-tight text-gray-700 dark:text-gray-200"><img class="h-8 inline-block align-baseline" src="{{ asset('storage/images/logo.png') }}" class="h-8" alt="Logo"><span class="align-text-bottom">TomorrowInsurance</span></a>
+            </div>
+            <div id="main-nav" class="w-full text-xl font-medium hidden lg:inline flex-grow lg:flex lg:justify-end lg:w-auto">
             <!--<div class="text-base lg:flex-grow">
                 <a href="{{ route('article.index') }}" class="navbar-items nav {{ routeName('post.index') }} dark:text-gray-400 dark-hover:text-gray-600 py-4">
                     Articles
@@ -31,51 +31,66 @@
                     Agents généraux
                 </a>
             </div>-->
-            <div class="w-full lg:w-1/2 pr-0 mt-2 md:mt-0">
-                <div class="flex relative inline-block items-center justify-end sm:mt-3 lg:mt-0">
-                    @auth
-                        <a class="mr-4 text-gray-600 text-2xl border-solid border-gray-200 hover:text-blue-500" href="{{ route('chat.index') }}"><i class="far fa-bell"></i></a>
-                        <a class="mr-4 relative text-gray-600 text-2xl border-solid border-gray-200 hover:text-blue-500" href="{{ route('chat.index') }}">
-                            <i class="far fa-comment-dots"></i>
-                        </a>
-                        @if(auth()->user()->role_id === 2) <!-- Salarié -->
-                        <a class="pr-3 mx-4 btn btn-blue" href="{{ route('show.formation') }}">Trouver une formation</a>
-                        @elseif(auth()->user()->role_id === 3) <!-- Entreprise -->
-                        <a class="pr-3 mx-4 btn btn-blue" href="{{ route('article.create') }}">Proposer une offre</a>
-                        @elseif(auth()->user()->role_id === 4) <!-- Ecole -->
-                        <a class="pr-3 mx-4 btn btn-blue" href="{{ route('create.formation') }}">Proposer une formation</a>
-                        @elseif(auth()->user()->role_id === 5) <!-- Etudiant -->
-                        <a class="pr-3 mx-4 btn btn-blue" href="{{ route('article.create') }}">Boite à idées</a>
-                        @endif
-                        <div class="relative text-sm">
+                <div class="w-full lg:w-1/2 pr-0 mt-2 md:mt-0">
+                    <div class="flex relative inline-block items-center justify-end sm:mt-3 lg:mt-0">
+                        @auth
+                            <a class="relative text-gray-600 border-solid border-gray-200 hover:text-blue-500" href="{{ route('chat.index') }}">
+                                <ion-icon class="align-middle text-3xl" name="chatbox-outline"></ion-icon>
+                            </a>
+                            @if(auth()->user()->role_id === 1) <!-- Salarié -->
+                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('admin.index') }}">Administration</a>
+                            @elseif(auth()->user()->role_id === 2) <!-- Salarié -->
+                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('show.formation') }}">Trouver une formation</a>
+                            @elseif(auth()->user()->role_id === 3) <!-- Entreprise -->
+                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('article.create') }}">Proposer une offre</a>
+                            @elseif(auth()->user()->role_id === 4) <!-- Ecole -->
+                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('create.formation') }}">Proposer une formation</a>
+                            @elseif(auth()->user()->role_id === 5) <!-- Etudiant -->
+                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('article.create') }}">Boite à idées</a>
+                            @endif
+                            <div class="relative text-sm">
 
-                            <!-- Mon compte -->
-                            <button id="userButton" class="flex items-center focus:outline-none text-gray-600 hover:text-blue-500">
-                                <img class="w-10 h-10 rounded-full" src="{{ \App\User::getAvatar(auth()->user()->id) }}" alt="Avatar of User">
-                            </button>
-
-                            <!-- Dropdown -->
-                            <div id="userMenu" class="bg-white border border-blue-100 dark:border-gray-800 border-solid dark:bg-gray-700 rounded shadow-md mt-5 absolute pin-t pin-r min-w-full overflow-auto z-30 invisible shadow" style="right: 30%; width: 180px">
-                                <ul class="list-reset font-normal">
-                                    <li><a href="{{ route('user.edit', auth()->id()) }}" class="px-4 py-3 block text-black dark:text-gray-300 hover:text-blue-500 dark-hover:bg-gray-800 no-underline hover:no-underline transition-100">Mon compte</a></li>
-                                    <li><a href="{{ route('user.options') }}" class="px-4 py-3 block text-black dark:text-gray-300 hover:text-blue-500 dark-hover:bg-gray-800 no-underline hover:no-underline transition-100">Réglages</a></li>
-                                    @if(auth()->user()->role_id === 1)
-                                        <li><a href="{{ route('admin.index') }}" class="px-4 py-3 block text-black dark:text-gray-300 hover:text-blue-500 dark-hover:bg-gray-800 no-underline hover:no-underline transition-100">Administration</a></li>
-                                    @endif
-                                    <li><hr class="border-t mx-2 border-gray-200 dark:border-gray-600"></li>
-                                    <li><a href="{{ route('user.logout') }}" class="px-4 py-3 block text-black hover:text-red-500 dark-hover:bg-gray-800 no-underline hover:no-underline transition-100">Déconnexion</a></li>
-                                </ul>
+                                <div x-data="{ open: false }" @keydown.escape="open = false" @click.away="open = false" class="relative inline-block text-left">
+                                    <div>
+                                        <button @click="open = !open" type="button" class="transition ease-in-out duration-150">
+                                            <img class="w-10 h-10 rounded-full" src="{{ \App\User::getAvatar(auth()->user()->id) }}" alt="Avatar of User">
+                                        </button>
+                                    </div>
+                                    <div
+                                        x-show="open"
+                                        x-transition:enter="transition ease-out duration-100"
+                                        x-transition:enter-start="transform opacity-0 scale-95"
+                                        x-transition:enter-end="transform opacity-100 scale-100"
+                                        x-transition:leave="transition ease-in duration-100"
+                                        x-transition:leave-start="transform opacity-100 scale-100"
+                                        x-transition:leave-end="transform opacity-0 scale-95" class="dropdown">
+                                        <div class="rounded-md bg-white shadow-xs">
+                                            <div class="py-1">
+                                                <a href="{{ route('user.profile', auth()->id()) }}" class="dropdown-item">
+                                                    Mon compte
+                                                </a>
+                                            </div>
+                                            <div class="border-t border-gray-100"></div>
+                                            <div class="py-1">
+                                                <a href="{{ route('user.options') }}" class="dropdown-item">Réglages</a>
+                                            </div>
+                                            <div class="border-t border-gray-100"></div>
+                                            <div class="py-1">
+                                                <a href="{{ route('user.logout') }}" class="dropdown-item">Déconnexion</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    @endauth
-                    @guest
-                        <a href="{{ route('login') }}" class="text-sm mr-4 text-gray-700">Se connecter</a>
-                        <a href="{{ route('register') }}" class="btn btn-blue">S'inscrire</a>
-                    @endguest
-                </div>
+                        @endauth
+                        @guest
+                            <a href="{{ route('login') }}" class="text-sm mr-4 text-gray-700">Se connecter</a>
+                            <a href="{{ route('register') }}" class="btn btn-blue">S'inscrire</a>
+                        @endguest
+                    </div>
 
+                </div>
             </div>
-        </div>
     </nav>
 </div>
 
