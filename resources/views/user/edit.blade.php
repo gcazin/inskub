@@ -5,7 +5,7 @@
     <div class="bg-gray-100 dark:bg-gray-800 py-2 px-4 rounded-b">
         <div class="container">
             <div class="row">
-                @if ($message = Session::get('success'))
+                @if ($message = session()->get('success'))
                     <div class="alert alert-success" role="alert">
                         {{ $message }}
                     </div>
@@ -24,7 +24,7 @@
             </div>
 
         </div>
-        <form action="{{ route('user.update', auth()->user()->id) }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('user.edit', auth()->user()->id) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PATCH')
             <div class="flex w-full items-center justify-center bg-grey-lighter mt-2 mb-5">

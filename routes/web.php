@@ -49,7 +49,14 @@ Route::namespace('User')->name('user.')->group(function() {
     // Partie "Mon compte"
     Route::get('/profil/{id}', 'UserController@index')->name('profile');
 
-    Route::prefix('profil')->group(function() {
+    Route::prefix('mon-compte')->group(function() {
+
+        /**
+         * Gestion du compte
+         */
+        Route::get('/', 'UserController@edit')->name('edit');
+        Route::put('/', 'UserController@update');
+        Route::get('/options', 'UserController@options')->name('options');
 
         /**
          * Crud des formations de l'utilisateur
@@ -66,14 +73,25 @@ Route::namespace('User')->name('user.')->group(function() {
             Route::get('/create', 'UserExperienceController@create')->name('create');
             Route::post('/create', 'UserExperienceController@store');
         });
-
-        /**
-         * Gestion du compte
-         */
-        Route::get('/mon-compte', 'UserController@edit')->name('edit');
-        Route::get('/options', 'UserController@options')->name('options');
-        Route::get('/avances', 'UserController@advanced')->name('advanced');
     });
+});
+
+/**
+ * CRUD des formations
+ */
+Route::namespace('Formation')->prefix('formation')->name('formation.')->group(function() {
+    Route::get('/', 'FormationController@index')->name('index');
+    Route::get('/create', 'FormationController@create')->name('create');
+    Route::post('/create', 'FormationController@store');
+});
+
+/**
+ * CRUD des formations
+ */
+Route::get('/jobs', 'Job\JobController@index')->name('job.index');
+Route::namespace('Job')->prefix('job')->name('job.')->group(function() {
+    Route::get('/create', 'JobController@create')->name('create');
+    Route::post('/create', 'JobController@store');
 });
 
 Route::namespace('Chat')->name('chat.')->group(function() {
@@ -89,48 +107,7 @@ Route::namespace('Follow')->group(function() {
     Route::post('/follow/add', 'FollowerController@add')->name('follower.add');
 });
 
-Route::namespace('Formation')->prefix('formation')->name('formation.')->group(function() {
-    Route::get('/create', 'FormationController@create')->name('create');
-    Route::post('/create', 'FormationController@store');
-});
-
 // Administration
 Route::namespace('Admin')->group(function() {
     Route::get('/admin', 'AdminController@index')->name('admin.index');
 });
-
-// Article
-Route::namespace('Article')->group(function() {
-
-    // CRUD des articles
-    Route::resource('/article', 'ArticleController', [])->except(['index', 'show']);
-    Route::get('/article/{id}/edit', 'ArticleController@edit')->name('article.edit');
-    Route::get('/articles', 'ArticleController@index')->name('article.index');
-    Route::get('/article/{id}/{slug}', 'ArticleController@show')->name('article.show');
-
-    // Création des CRUD d'administration
-    /*Route::name('admin.')->group(function () {
-        Route::resource('admin/subcategory', 'SubCategoryController', [
-            'prefix' => 'admin.'
-        ])->except(['index', 'show']);
-        Route::resource('admin/category', 'CategoryController', [
-            'prefix' => 'admin.'
-        ])->except(['index', 'show']);
-    });*/
-    Route::get('/articles/categorie/{category_id}', 'CategoryController@index')->name('category.index');
-    //Route::get('/admin/subcategory/{id}/edit', 'SubCategoryController@edit')->name('admin.subcategory.edit');
-
-    // Recherche
-    Route::get('/articles/search', 'SearchController@search')->name('search');
-
-    // TODO: A supprimer
-    Route::get('/threads', 'ArticleController@threads')->name('threads');
-});
-
-Route::get('/question', function() {
-    return view('question-answer');
-})->name('question');
-
-Route::get('/agents', function() {
-    return view('listing-agents');
-})->name('listing-agents');

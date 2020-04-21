@@ -11,7 +11,7 @@
                             <img class="rounded-full" height="40" width="40" src="{{ auth()->user()->getAvatar($post->user_id) }}">
                         </div>
                         <div class="flex-1 my-1">
-                            <span class="font-bold">{{ App\User::all()->find($post->user_id)->name }}</span>
+                            <a href="{{ route('user.profile', $post->user_id) }}" class="text-gray-800 hover:underline focus:underline">{{ App\User::all()->find($post->user_id)->first_name }} {{ App\User::all()->find($post->user_id)->last_name }}</a>
                             <div class="text-xs text-gray-600 flex items-center">
                                 <span>{{ $post->created_at->diffForHumans() }}</span>
                             </div>
@@ -61,15 +61,17 @@
             <div class="w-11/12 mx-auto overflow-x-auto" style="max-height: 40vh">
                 <p class="mt-2 text-sm">Commentaires</p>
                 @foreach($post->replies as $reply)
-                <div class="flex my-5">
-                    <div class="" >
-                        <img class="rounded-full" height="30" width="30" src="{{ auth()->user()->getAvatar($post->user_id) }}" alt="">
+                    <div class="flex my-5">
+                        <div>
+                            <img class="rounded-full" height="30" width="30" src="{{ auth()->user()->getAvatar($reply->user_id) }}" alt="">
+                        </div>
+                        <div class="flex-1 p-2 bg-gray-100 ml-3 rounded-lg shadow-sm">
+                            <a href="{{ route('user.profile', $reply->user_id) }}" class="text-blue-800 hover:underline focus:underline" class="text-sm font-bold">
+                                {{ \App\User::find($reply->user_id)->first_name }} {{ \App\User::find($reply->user_id)->last_name }}
+                            </a>
+                            <p>{{ $reply->message }}</p>
+                        </div>
                     </div>
-                    <div class="flex-1 p-2 bg-gray-100 ml-3 rounded-lg shadow-sm">
-                        <p class="text-sm font-bold">{{ \App\User::find($reply->user_id)->name }}</p>
-                        <p>{{ $reply->message }}</p>
-                    </div>
-                </div>
                 @endforeach
             </div>
             <div class="reply pb-2 w-11/12 mx-auto">
@@ -77,7 +79,7 @@
                     @csrf
                     <div class="flex">
                         <div class="self-center mr-2">
-                            <img class="rounded-full" height="30" width="30" src="{{ auth()->user()->getAvatar($post->user_id) }}" alt="">
+                            <img class="rounded-full" height="30" width="30" src="{{ auth()->user()->getAvatar($reply->user_id) }}" alt="">
                         </div>
                         <div class="flex-1 form-group">
                             <input name="message" class="input" type="text" placeholder="Votre message">

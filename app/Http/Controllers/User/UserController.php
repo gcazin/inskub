@@ -49,7 +49,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(int $id)
+    public function index($id)
     {
         $user = User::findOrFail($id);
         $posts = Post::all()->where('user_id', $id);
@@ -61,7 +61,7 @@ class UserController extends Controller
      *
      * @return Factory|View
      */
-    public function options(): View
+    public function options()
     {
         $user = $this->auth->user();
         return view('user.options', compact('user', $user));
@@ -77,16 +77,6 @@ class UserController extends Controller
         $user = $this->auth->user();
         return view('user.edit', compact('user', $user));
     }
-
-    /**
-     * Page "Réglages avancées"
-     *
-     */
-    /*public function advanced(): View
-    {
-        $user = $this->auth->user();
-        return view('auth.advanced', compact('user', $user));
-    }*/
 
     /**
      * Mise à jour du profil

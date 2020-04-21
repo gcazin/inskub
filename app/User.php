@@ -48,12 +48,7 @@ class User extends \Illuminate\Foundation\Auth\User
      */
     public static function isAdmin(): bool
     {
-        if(Auth::check()) {
-            if ((int) Auth::user()->role_id === 1) {
-                return true;
-            }
-        }
-        return false;
+        return Auth::check() && (int) Auth::user()->role_id === 1;
     }
 
     /**
@@ -62,9 +57,9 @@ class User extends \Illuminate\Foundation\Auth\User
      */
     public static function getAvatar($id)
     {
-        $user = User::find($id);
-        if ($user->avatar === "users/default.png" || $user->avatar == null) {
-            return 'https://avatars.dicebear.com/v2/initials/' . strtolower(substr($user->name, 0, 2)) . '.svg?options[fontSize]=40';
+        $user = self::find($id);
+        if ($user->avatar === "user.jpg" || $user->avatar === null) {
+            return 'https://avatars.dicebear.com/v2/initials/' . strtolower(trim(substr($user->first_name, 0, 1))) . ''.strtolower(trim(substr($user->last_name, 0, 1))).'.svg?options[fontSize]=40';
         }
         return asset('/storage/avatars/' . $user->avatar);
     }
@@ -89,6 +84,11 @@ class User extends \Illuminate\Foundation\Auth\User
     {
         $user = User::find($id);
         return count($user->followings()->get());
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
     }
 
 }

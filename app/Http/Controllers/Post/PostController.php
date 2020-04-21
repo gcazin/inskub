@@ -42,6 +42,9 @@ class PostController extends Controller
         $post->content = $request->get('content');
         $post->user_id = auth()->user()->id;
         $post->visibility_id = $request->get('visibility_id');
+        if($request->has('media')) {
+            $post->path_id = $request->file('media')->storeAs('posts', \Illuminate\Support\Str::random(40).'.'.$request->file('media')->extension(), ['disk' => 'public']);
+        }
         $post->save();
 
         return redirect(route('post.index'));

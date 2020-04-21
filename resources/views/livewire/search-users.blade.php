@@ -11,7 +11,7 @@
         @foreach($users as $user)
             <a href="{{ route('user.profile', $user->id) }}" class="block px-4 py-2 border-b border-gray-200">
                 <img class="h-6 inline-block rounded-full mr-2" src="{{ $user::getAvatar($user->id) }}" alt="">
-                {{ $user->username }}
+                {{ $user->last_name }} {{ $user->first_name }}
             </a>
         @endforeach
     </div>

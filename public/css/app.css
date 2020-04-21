@@ -19651,6 +19651,10 @@ video {
   fill: #4a5568;
 }
 
+.fix-footer {
+  position: absolute;
+}
+
 /**
 * Homepage
 *

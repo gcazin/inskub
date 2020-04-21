@@ -19,18 +19,16 @@
                     </button>
                 </div>
             @endauth
-            <div class="hidden lg:block flex items-center flex-shrink-0 text-black mr-6">
-                <a href="{{ route('post.index') }}" class="pb-1 font-medium text-2xl tracking-tight text-gray-700 dark:text-gray-200"><img class="h-8 inline-block align-baseline" src="{{ asset('storage/images/logo.png') }}" class="h-8" alt="Logo"><span class="align-text-bottom">TomorrowInsurance</span></a>
+            <div class="hidden lg:flex align-center flex-shrink-0 text-black">
+                <a href="{{ route('post.index') }}" class="font-medium text-2xl text-gray-700 dark:text-gray-200">
+                    <img class="h-8 inline-block align-baseline" src="{{ asset('storage/images/logo.png') }}" class="h-8" alt="Logo">
+                    <span class="align-text-bottom">TomorrowInsurance</span>
+                </a>
+                <div class="ml-2 px-3 py-2 rounded hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-all duration-250">
+                    <a href="{{ route('discover') }}" class=" dark:text-gray-200">Découvrir</a>
+                </div>
             </div>
             <div id="main-nav" class="w-full text-xl font-medium hidden lg:inline flex-grow lg:flex lg:justify-end lg:w-auto">
-            <!--<div class="text-base lg:flex-grow">
-                <a href="{{ route('article.index') }}" class="navbar-items nav {{ routeName('post.index') }} dark:text-gray-400 dark-hover:text-gray-600 py-4">
-                    Articles
-                </a>
-                <a href="{{ route('listing-agents') }}" class="navbar-items nav {{ routeName('threads') }} dark:text-gray-400 dark-hover:text-gray-600 py-4">
-                    Agents généraux
-                </a>
-            </div>-->
                 <div class="w-full lg:w-1/2 pr-0 mt-2 md:mt-0">
                     <div class="flex relative inline-block items-center justify-end sm:mt-3 lg:mt-0">
                         @auth
@@ -40,13 +38,13 @@
                             @if(auth()->user()->role_id === 1) <!-- Salarié -->
                             <a class="pr-3 mx-4 btn btn-blue" href="{{ route('admin.index') }}">Administration</a>
                             @elseif(auth()->user()->role_id === 2) <!-- Salarié -->
-                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('show.formation') }}">Trouver une formation</a>
+                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('formation.index') }}">Trouver une formation</a>
                             @elseif(auth()->user()->role_id === 3) <!-- Entreprise -->
-                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('article.create') }}">Proposer une offre</a>
+                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('job.create') }}">Proposer une offre</a>
                             @elseif(auth()->user()->role_id === 4) <!-- Ecole -->
-                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('create.formation') }}">Proposer une formation</a>
+                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('formation.create') }}">Proposer une formation</a>
                             @elseif(auth()->user()->role_id === 5) <!-- Etudiant -->
-                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('article.create') }}">Boite à idées</a>
+                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('') }}">Boite à idées</a>
                             @endif
                             <div class="relative text-sm">
 
@@ -111,15 +109,12 @@
     </div>
 @endif
 
-@if(\Request::is('admin') OR \Request::is('admin/*'))
+@if(request()->is('admin') || request()->is('admin/*'))
     <div class="bg-gray-100 dark:bg-gray-800 shadow px-5 py-3">
         <nav class="flex items-center justify-between flex-wrap w-11/12 m-auto">
             <div class="w-full block">
                 <div class="text-sm overflow-x-auto overflow-y-hidden whitespace-no-wrap">
                     <a href="{{ route('admin.index') }}" class="navbar-items subcategory">{{ __('Administration') }}</a>
-                    <a href="{{ route('article.create') }}" class="navbar-items subcategory">{{ __('Créer un article') }}</a>
-                    <a href="{{ route('admin.category.create') }}" class="navbar-items subcategory">{{ __('Créer une catégorie') }}</a>
-                    <a href="{{ route('admin.subcategory.create') }}" class="navbar-items subcategory">{{ __('Créer une sous-catégorie') }}</a>
                 </div>
             </div>
         </nav>

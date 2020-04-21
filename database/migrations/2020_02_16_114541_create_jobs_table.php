@@ -18,10 +18,10 @@ class CreateJobsTable extends Migration
             $table->string('title');
             $table->longText('description');
             $table->integer('hours')->nullable();
-            $table->double('salary')->nullable();
+            $table->integer('salary')->nullable();
 
-            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('type_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

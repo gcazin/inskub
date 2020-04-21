@@ -21,7 +21,7 @@ class FormationController extends Controller
     public function create()
     {
         $formation = $this->formation::all();
-        return view('formation.create-formation', compact('formation'));
+        return view('formation.create', compact('formation'));
     }
 
     public function store(Request $request)
@@ -34,12 +34,12 @@ class FormationController extends Controller
         $formation->user_id = \auth()->user()->id;
         $formation->save();
 
-        return redirect(route('create.formation'));
+        return redirect(route('formation.create'));
     }
 
     public function show()
     {
         $formation = $this->formation::all();
-        return view('formation.show-formation', compact('formation'));
+        return view('formation.show', compact('formation'));
     }
 }

@@ -14,13 +14,13 @@ class SearchUsers extends Component
 
     public function mount()
     {
-        $this->search = request()->query('search', $this->search);
+        $this->search = (string) request()->query('search', $this->search);
     }
 
     public function render()
     {
         return view('livewire.search-users', [
-            'users' => User::where('username', 'LIKE','%'.$this->search.'%')->get(),
+            'users' => User::where('first_name', 'LIKE','%'.$this->search.'%')->get(),
         ]);
     }
 }

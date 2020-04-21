@@ -92,5 +92,17 @@
 
 </script>
 <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+<script>
+    var $body = jQuery('body');
+
+    /* bind events */
+    $(document)
+        .on('focus', 'input', function() {
+            $body.addClass('.fix-footer');
+        })
+        .on('blur', 'input', function() {
+            $body.removeClass('.fix-footer');
+        });
+</script>
 </body>
 </html>

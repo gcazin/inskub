@@ -16,7 +16,7 @@ class CreateJobsTypeTable extends Migration
         Schema::create('jobs_type', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->longText('description');
+            $table->longText('description')->nullable();
             $table->timestamps();
         });
     }
