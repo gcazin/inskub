@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Be right back.</title>
+        <title>Site en maintenance.</title>
 
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
 
@@ -34,13 +34,14 @@
             .title {
                 font-size: 72px;
                 margin-bottom: 40px;
+                color: #2d3748;
             }
         </style>
     </head>
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Be right back.</div>
+                <div class="title">Le site est actuellement en maintenance.</div>
             </div>
         </div>
     </body>
