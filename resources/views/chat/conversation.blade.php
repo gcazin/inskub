@@ -4,15 +4,18 @@
     <!-- Chat  -->
     <div class="flex flex-col -mt-5 w-full lg:w-full bg-white">
         <div class="w-11/12 mx-auto flex flex-col" style="height: 77vh">
-            <div class="flex justify-between items-center border-b border-solid border-gray-200 text-gray-600" style="height: 50px">
+            <div class="flex justify-between items-center border-b border-solid border-gray-200 text-gray-600"
+                 style="height: 50px">
                 <div>
                     Conversation avec
                     @foreach($participants as $participant)
-                        {{ \App\User::find($participant['messageable_id'])->username }}{{ ($loop->last) ? '.' : ',' }}
+                        {{ ucfirst(\App\User::find($participant['messageable_id'])->first_name) }}{{ ($loop->last) ? '.' : ',' }}
                     @endforeach
                 </div>
                 <div>
-                    <button class="modal-open" class="text-lg"><ion-icon class="align-middle" name="settings-outline"></ion-icon></button>
+                    <button class="modal-open" class="text-lg">
+                        <ion-icon class="align-middle" name="settings-outline"></ion-icon>
+                    </button>
                     @component('partials.modal')
                         @slot('title')
                             Réglages

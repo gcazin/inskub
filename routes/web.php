@@ -92,6 +92,7 @@ Route::get('/jobs', 'Job\JobController@index')->name('job.index');
 Route::namespace('Job')->prefix('job')->name('job.')->group(function() {
     Route::get('/create', 'JobController@create')->name('create');
     Route::post('/create', 'JobController@store');
+    Route::get('/{id}', 'JobController@show')->name('show');
 });
 
 Route::namespace('Chat')->name('chat.')->group(function() {

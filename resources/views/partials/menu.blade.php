@@ -14,44 +14,71 @@
         <livewire:search-users>
             @auth
                 <div class="ml-2 block lg:hidden flex justify-end">
-                    <button id="userButton" class="flex items-center focus:outline-none text-gray-600 hover:text-blue-500">
-                        <img class="w-10 h-10 rounded-full" src="{{ \App\User::getAvatar(auth()->user()->id) }}" alt="Avatar of User">
+                    <button id="userButton"
+                            class="flex items-center focus:outline-none text-gray-600 hover:text-blue-500">
+                        <img class="w-10 h-10 rounded-full" src="{{ \App\User::getAvatar(auth()->user()->id) }}"
+                             alt="Avatar of User">
                     </button>
                 </div>
             @endauth
             <div class="hidden lg:flex align-center flex-shrink-0 text-black">
                 <a href="{{ route('post.index') }}" class="font-medium text-2xl text-gray-700 dark:text-gray-200">
-                    <img class="h-8 inline-block align-baseline" src="{{ asset('storage/images/logo.png') }}" class="h-8" alt="Logo">
+                    <img class="h-8 inline-block align-baseline" src="{{ asset('storage/images/logo.png') }}"
+                         alt="Logo">
                     <span class="align-text-bottom">TomorrowInsurance</span>
                 </a>
-                <div class="ml-2 px-3 py-2 rounded hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-all duration-250">
-                    <a href="{{ route('discover') }}" class=" dark:text-gray-200">Découvrir</a>
+                <div class="ml-2 flex rounded text-gray-600  ">
+                    <a href="{{ route('discover') }}"
+                       class="rounded-lg px-3 py-2 hover:bg-gray-200 hover:text-gray-800 mr-2 transition-all duration-250">
+                        Découvrir
+                    </a>
+                @auth
+                    @if(auth()->user()->role_id === 1) <!-- Admin -->
+                        <a href="{{ route('discover') }}"
+                           class="rounded-lg px-3 py-2 hover:bg-gray-200 hover:text-gray-800 mr-4 transition-all duration-250">Découvrir</a>
+                    @elseif(auth()->user()->role_id === 2) <!-- Salarié -->
+                        <a class="pr-3 mx-4 btn btn-blue" href="{{ route('formation.index') }}">Trouver une
+                            formation</a>
+                    @elseif(auth()->user()->role_id === 4) <!-- Ecole -->
+                        <a href="{{ route('discover') }}" class=" dark:text-gray-200">Découvrir</a>
+                    @elseif(auth()->user()->role_id === 5) <!-- Etudiant -->
+                        <a class="rounded-lg px-3 py-2 hover:bg-gray-200 hover:text-gray-800 mr-4 transition-all duration-250"
+                           href="{{ route('job.index') }}">Offres d'emploi</a>
+                        @endif
+                    @endauth
                 </div>
             </div>
-            <div id="main-nav" class="w-full text-xl font-medium hidden lg:inline flex-grow lg:flex lg:justify-end lg:w-auto">
+            <div id="main-nav"
+                 class="w-full text-xl font-medium hidden lg:inline flex-grow lg:flex lg:justify-end lg:w-auto">
                 <div class="w-full lg:w-1/2 pr-0 mt-2 md:mt-0">
                     <div class="flex relative inline-block items-center justify-end sm:mt-3 lg:mt-0">
                         @auth
-                            <a class="relative text-gray-600 border-solid border-gray-200 hover:text-blue-500" href="{{ route('chat.index') }}">
+                            <a class="mr-2 relative text-gray-600 border-solid border-gray-200 hover:text-blue-500"
+                               href="{{ route('chat.index') }}">
                                 <ion-icon class="align-middle text-3xl" name="chatbox-outline"></ion-icon>
                             </a>
-                            @if(auth()->user()->role_id === 1) <!-- Salarié -->
+                            @if(auth()->user()->role_id === 1) <!-- Admin -->
                             <a class="pr-3 mx-4 btn btn-blue" href="{{ route('admin.index') }}">Administration</a>
                             @elseif(auth()->user()->role_id === 2) <!-- Salarié -->
-                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('formation.index') }}">Trouver une formation</a>
+                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('formation.index') }}">Trouver une
+                                formation</a>
                             @elseif(auth()->user()->role_id === 3) <!-- Entreprise -->
-                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('job.create') }}">Proposer une offre</a>
+                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('job.create') }}">Proposer une offre
+                                d'emploi</a>
                             @elseif(auth()->user()->role_id === 4) <!-- Ecole -->
-                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('formation.create') }}">Proposer une formation</a>
-                            @elseif(auth()->user()->role_id === 5) <!-- Etudiant -->
-                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('') }}">Boite à idées</a>
+                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('formation.create') }}">Proposer une
+                                formation</a>
                             @endif
                             <div class="relative text-sm">
 
-                                <div x-data="{ open: false }" @keydown.escape="open = false" @click.away="open = false" class="relative inline-block text-left">
+                                <div x-data="{ open: false }" @keydown.escape="open = false" @click.away="open = false"
+                                     class="relative inline-block text-left">
                                     <div>
-                                        <button @click="open = !open" type="button" class="transition ease-in-out duration-150">
-                                            <img class="w-10 h-10 rounded-full" src="{{ \App\User::getAvatar(auth()->user()->id) }}" alt="Avatar of User">
+                                        <button @click="open = !open" type="button"
+                                                class="transition ease-in-out duration-150">
+                                            <img class="w-10 h-10 rounded-full"
+                                                 src="{{ \App\User::getAvatar(auth()->user()->id) }}"
+                                                 alt="Avatar of User">
                                         </button>
                                     </div>
                                     <div
@@ -91,23 +118,6 @@
             </div>
     </nav>
 </div>
-
-@if(\Request::is('media') OR \Request::is('media/*'))
-    <div class="bg-gray-100 dark:bg-gray-800 shadow px-5 py-3">
-        <nav class="flex items-center justify-between flex-wrap w-11/12 m-auto">
-            <div class="w-full block">
-                <div class="text-sm overflow-x-auto overflow-y-hidden whitespace-no-wrap">
-                    @php
-                        $subcategories = \App\Subcategory::all();
-                    @endphp
-                    @foreach($subcategories as $subcategory)
-                        <a href="{{ route('subcategory', $subcategory->id) }}" class="navbar-items subcategory">{{ $subcategory->title }}</a>
-                    @endforeach
-                </div>
-            </div>
-        </nav>
-    </div>
-@endif
 
 @if(request()->is('admin') || request()->is('admin/*'))
     <div class="bg-gray-100 dark:bg-gray-800 shadow px-5 py-3">

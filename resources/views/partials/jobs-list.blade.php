@@ -1,10 +1,10 @@
-<div class="card">
-    @forelse(\App\Job::all()->sortByDesc('creatd_at') as $job)
+@if(count($jobs) > 0)
+    @foreach($jobs as $job)
         <div class="formation flex py-4 border-b border-gray-400">
             <div class="w-11/12 lg:w-full px-5">
                 <div class="flex justify-between">
                     <h1 class="text-xl font-bold">
-                        <a class="text-xl font-bold text-blue-600" href="{{ route('job.index') }}">
+                        <a class="text-xl font-bold text-blue-600" href="{{ route('job.show', $job->id) }}">
                             {{ $job->title }}
                         </a>
                     </h1>
@@ -23,11 +23,19 @@
                 </div>
             </div>
         </div>
-    @empty
-        <div class="px-3 pt-2 pb-1">
-            <div class="alert alert-info">
-                Vous n'avez encore ajouté aucune formations
-            </div>
+    @endforeach
+    <div class="flex items-center py-3">
+        <div class="flex-1 px-5">
+            <span class="text-gray-700 text-sm">Page {{ $jobs->currentPage() }}</span>
         </div>
-    @endforelse
-</div>
+        <div class="flex-1">
+            {{ $jobs->links() }}
+        </div>
+    </div>
+@else
+    <div class="px-3 pt-2 pb-1">
+        <div class="alert alert-info">
+            Vous n'avez encore ajouté aucune formations
+        </div>
+    </div>
+@endif

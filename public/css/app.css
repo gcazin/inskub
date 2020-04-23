@@ -20377,9 +20377,11 @@ input.tag-input {
 }
 
 .card {
-  background-color: #fff;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  border-radius: 0.25rem;
+    background-color: #fff;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 0.5rem;
+    border-width: 1px;
+    border-color: #edf2f7;
 }
 
 .card__header {
@@ -20392,33 +20394,43 @@ input.tag-input {
 }
 
 .card__header--title {
-  font-size: 1.25rem;
-  color: #4a5568;
-  font-weight: 700;
+    font-size: 1.25rem;
+    color: #4a5568;
+    font-weight: 700;
 }
 
 .card__header--button ion-icon {
-  font-size: 1.875rem;
-  color: #4299e1;
+    font-size: 1.875rem;
+    color: #4299e1;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.pagination .page-item {
+    margin-right: 0.75rem;
 }
 
 .mode-dark {
-  /**
-  * Menu
-  *
-   */
-  /**
-  * Footer
-  *
-   */
-  /**
-  * Input
-  *
-   */
-  /**
-  * Errors messages
-  *
-   */
+    /**
+    * Menu
+    *
+     */
+    /**
+    * Footer
+    *
+     */
+    /**
+    * Input
+    *
+     */
+    /**
+    * Errors messages
+    *
+     */
 }
 
 .mode-dark .btn-light:hover {

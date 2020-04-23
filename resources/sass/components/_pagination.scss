@@ -1,0 +1,7 @@
+.pagination {
+    @apply flex items-center justify-end;
+}
+
+.pagination .page-item {
+    @apply mr-3;
+}

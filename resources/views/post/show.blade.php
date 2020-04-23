@@ -57,29 +57,37 @@
             </div>
         </div>
 
+        <!-- Commentaires -->
         <div class="bg-white">
             <div class="w-11/12 mx-auto overflow-x-auto" style="max-height: 40vh">
                 <p class="mt-2 text-sm">Commentaires</p>
-                @foreach($post->replies as $reply)
-                    <div class="flex my-5">
-                        <div>
-                            <img class="rounded-full" height="30" width="30" src="{{ auth()->user()->getAvatar($reply->user_id) }}" alt="">
+                @if(count($post->replies) > 0)
+                    @foreach($post->replies as $reply)
+                        <div class="flex my-5">
+                            <div>
+                                <img class="rounded-full" height="30" width="30"
+                                     src="{{ auth()->user()->getAvatar($reply->user_id) }}" alt="">
+                            </div>
+                            <div class="flex-1 p-2 bg-gray-100 ml-3 rounded-lg shadow-sm">
+                                <a href="{{ route('user.profile', $reply->user_id) }}"
+                                   class="text-blue-800 hover:underline focus:underline" class="text-sm font-bold">
+                                    {{ \App\User::find($reply->user_id)->first_name }} {{ \App\User::find($reply->user_id)->last_name }}
+                                </a>
+                                <p>{{ $reply->message }}</p>
+                            </div>
                         </div>
-                        <div class="flex-1 p-2 bg-gray-100 ml-3 rounded-lg shadow-sm">
-                            <a href="{{ route('user.profile', $reply->user_id) }}" class="text-blue-800 hover:underline focus:underline" class="text-sm font-bold">
-                                {{ \App\User::find($reply->user_id)->first_name }} {{ \App\User::find($reply->user_id)->last_name }}
-                            </a>
-                            <p>{{ $reply->message }}</p>
-                        </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                @else
+                    <p class="py-3 text-sm text-gray-700">Aucun commentaire.</p>
+                @endif
             </div>
             <div class="reply pb-2 w-11/12 mx-auto">
                 <form action="{{ route('post.reply', $post->id) }}" method="post">
                     @csrf
                     <div class="flex">
                         <div class="self-center mr-2">
-                            <img class="rounded-full" height="30" width="30" src="{{ auth()->user()->getAvatar($reply->user_id) }}" alt="">
+                            <img class="rounded-full" height="30" width="30"
+                                 src="{{ auth()->user()->getAvatar(auth()->id()) }}" alt="">
                         </div>
                         <div class="flex-1 form-group">
                             <input name="message" class="input" type="text" placeholder="Votre message">

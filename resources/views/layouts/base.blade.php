@@ -24,7 +24,7 @@
     @livewireScripts
 </head>
 <body class="bg-gray-100 font-sans flex-col h-full dark:bg-gray-900 dark:text-white">
-<header class="nav bg-white dark:bg-gray-800 border lg:border-none border-gray-200">
+<header class="nav bg-white dark:bg-gray-800 border-b border-gray-200">
     @php
         $auth = (new Auth())::user();
         $user = (new \App\User());
