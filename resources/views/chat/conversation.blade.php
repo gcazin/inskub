@@ -27,7 +27,7 @@
                                 <input type="hidden" name="conversation_id" value="{{ request()->route('id') }}">
                                 <select id="participants" name="participants[]" class="input" multiple>
                                     @foreach(\App\User::all() as $user)
-                                        <option value="{{ $user->id }}">{{ $user->username }}</option>
+                                        <option value="{{ $user->id }}">{{ $user->first_name }} {{ $user->last_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
