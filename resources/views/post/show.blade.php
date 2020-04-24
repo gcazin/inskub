@@ -59,7 +59,7 @@
 
         <!-- Commentaires -->
         <div class="bg-white">
-            <div class="w-11/12 mx-auto overflow-x-auto" style="max-height: 40vh">
+            <div class="w-11/12 mx-auto">
                 <p class="mt-2 text-sm">Commentaires</p>
                 @if(count($post->replies) > 0)
                     @foreach($post->replies as $reply)
