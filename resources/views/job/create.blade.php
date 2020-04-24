@@ -1,4 +1,4 @@
-@extends('layouts.base', ['full_width' => false])
+@extends('layouts.base', ['full_width' => false, 'header' => false])
 
 @section('content')
     <div class="lg:w-6/12 mx-auto">

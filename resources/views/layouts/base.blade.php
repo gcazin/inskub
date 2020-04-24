@@ -32,9 +32,24 @@
     @if(!isset($header))
         @include("partials.menu", compact('user', $user))
     @else
-        <div class="bg-blue-400 shadow text-white">
-            <div class="w-11/12 mx-auto">
-                <a class="text-4xl" href="{{ route('post.index') }}"><i class="fas fa-arrow-circle-left"></i></a>
+        <div class="border-b border-gray-200 text-white">
+            <div class="flex w-11/12 mx-auto">
+                <div class="w-1/12">
+                    <a class="text-4xl text-blue-500" href="{{ url()->previous() }}"><i class="fas fa-arrow-circle-left"></i></a>
+                </div>
+                <div class="w-10/12 self-center">
+                    <livewire:search-users>
+                </div>
+                <div class="w-1/12 self-center">
+                    @auth
+                        <div class="ml-2 block lg:hidden flex justify-end">
+                            <button id="userButton"
+                                    class="flex items-center focus:outline-none text-gray-600 hover:text-blue-500">
+                                <a href="{{ route('user.profile', auth()->id()) }}"><img class="w-10 h-10 rounded-full" src="{{ \App\User::find(auth()->id())->avatar }}" alt="Avatar of User"></a>
+                            </button>
+                        </div>
+                    @endauth
+                </div>
             </div>
         </div>
     @endif

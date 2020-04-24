@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('layouts.base', ['header' => false])
 
 @section('content')
 

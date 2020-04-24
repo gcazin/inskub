@@ -2,6 +2,31 @@
 
 @section('content')
 
+    @auth
+        <div class="lg:hidden">
+        @if(auth()->user()->role_id === 1) <!-- Admin -->
+            <a class="block {{ (request()->is('admin')) ? 'active' : '' }}" href="{{ route('admin.index') }}">
+                Administration
+            </a>
+        @elseif(auth()->user()->role_id === 2 || auth()->user()->role_id === 5) <!-- Salarié et étudiant -->
+            <a class="block px-2 py-3 text-center text-blue-600 font-bold card mb-2" href="{{ route('job.index') }}">
+                Trouver un emploi
+            </a>
+            <a class="block px-2 py-3 text-center text-blue-600 font-bold card" href="{{ route('formation.index') }}">
+                Trouver une formation
+            </a>
+        @elseif(auth()->user()->role_id === 3) <!-- Entreprise -->
+            <a class="nav-item {{ (request()->is('job/create')) ? 'active' : '' }}" href="{{ route('job.create') }}">
+                Proposer une offre d'emploi
+            </a>
+        @elseif(auth()->user()->role_id === 4) <!-- Ecole -->
+            <a class="nav-item {{ (request()->is('formation/create')) ? 'active' : '' }}" href="{{ route('formation.create') }}">
+                Proposer une formation
+            </a>
+            @endif
+        </div>
+    @endauth
+
     @foreach($roles as $role)
         <div class="group mb-5">
             <div class="group__title p-2 rounded">
