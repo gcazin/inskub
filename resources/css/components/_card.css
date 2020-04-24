@@ -28,6 +28,6 @@ Social feed
 
 @screen lg {
     .post-card {
-        @apply w-7/12;
+        @apply w-7 / 12;
     }
 }

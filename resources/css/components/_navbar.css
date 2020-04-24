@@ -21,9 +21,11 @@
 .navbar-items.nav {
     @apply block bg-gray-100 p-3 mt-1 rounded;
 }
+
 .navbar-items.nav.active {
     @apply text-blue-500 border-b-2 border-blue-500 border-solid;
 }
+
 .navbar-items.subcategory {
     @apply inline-block mr-2 bg-gray-200 py-1 px-2 rounded;
 }

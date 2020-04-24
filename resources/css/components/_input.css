@@ -27,7 +27,7 @@
     @apply bg-white text-gray-600;
     border-color: #80bdff;
     outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
 }
 
 .custom-label input:checked + svg {

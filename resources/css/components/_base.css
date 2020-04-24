@@ -12,12 +12,12 @@
  */
 
 .container {
-    @apply w-11/12 mx-auto;
+    @apply w-11 / 12 mx-auto;
 }
 
 @screen lg {
     .container {
-        @apply w-7/12;
+        @apply w-7 / 12;
     }
 }
 
