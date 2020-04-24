@@ -16,8 +16,7 @@
                 <div class="ml-2 block lg:hidden flex justify-end">
                     <button id="userButton"
                             class="flex items-center focus:outline-none text-gray-600 hover:text-blue-500">
-                        <img class="w-10 h-10 rounded-full" src="{{ \App\User::getAvatar(auth()->user()->id) }}"
-                             alt="Avatar of User">
+                        <a href="{{ route('user.profile', auth()->id()) }}"><img class="w-10 h-10 rounded-full" src="{{ \App\User::find(auth()->id())->avatar }}" alt="Avatar of User"></a>
                     </button>
                 </div>
             @endauth
@@ -28,22 +27,32 @@
                     <span class="align-text-bottom">TomorrowInsurance</span>
                 </a>
                 <div class="ml-2 flex rounded text-gray-600  ">
-                    <a href="{{ route('discover') }}"
-                       class="rounded-lg px-3 py-2 hover:bg-gray-200 hover:text-gray-800 mr-2 transition-all duration-250">
-                        Découvrir
-                    </a>
-                @auth
-                    @if(auth()->user()->role_id === 1) <!-- Admin -->
-                        <a href="{{ route('discover') }}"
-                           class="rounded-lg px-3 py-2 hover:bg-gray-200 hover:text-gray-800 mr-4 transition-all duration-250">Découvrir</a>
-                    @elseif(auth()->user()->role_id === 2) <!-- Salarié -->
-                        <a class="pr-3 mx-4 btn btn-blue" href="{{ route('formation.index') }}">Trouver une
-                            formation</a>
-                    @elseif(auth()->user()->role_id === 4) <!-- Ecole -->
-                        <a href="{{ route('discover') }}" class=" dark:text-gray-200">Découvrir</a>
-                    @elseif(auth()->user()->role_id === 5) <!-- Etudiant -->
-                        <a class="rounded-lg px-3 py-2 hover:bg-gray-200 hover:text-gray-800 mr-4 transition-all duration-250"
-                           href="{{ route('job.index') }}">Offres d'emploi</a>
+                    @auth
+                        <a href="{{ route('discover') }}" class="nav-item {{ (request()->is('discover')) ? 'active' : '' }}">
+                            Découvrir
+                        </a>
+                        <a href="{{ route('post.create') }}" class="nav-item {{ (request()->is('post/create')) ? 'active' : '' }}">
+                            Publier
+                        </a>
+                        @if(auth()->user()->role_id === 1) <!-- Admin -->
+                        <a class="nav-item {{ (request()->is('admin')) ? 'active' : '' }}" href="{{ route('admin.index') }}">
+                            Administration
+                        </a>
+                        @elseif(auth()->user()->role_id === 2 || auth()->user()->role_id === 5) <!-- Salarié et étudiant -->
+                        <a class="nav-item {{ (request()->is('jobs')) ? 'active' : '' }}" href="{{ route('job.index') }}">
+                            Trouver un emploi
+                        </a>
+                        <a class="nav-item {{ (request()->is('formations')) ? 'active' : '' }}" href="{{ route('formation.index') }}">
+                            Trouver une formation
+                        </a>
+                        @elseif(auth()->user()->role_id === 3) <!-- Entreprise -->
+                        <a class="nav-item {{ (request()->is('job/create')) ? 'active' : '' }}" href="{{ route('job.create') }}">
+                            Proposer une offre d'emploi
+                        </a>
+                        @elseif(auth()->user()->role_id === 4) <!-- Ecole -->
+                        <a class="nav-item {{ (request()->is('formation/create')) ? 'active' : '' }}" href="{{ route('formation.create') }}">
+                            Proposer une formation
+                        </a>
                         @endif
                     @endauth
                 </div>
@@ -53,22 +62,6 @@
                 <div class="w-full lg:w-1/2 pr-0 mt-2 md:mt-0">
                     <div class="flex relative inline-block items-center justify-end sm:mt-3 lg:mt-0">
                         @auth
-                            <a class="mr-2 relative text-gray-600 border-solid border-gray-200 hover:text-blue-500"
-                               href="{{ route('chat.index') }}">
-                                <ion-icon class="align-middle text-3xl" name="chatbox-outline"></ion-icon>
-                            </a>
-                            @if(auth()->user()->role_id === 1) <!-- Admin -->
-                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('admin.index') }}">Administration</a>
-                            @elseif(auth()->user()->role_id === 2) <!-- Salarié -->
-                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('formation.index') }}">Trouver une
-                                formation</a>
-                            @elseif(auth()->user()->role_id === 3) <!-- Entreprise -->
-                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('job.create') }}">Proposer une offre
-                                d'emploi</a>
-                            @elseif(auth()->user()->role_id === 4) <!-- Ecole -->
-                            <a class="pr-3 mx-4 btn btn-blue" href="{{ route('formation.create') }}">Proposer une
-                                formation</a>
-                            @endif
                             <div class="relative text-sm">
 
                                 <div x-data="{ open: false }" @keydown.escape="open = false" @click.away="open = false"
@@ -97,6 +90,9 @@
                                             </div>
                                             <div class="border-t border-gray-100"></div>
                                             <div class="py-1">
+                                                <a href="{{ route('chat.index') }}" class="dropdown-item">Messagerie</a>
+                                            </div>
+                                            <div class="py-1">
                                                 <a href="{{ route('user.options') }}" class="dropdown-item">Réglages</a>
                                             </div>
                                             <div class="border-t border-gray-100"></div>
@@ -113,7 +109,6 @@
                             <a href="{{ route('register') }}" class="btn btn-blue">S'inscrire</a>
                         @endguest
                     </div>
-
                 </div>
             </div>
     </nav>

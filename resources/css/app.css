@@ -1,0 +1,16 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import "components/_base.css";
+@import "components/_navbar.css";
+@import "components/_footer.css";
+
+
+@import "components/_input.css";
+@import "components/_button.css";
+@import "components/_card.css";
+@import "components/_dropdown.css";
+@import "components/_alerts.css";
+@import "components/_pagination.css";
+@import "components/_error.css";

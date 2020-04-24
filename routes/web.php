@@ -48,6 +48,8 @@ Route::namespace('Auth')->group(function() {
 Route::namespace('User')->name('user.')->group(function() {
     // Partie "Mon compte"
     Route::get('/profil/{id}', 'UserController@index')->name('profile');
+    Route::get('/profil/{id}/followers', 'UserController@follower')->name('follower');
+    Route::get('/profil/{id}/followings', 'UserController@following')->name('following');
 
     Route::prefix('mon-compte')->group(function() {
 
@@ -79,9 +81,10 @@ Route::namespace('User')->name('user.')->group(function() {
 /**
  * CRUD des formations
  */
+Route::get('/formations', 'Formation\FormationController@index')->name('formation.index');
 Route::namespace('Formation')->prefix('formation')->name('formation.')->group(function() {
-    Route::get('/', 'FormationController@index')->name('index');
     Route::get('/create', 'FormationController@create')->name('create');
+    Route::get('/{id}', 'FormationController@show')->name('show');
     Route::post('/create', 'FormationController@store');
 });
 

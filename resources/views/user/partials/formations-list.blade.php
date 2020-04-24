@@ -18,9 +18,9 @@
         </div>
     </div>
 @empty
-    <div class="px-3 pt-2 pb-1">
+    <div class="pt-2 pb-1">
         <div class="alert alert-info">
-            Vous n'avez encore ajouté aucune formations
+            Aucune formation à afficher.
         </div>
     </div>
 @endforelse

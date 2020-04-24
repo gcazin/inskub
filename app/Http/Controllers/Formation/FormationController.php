@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Formation;
 use App\Formation;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FormationController extends Controller
 {
@@ -16,6 +17,12 @@ class FormationController extends Controller
     public function __construct(Formation $formation)
     {
         $this->formation = $formation;
+    }
+
+    public function index()
+    {
+        $formations = DB::table('formations')->orderByDesc('created_at')->simplePaginate(10);
+        return view('formation.index', compact('formations'));
     }
 
     public function create()
@@ -31,15 +38,15 @@ class FormationController extends Controller
         $formation->description = $request->input('description');
         $formation->location = $request->input('location');
         $formation->entry_price = $request->input('entry_price');
-        $formation->user_id = \auth()->user()->id;
+        $formation->user_id = auth()->id();
         $formation->save();
 
-        return redirect(route('formation.create'));
+        return redirect(route('formation.index'));
     }
 
-    public function show()
+    public function show($id)
     {
-        $formation = $this->formation::all();
+        $formation = $this->formation::find($id);
         return view('formation.show', compact('formation'));
     }
 }

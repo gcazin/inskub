@@ -1,0 +1,35 @@
+/**
+* Input
+*
+ */
+
+.form-group {
+    @apply mb-3;
+}
+
+.form-group > label {
+    @apply text-gray-600 block mb-1;
+}
+
+.form-group input, .form-group textarea {
+    @apply border border-gray-300 rounded py-2 px-4 block w-full appearance-none leading-normal text-gray-700;
+}
+
+.form-group input, .form-group textarea, .form-group select, .form-group button {
+    @apply transition-border duration-500;
+}
+
+.form-group select {
+    @apply bg-white border border-gray-300 rounded py-2 px-4 block w-full leading-normal text-gray-700;
+}
+
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    @apply bg-white text-gray-600;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.custom-label input:checked + svg {
+    display: block !important;
+}

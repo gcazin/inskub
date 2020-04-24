@@ -7,8 +7,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Job::class, function (Faker $faker) {
     return [
-        'title' => $faker->sentence,
-        'description' => $faker->realText(),
+        'title' => $faker->jobTitle,
+        'description' => $faker->catchPhrase,
         'hours' => 35,
         'salary' => random_int(1100,2000),
         'user_id' => random_int(1,10),

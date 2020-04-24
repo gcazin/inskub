@@ -1,7 +1,7 @@
 @if(count($jobs) > 0)
     @foreach($jobs as $job)
         <div class="formation flex py-4 border-b border-gray-400">
-            <div class="w-11/12 lg:w-full px-5">
+            <div class="w-11/12 lg:w-full">
                 <div class="flex justify-between">
                     <h1 class="text-xl font-bold">
                         <a class="text-xl font-bold text-blue-600" href="{{ route('job.show', $job->id) }}">
@@ -25,7 +25,7 @@
         </div>
     @endforeach
     <div class="flex items-center py-3">
-        <div class="flex-1 px-5">
+        <div class="flex-1">
             <span class="text-gray-700 text-sm">Page {{ $jobs->currentPage() }}</span>
         </div>
         <div class="flex-1">

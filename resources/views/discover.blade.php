@@ -9,7 +9,7 @@
             </div>
             <div class="flex group__content rounded-b overflow-x-auto scrolling-touch pb-4">
                 @foreach($role->users as $member)
-                    <div class="w-1/2 bg-white rounded group__content-card text-center shadow mr-3" style="flex: 0 0 auto">
+                    <div class="w-1/2 lg:w-1/4 bg-white rounded group__content-card text-center shadow mr-3" style="flex: 0 0 auto">
                         <div class="flex justify-center py-4">
                             <img class="h-16 rounded-full" src="{{ $user->find($member->id)::getAvatar($member->id) }}" alt="">
                         </div>

@@ -6,7 +6,7 @@
             <img src="{{ asset('storage/users/profile_background.png') }}" class="w-full" alt="">
         </div>
         <div class="flex justify-center -mt-8 bg-white">
-            <img alt="avatar" src="{{ \App\User::getAvatar(auth()->id()) }}"
+            <img alt="avatar" src="{{ \App\User::getAvatar($user->id) }}"
                  class="h-16 rounded-full border-solid border-white border-2 -mt-3">
         </div>
         <div class="profile__infos shadow-sm bg-white py-1">
@@ -25,8 +25,12 @@
 
                 </div>
                 <p class="text-sm text-gray-700 mb-3">
-                    {{ \App\User::getNumberFollowers(auth()->id()) }} abonnés -
+                    <a href="{{ route('user.follower', $user->id) }}">
+                        {{ \App\User::getNumberFollowers(auth()->id()) }} abonnés
+                    </a> -
+                    <a href="{{ route('user.following', $user->id) }}">
                     {{ \App\User::getNumberFollowings(auth()->id()) }} abonnements
+                    </a>
                 </p>
             </div>
         </div>

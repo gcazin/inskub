@@ -1,37 +1,44 @@
-@extends('layouts.base', ['title' => 'Inscription', 'full_width' => false])
+@extends('layouts.base', ['full_width' => false])
 
 @section('content')
-    <div class="center-box flex-col lg:flex-row">
-        <div class="flex-1 align-self-center">
-            <img src="{{ asset('storage/images/authentication.svg') }}" class="w-6/12 m-auto">
-        </div>
-        <div class="flex-1">
-            <h1 class="text-3xl mb-5">Publier une formation</h1>
-            <form method="POST" action="{{ route('store.formation') }}">
+    <div class="lg:w-6/12 mx-auto">
+        <h1 class="text-xl text-gray-700 mb-2">Publier une formation</h1>
+        <div class="bg-white px-2 pt-1 pb-4 shadow rounded">
+            <form action="{{ route('formation.create') }}" method="post">
                 @csrf
-                <label for="title">Titre de la formation</label>
-                <input id="title" type="text" class="input" name="title" value="{{ old('title') }}" required>
 
-                <label for="description">Description de la formation</label>
-                <textarea id="description" class="input" name="description" value="{{ old('description') }}" required></textarea>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-                <label for="location">Position de la formation</label>
-                <input type="text" id="location" class="input" name="location" value="{{ old('location') }}" required>
-
-                <label for="entry_price">Prix d'entrée de la formation</label>
-                <input type="text" id="entry_price" class="input" name="entry_price" value="{{ old('entry_price') }}" required>
-
-                @error('name')
-                <span class="error" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-
-                <div class="text-right mt-3">
-                    <button type="submit" class="btn btn-blue">
-                        {{ __('Publier la formation') }}
-                    </button>
+                <div class="form-group">
+                    <label for="title">Titre de votre formation</label>
+                    <input type="text" name="title" id="title" placeholder="Chef de projet..." value="{{ old('title') }}" required >
                 </div>
+
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea name="description" id="description" placeholder="..." required maxlength="255">{{ old('description') }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Localisation</label>
+                    <input type="text" name="location" id="location" placeholder="Paris" value="{{ old('location') }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="salary">Prix d'entrée</label>
+                    <input type="number" name="entry_price" id="entry_price" placeholder="1300" value="{{ old('entry_price') }}">
+                </div>
+
+                <button class="btn btn-blue btn-block" type="submit">Publier</button>
             </form>
         </div>
     </div>

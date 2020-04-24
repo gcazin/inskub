@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ReplyPostSeeder::class);
         $this->call(JobsTypeSeeder::class);
         $this->call(JobSeeder::class);
+        $this->call(FormationSeeder::class);
     }
 }

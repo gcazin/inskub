@@ -57,6 +57,9 @@ class RegisterController extends Controller
             'first_name' => ['required', 'string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'department' => ['integer'],
+            'tel' => [''],
+            'adresse' => [''],
         ]);
     }
 
@@ -74,7 +77,7 @@ class RegisterController extends Controller
         $user->last_name = $data['last_name'];
         $user->email = $data['email'];
         $user->password = Hash::make($data['password']);
-        $user->departement = $data['departement'];
+        $user->department = $data['departement'] ?? null;
         $user->tel = $data['tel'] ?? null;
         $user->adresse = $data['adresse'] ?? null;
         $user->save();

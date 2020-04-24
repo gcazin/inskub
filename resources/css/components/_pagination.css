@@ -5,3 +5,7 @@
 .pagination .page-item {
     @apply mr-3;
 }
+
+.pagination .page-item:last-child {
+    @apply mr-0;
+}

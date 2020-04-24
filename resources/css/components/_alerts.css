@@ -5,9 +5,10 @@
 
 .alert {
     @apply text-sm mb-3 border-l-4 p-4;
-    &-inline {
-        @apply border-0 bg-transparent;
-    }
+}
+
+.alert-inline {
+    @apply border-0 bg-transparent;
 }
 
 .alert-success {

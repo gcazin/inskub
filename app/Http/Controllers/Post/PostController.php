@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePost;
 use App\Post;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -43,7 +44,7 @@ class PostController extends Controller
         $post->user_id = auth()->user()->id;
         $post->visibility_id = $request->get('visibility_id');
         if($request->has('media')) {
-            $post->path_id = $request->file('media')->storeAs('posts', \Illuminate\Support\Str::random(40).'.'.$request->file('media')->extension(), ['disk' => 'public']);
+            $post->media = $request->file('media')->storeAs('posts', Str::random(40).'.'.$request->file('media')->extension(), ['disk' => 'public']);
         }
         $post->save();
 

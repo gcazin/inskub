@@ -7,18 +7,18 @@
         <div class="card">
             <div class="card__header">
                 <div class="card__header--title">
-                    <h2>Offres d'emplois proposées</h2>
+                    <h2>Formations proposées</h2>
                 </div>
-                @if(auth()->user()->role_id === 3)
+                @if(auth()->user()->role_id === 4)
                     <div class="card__header--button">
-                        <a href="{{ route('job.create') }}">
+                        <a href="{{ route('formation.create') }}">
                             <ion-icon name="add-circle-outline"></ion-icon>
                         </a>
                     </div>
                 @endif
             </div>
             <div class="card__body">
-                @include('partials.jobs-list')
+                @include('partials.formations-list')
             </div>
         </div>
     </div>

@@ -56,6 +56,18 @@ class UserController extends Controller
         return view('user.profile', compact('user', 'posts'));
     }
 
+    public function follower($id)
+    {
+        $user = User::find($id);
+        return view('user.partials.followers-list', compact('user'));
+    }
+
+    public function following($id)
+    {
+        $user = User::find($id);
+        return view('user.partials.followings-list', compact('user'));
+    }
+
     /**
      * Page "Options"
      *
@@ -88,8 +100,6 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $user = $this->user->findOrFail($this->auth->user()->id);
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
 
         if($request->has('avatar')) {
             $avatarName = $user->id . '_avatar' . time() . '.' . request()->avatar->getClientOriginalExtension();
@@ -98,10 +108,14 @@ class UserController extends Controller
         } else {
             $user->avatar = $this->auth->user()->avatar;
         }
+        $user->last_name = $request->input('last_name');
+        $user->first_name = $request->input('first_name');
+        $user->email = $request->input('email');
 
         if($request->filled('password')) {
             $request->validate([
-                'name' => ['string', 'max:25', 'unique:users,name,'. $user->id],
+                'last_name' => ['string', 'max:25'],
+                'first_name' => ['string', 'max:25'],
                 'email' => ['string', 'email', 'max:255', 'unique:users,email,' . $user->id],
                 'password' => ['string', 'min:8', 'confirmed'],
                 'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -109,7 +123,8 @@ class UserController extends Controller
             $user->password = bcrypt($request->password);
         } else {
             $request->validate([
-                'name' => ['string', 'max:25', 'unique:users,name,'. $user->id],
+                'last_name' => ['string', 'max:25'],
+                'first_name' => ['string', 'max:25'],
                 'email' => ['string', 'email', 'max:255', 'unique:users,email,' . $user->id],
                 'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);

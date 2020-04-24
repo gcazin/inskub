@@ -24,6 +24,9 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('avatar')->default('user.jpg');
+            $table->integer('department')->nullable();
+            $table->integer('tel')->nullable();
+            $table->integer('adresse')->nullable();
             $table->rememberToken();
             $table->timestamps();
 
@@ -40,8 +43,18 @@ class CreateUsersTable extends Migration
                 'first_name' => $role,
                 'email' => ''.$role.'@'.$role.'.fr',
                 'password' => Hash::make('secret'),
+                'avatar' => 'https://randomuser.me/api/portraits/'.array_rand(array_flip(['men', 'women']), 1).'/'.random_int(1,99).'.jpg'
             ]);
         }
+
+        DB::table('users')->insert([
+            'role_id' => 2,
+            'last_name' => 'invite',
+            'first_name' => 'invite',
+            'email' => 'invite@invite.fr',
+            'password' => Hash::make('invite'),
+            'avatar' => 'https://randomuser.me/api/portraits/'.array_rand(array_flip(['men', 'women']), 1).'/'.random_int(1,99).'.jpg'
+        ]);
     }
 
     /**
