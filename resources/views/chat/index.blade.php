@@ -5,7 +5,16 @@
         <!-- Liste des personnes -->
         <div class="people-chat w-full lg:w-11/12 lg:mx-auto flex flex-col border-solid h-screen overflow-y-auto">
             <div class="w-11/12 mx-auto lg:w-full">
-                <h1 class="text-xl text-gray-700 mb-3">Espace conversations</h1>
+                <div class="flex">
+                    <div class="w-1/2">
+                        <h1 class="text-gray-700 mb-3">Espace conversations</h1>
+                    </div>
+                    <div class="w-1/2 text-right">
+                        <a href="{{ route('user.following', auth()->id()) }}">
+                            <ion-icon class="text-2xl text-blue-700" name="add-outline"></ion-icon>
+                        </a>
+                    </div>
+                </div>
             </div>
             <!-- Liste des gens à qui ont a envoyés un chat -->
             @if(count($conversations) > 0)

@@ -55,6 +55,17 @@ class CreateUsersTable extends Migration
             'password' => Hash::make('invite'),
             'avatar' => 'https://randomuser.me/api/portraits/'.array_rand(array_flip(['men', 'women']), 1).'/'.random_int(1,99).'.jpg'
         ]);
+
+        for($i = 1; $i <= 4; $i++) {
+            DB::table('users')->insert([
+                'role_id' => 2,
+                'last_name' => 'invite'.$i,
+                'first_name' => 'invite'.$i,
+                'email' => 'invite'.$i.'@invite.fr',
+                'password' => Hash::make('invite'.$i),
+                'avatar' => 'https://randomuser.me/api/portraits/'.array_rand(array_flip(['men', 'women']), 1).'/'.random_int(1,99).'.jpg'
+            ]);
+        }
     }
 
     /**

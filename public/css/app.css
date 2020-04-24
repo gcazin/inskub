@@ -146,6 +146,10 @@
   margin-bottom: 0.75rem;
 }
 
+.form-group:first-child {
+  margin-top: 0.75rem;
+}
+
 .form-group > label {
   color: #718096;
   display: block;

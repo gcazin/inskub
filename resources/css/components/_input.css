@@ -7,6 +7,10 @@
     @apply mb-3;
 }
 
+.form-group:first-child {
+    @apply mt-3;
+}
+
 .form-group > label {
     @apply text-gray-600 block mb-1;
 }

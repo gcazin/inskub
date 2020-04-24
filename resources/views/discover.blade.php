@@ -9,12 +9,12 @@
                 Administration
             </a>
         @elseif(auth()->user()->role_id === 2 || auth()->user()->role_id === 5) <!-- Salarié et étudiant -->
-            <div class="flex text-sm">
+            <div class="flex">
                 <a class="w-1/2 mr-3 block px-2 py-3 text-center text-blue-600 font-bold card" href="{{ route('job.index') }}">
-                    Trouver un emploi
+                    Emploi
                 </a>
                 <a class="w-1/2 block px-2 py-3 text-center text-blue-600 font-bold card" href="{{ route('formation.index') }}">
-                    Trouver une formation
+                    Formation
                 </a>
             </div>
         @elseif(auth()->user()->role_id === 3) <!-- Entreprise -->

@@ -55,7 +55,7 @@
     @endif
 </header>
 <main class="@if(isset($flip_wave) && $flip_wave == true) flip-wave @else {{ null }} @endif content">
-    <div class="pt-5 pb-24 mb:pb-16 @if(isset($full_width) && $full_width == false) w-11/12 mx-auto @else w-full @endif">
+    <div class="pt-5 pb-24 mb:pb-16 @if(isset($full_width) && $full_width == false) w-11/12 mx-auto @else w-full @endif @guest h-screen flex flex-col justify-center @endguest">
         @yield('content')
     </div>
 </main>
