@@ -22,12 +22,16 @@ Social feed
     @apply w-full bg-white rounded mx-auto my-2 border border-gray-300 overflow-hidden;
 }
 
+.post-card:first-child {
+    @apply -mt-3;
+}
+
 .post-card__content {
     @apply flex px-5 mx-auto flex-col;
 }
 
 @screen lg {
     .post-card {
-        @apply w-7 / 12;
+        @apply w-7/12;
     }
 }
