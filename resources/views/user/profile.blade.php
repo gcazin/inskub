@@ -15,7 +15,7 @@
                     <p class="text-xl font-light">{{ ucfirst($user->first_name) }} {{ ucfirst($user->last_name) }}</p>
                     @if(auth()->id() === (int) request()->route('id'))
                         <a class="text-gray-700" href="{{ route('user.edit') }}">
-                            <ion-icon class="align-bottom text-lg" name="settings-outline"></ion-icon>
+                            <ion-icon class="align-bottom text-xl" name="settings-outline"></ion-icon>
                         </a>
                     @else
                         <a class="text-xl" href="{{ route('chat.createConversation', $user->id) }}">

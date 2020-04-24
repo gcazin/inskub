@@ -21,14 +21,14 @@ $factory->define(UserFormation::class, function (Faker $faker) {
 
 $factory->define(UserExperience::class, function (Faker $faker) {
     return [
-        'title' => $faker->word,
-        'enterprise' => $faker->word,
+        'title' => $faker->jobTitle,
+        'enterprise' => $faker->company,
         'location' => $faker->city,
         'start_date' => $faker->year,
         'finish_date' => $faker->year,
         'sector' => $faker->word,
         'description' => $faker->sentence,
         'media' => null,
-        'user_id' => random_int(1,15),
+        'user_id' => random_int(1, 15),
     ];
 });

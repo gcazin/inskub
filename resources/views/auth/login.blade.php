@@ -2,6 +2,13 @@
 
 @section('content')
     <div class="container lg:w-5/12">
+    <!--<div class="text-center">
+            <a href="{{ route('post.index') }}" class="font-medium text-3xl text-gray-700 dark:text-gray-200">
+                <img class="h-8 inline-block align-baseline" src="{{ asset('storage/images/logo.png') }}"
+                     alt="Logo">
+                <span class="">TomorrowInsurance</span>
+            </a>
+        </div>-->
         <h1 class="text-2xl text-gray-600 mb-3">Connexion</h1>
         <div class="card flex flex-col lg:flex-row">
             <div class="flex-1">
