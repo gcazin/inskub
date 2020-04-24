@@ -64,7 +64,7 @@
                         <button type="submit" class="flex-1 no-underline text-blue px-2 py-2 items-center hover:bg-grey-lighter">
                             <a href="{{ route('post.show', $post->id) }}">
                                 <i class="far fa-comment"></i>
-                                <span class="text-gray-700">Répondre</span>
+                                <span class="text-gray-700">Commenter</span>
                             </a>
                         </button>
                         <div class="flex-1">

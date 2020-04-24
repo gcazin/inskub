@@ -3,24 +3,26 @@
 @section('content')
 
     @auth
-        <div class="lg:hidden">
+        <div class="lg:hidden mt-3 mb-4 lg:my-0">
         @if(auth()->user()->role_id === 1) <!-- Admin -->
             <a class="block {{ (request()->is('admin')) ? 'active' : '' }}" href="{{ route('admin.index') }}">
                 Administration
             </a>
         @elseif(auth()->user()->role_id === 2 || auth()->user()->role_id === 5) <!-- Salarié et étudiant -->
-            <a class="block px-2 py-3 text-center text-blue-600 font-bold card mb-2" href="{{ route('job.index') }}">
-                Trouver un emploi
-            </a>
-            <a class="block px-2 py-3 text-center text-blue-600 font-bold card" href="{{ route('formation.index') }}">
-                Trouver une formation
-            </a>
+            <div class="flex text-sm">
+                <a class="w-1/2 mr-3 block px-2 py-3 text-center text-blue-600 font-bold card" href="{{ route('job.index') }}">
+                    Trouver un emploi
+                </a>
+                <a class="w-1/2 block px-2 py-3 text-center text-blue-600 font-bold card" href="{{ route('formation.index') }}">
+                    Trouver une formation
+                </a>
+            </div>
         @elseif(auth()->user()->role_id === 3) <!-- Entreprise -->
-            <a class="nav-item {{ (request()->is('job/create')) ? 'active' : '' }}" href="{{ route('job.create') }}">
+            <a class="block px-2 py-3 text-center text-blue-600 font-bold card mb-2" href="{{ route('job.create') }}">
                 Proposer une offre d'emploi
             </a>
         @elseif(auth()->user()->role_id === 4) <!-- Ecole -->
-            <a class="nav-item {{ (request()->is('formation/create')) ? 'active' : '' }}" href="{{ route('formation.create') }}">
+            <a class="block px-2 py-3 text-center text-blue-600 font-bold card mb-2" href="{{ route('formation.create') }}">
                 Proposer une formation
             </a>
             @endif
@@ -38,7 +40,7 @@
                         <div class="flex justify-center py-4">
                             <img class="h-16 rounded-full" src="{{ $user->find($member->id)::getAvatar($member->id) }}" alt="">
                         </div>
-                        <a href="{{ route('user.profile', $member->id) }}" class="pb-4 text-blue-800 hover:underline focus:underline">{{ $member->last_name }} {{ $member->first_name }}</a>
+                        <a href="{{ route('user.profile', $member->id) }}" class="pb-4 text-blue-800 hover:underline focus:underline">{{ $member->first_name }} {{ $member->last_name }}</a>
                         <p class="pb-4 text-gray-600">
                             {{ count(\App\User::find($member->id)->followers()->get()) }} abonnés
                         </p>

@@ -1,16 +1,16 @@
 @if(count($formations) > 0)
     @foreach($formations as $formation)
         <div class="formation flex py-4 border-b border-gray-400">
-            <div class="w-11/12 lg:w-full">
+            <div class="w-full">
                 <div class="flex justify-between">
-                    <h1 class="text-xl font-bold">
-                        <a class="text-xl font-bold text-blue-600" href="{{ route('formation.show', $formation->id) }}">
+                    <h1 class="font-bold overflow-hidden">
+                        <a class="lg:text-xl font-bold text-blue-600 truncate" href="{{ route('formation.show', $formation->id) }}">
                             {{ $formation->title }}
                         </a>
                     </h1>
                 </div>
                 <div class="flex">
-                    <p class="w-1/2 text-sm text-gray-600 truncate">
+                    <p class="w-1/2 text-sm text-gray-600">
                         Publiée par
                         <img class="inline h-5 rounded-full" src="{{ \App\User::getAvatar($formation->user_id) }}" alt="">
                         {{ \App\User::find($formation->user_id)->last_name }}

@@ -1,4 +1,4 @@
-<div class="relative flex-1 bg-gray-200 block lg:hidden flex text-gray-600 rounded">
+<div class="relative flex-1 bg-white block lg:hidden flex text-gray-600 rounded">
     <div class="order-2">
         <input wire:model="search" id="search" type="search" placeholder="Chercher" class="bg-transparent h-10 px-1 rounded-full text-sm focus:outline-none">
     </div>

@@ -1,6 +1,6 @@
 @forelse(\App\Job::all()->where('user_id', request()->route('id'))->sortByDesc('created_by') as $job)
     <div class="formation flex py-4 border-b border-gray-400">
-        <div class="w-11/12 lg:w-full">
+        <div class="w-full">
             <div class="flex justify-between">
                 <h1 class="text-xl font-bold">
                     <a class="text-xl font-bold text-blue-600" href="{{ route('job.show', $job->id) }}">

@@ -3,7 +3,7 @@
 @section('content')
     <div class="profile -mt-5 mb-3">
         <div class="profile__banner overflow-hidden h-24">
-            <img src="{{ asset('storage/users/profile_background.png') }}" class="w-full" alt="">
+            <img src="https://i.imgur.com/XNgxmzi.png" class="w-full" alt="">
         </div>
         <div class="flex justify-center -mt-8 bg-white">
             <img alt="avatar" src="{{ \App\User::getAvatar($user->id) }}"

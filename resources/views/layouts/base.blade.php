@@ -23,8 +23,8 @@
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.0.1/dist/alpine.js" defer></script>
     @livewireScripts
 </head>
-<body class="bg-gray-100 font-sans flex-col h-full dark:bg-gray-900 dark:text-white">
-<header class="nav bg-white dark:bg-gray-800 border-b border-gray-200">
+<body class="font-sans flex-col h-full dark:bg-gray-900 dark:text-white" style="background: #f5f5f5">
+<header class="nav dark:bg-gray-800 border-b-4 border-white" style="background: url(http://localhost:8000/storage/users/profile_background.png); background-size: cover; background-position: center">
     @php
         $auth = (new Auth())::user();
         $user = (new \App\User());
@@ -34,13 +34,13 @@
     @else
         <div class="border-b border-gray-200 text-white">
             <div class="flex w-11/12 mx-auto">
-                <div class="w-1/12">
+                <div class="w-2/12">
                     <a class="text-4xl text-blue-500" href="{{ url()->previous() }}"><i class="fas fa-arrow-circle-left"></i></a>
                 </div>
-                <div class="w-10/12 self-center">
+                <div class="w-8/12 self-center">
                     <livewire:search-users>
                 </div>
-                <div class="w-1/12 self-center">
+                <div class="w-2/12 self-center">
                     @auth
                         <div class="ml-2 block lg:hidden flex justify-end">
                             <button id="userButton"
