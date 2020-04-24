@@ -112,7 +112,7 @@
             <div class="card">
                 <div class="card__header">
                     <div class="card__header--title">
-                        <h2>Formations</h2>
+                        <h2>Formations proposées</h2>
                     </div>
                     @if(request()->route('id') === (int) auth()->id())
                         <div class="card__header--button">
