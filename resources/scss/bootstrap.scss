@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');
+
+$primary: #4299e1;
+$font-family-sans-serif:      -apple-system, BlinkMacSystemFont, "Open sans", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+
+@import "./node_modules/bootstrap/scss/bootstrap";
+
+.form-control {
+    border-color: $gray-300;
+}
+

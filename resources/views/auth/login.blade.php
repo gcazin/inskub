@@ -1,28 +1,24 @@
-@extends('layouts.base', ['title' => 'Connexion', 'full_width' => false])
+@extends('layouts.base', ['full' => true])
 
 @section('content')
-    <div class="text-center mb-5 ">
-        <a href="{{ route('post.index') }}" class="font-medium text-gray-700 dark:text-gray-200">
-            <img class="h-8 inline-block align-baseline" src="{{ asset('storage/images/logo.png') }}"
-                 alt="Logo">
-            <span class="text-3xl">TomorrowInsurance</span>
-        </a>
-    </div>
-    <div class="container lg:w-5/12">
-    <!--<div class="text-center">
-            <a href="{{ route('post.index') }}" class="font-medium text-3xl text-gray-700 dark:text-gray-200">
-                <img class="h-8 inline-block align-baseline" src="{{ asset('storage/images/logo.png') }}"
-                     alt="Logo">
-                <span class="">TomorrowInsurance</span>
-            </a>
-        </div>-->
-        <div class="card flex flex-col lg:flex-row">
-            <div class="flex-1">
-                <form method="POST" action="{{ route('login') }}">
+    <div class="row" style="height: 100vh">
+        <div class="position-relative col-lg-6 bg-primary d-flex align-items-center justify-content-center border-left border-dark">
+            <div id="particles-js" class="position-absolute w-100 h-100"></div>
+            <div class="container">
+                <div class="text-center">
+                    <h1 class="text-white">Bienvenue sur TomorrowInsurance</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 d-flex align-items-center justify-content-center">
+            <div class="container">
+                <h1 class="text-primary mb-4">Inscription</h1>
+                <form action="{{ route('login') }}" method="post">
                     @csrf
 
                     @if ($errors->any())
                         <div class="alert alert-danger">
+                            Des erreurs se sont produites lors de la saisie de vos informations
                             <ul>
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
@@ -31,42 +27,65 @@
                         </div>
                     @endif
 
-                    <div class="form-group">
-                        <label for="email">{{ __('Adresse mail') }}</label>
-                        <input name="email" id="email" type="email" placeholder="email@domaine.fr" required>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="custom-checkbox position-relative">
+                                <input type="checkbox" class="hide" name="" id="test">
+                                <label for="test">Salarié</label>
+                            </div>
+                        </div>
+                        <div class="col-3"></div>
+                        <div class="col-3"></div>
+                        <div class="col-3"></div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="password">{{ __('Mot de passe') }}</label>
-                        <input id="password" type="password" name="password" required autocomplete="current-password">
-                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" name="last_name" class="form-control border-0" placeholder="Nom de famille">
+                        </div>
 
-                    <div class="flex justify-content-between mb-3">
-                        <div class="flex-1">
-                            <label class="custom-label flex">
-                                <div class="bg-white border-2 border-solid border-gray-300 rounded w-6 h-6 p-1 flex justify-center items-center mr-2">
-                                    <input type="checkbox" class="hidden" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                    <svg class="hidden w-4 h-4 text-blue-500 pointer-events-none" viewBox="0 0 172 172"><g fill="none" stroke-width="none" stroke-miterlimit="10" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode:normal"><path d="M0 172V0h172v172z"/><path d="M145.433 37.933L64.5 118.8658 33.7337 88.0996l-10.134 10.1341L64.5 139.1341l91.067-91.067z" fill="currentColor" stroke-width="1"/></g></svg>
-                                </div>
-                                <span class="select-none"> Se souvenir de moi</span>
-                            </label>
+                        <div class="col">
+                            <input type="text" name="first_name" class="form-control" placeholder="Prénom">
                         </div>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-blue btn-block">
-                            {{ __('Connexion') }}
-                        </button>
+
                     </div>
-                    @if (Route::has('password.request'))
-                        <a class="btn btn-link" href="{{ route('password.request') }}">
-                            {{ __('Forgot Your Password?') }}
-                        </a>
-                    @endif
+                    <div class="form-group">
+                        <input type="text" name="email" class="form-control" placeholder="Adresse e-mail">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="password" class="form-control" placeholder="Mot de passe">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="confirm-password" class="form-control" placeholder="Confirmation du mot de passe">
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" name="role_id" id="role_id">
+                            <option disabled selected>Choisir votre type de compte</option>
+                            @foreach(\App\Role::all()->except(1) as $role)
+                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary">S'inscrire</button>
+                    </div>
                 </form>
+                <hr>
+                <p>Déjà un compte? <a href="{{ route('register') }}">Connectez-vous</a></p>
             </div>
         </div>
-        <div class="mt-3">
-            <p class="mt-3">Pas encore inscrit? <a class="text-blue-700" href="{{ route('register') }}">Créer votre compte</a></p>
-        </div>
     </div>
+@endsection
+
+@section('script')
+    <script src="{{ asset('js/particles.min.js') }}"></script>
+
+    <script>
+        /* particlesJS.load(@dom-id, @path-json, @callback (optional)); */
+        particlesJS.load('particles-js', '{{ asset('js/particlesjs-config.json') }}', function() {
+            console.log('callback - particles.js config loaded');
+        });
+    </script>
 @endsection

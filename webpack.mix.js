@@ -12,14 +12,9 @@ const tailwindcss = require ('tailwindcss');
  |
  */
 
-mix.postCss('resources/css/app.css', 'public/css', [
-    require('tailwindcss'),
-])
-
-/*mix.sass('resources/sass/app.css', 'public/css')
+mix.sass('resources/scss/bootstrap.scss', 'public/css')
     .options({
         processCssUrls: false,
-        postCss: [
-            tailwindcss('./tailwind.config.js'),
-        ]
-    });*/
+    });
+
+mix.js('resources/bootstrap/js/src/index.js', 'public/js')

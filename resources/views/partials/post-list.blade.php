@@ -1,3 +1,66 @@
+<div class="section">
+    <div class="row no-gutters align-items-center p-2">
+
+        <div class="col-1 text-center">
+            <img src="{{ \App\User::getAvatar(auth()->id()) }}" class="rounded-circle" alt="" style="height: 50px">
+        </div>
+        <div class="col-11">
+            <button type="button" class="btn btn-light btn-block rounded-pill" data-toggle="modal" data-target="#createPost">
+                Partager à votre réseau
+            </button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="createPost" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Créer une publication</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{{ route('post.create') }}">
+                        <div class="container-fluid">
+                            <div class="row py-3 align-items-center">
+                                <div class="col-1">
+                                    <img src="{{ \App\User::getAvatar(auth()->id()) }}" class="rounded-circle" style="height: 40px" alt="">
+                                </div>
+                                <div class="col-11 text-secondary pl-4">
+                                    {{ ucfirst(auth()->user()->first_name) }} {{ ucfirst(auth()->user()->last_name) }}
+                                </div>
+                            </div>
+                        </div>
+                        @csrf
+                        <div class="form-group h3">
+                            <textarea type="text" class="form-control rounded-0 border-0" placeholder="Ecrivez" autofocus="autofocus"></textarea>
+                        </div>
+                        <hr>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-lg-2">Partager</div>
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        <select class="form-control" id="visibility_id">
+                                            @foreach(\App\VisibilityPost::all() as $visibilityPost)
+                                                <option value="{{ $visibilityPost->id }}"><ion-icon name="add-outline"></ion-icon> {{ $visibilityPost->type }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary btn-block">Publier</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <!-- Post -->
 @foreach($posts->sortByDesc('created_at') as $post)
     @if($post->user_id === auth()->id() || auth()->user()->isFollowing($post->user_id))
