@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap);@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap);@import url(https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap);@charset "UTF-8";
 /*!
  * Bootstrap v4.4.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors
@@ -9945,5 +9945,121 @@ h3 {
   }
 }
 .form-control {
-  border-color: #dee2e6;
+  border-color: #dee2e6 !important;
+  border: 0;
+  border-bottom: 2px solid #e9ecef;
+  border-radius: 0;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-bottom-color: #4299e1 !important;
+}
+
+.input-group-text {
+  background: #fff !important;
+  border: 0;
+  border-radius: 0;
+}
+
+.input-group > .form-control:not(:first-child), .input-group > .custom-select:not(:first-child) {
+  border-left: 0 !important;
+  border-radius: 0;
+}
+
+.carousel-indicators li {
+  background: #007bff;
+  height: 0;
+  width: 20px;
+  border-radius: 100%;
+}
+
+.checkbox.custom {
+  display: none;
+}
+
+.checkbox.custom + .card-body {
+  border: 1px solid transparent;
+  transition: 0.2s;
+}
+
+.checkbox.custom:checked + .card-body {
+  border: 1px solid rgba(129, 183, 255, 0.7);
+  background: rgba(129, 183, 255, 0.1);
+  color: #007bff;
+}
+
+.dropnone .dropdown-toggle::before, .dropnone .dropdown-toggle::after {
+  display: none;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #ced4da;
+  border-radius: 50rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #ced4da;
+}
+
+#login-form {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  background: #fff;
+  z-index: 1;
+}
+
+.container-mobile {
+  width: 100%;
+}
+
+@media (min-width: 992px) {
+  .container-mobile {
+    width: 50%;
+  }
+}
+.pb-6,
+.py-6 {
+  padding-bottom: 3.5rem !important;
+}
+
+.pb-7,
+.py-7 {
+  padding-bottom: 4rem !important;
+}
+
+.pb-8,
+.py-8 {
+  padding-bottom: 4.5rem !important;
+}
+
+.pb-9,
+.py-9 {
+  padding-bottom: 5rem !important;
+}
+
+.pb-10,
+.py-10 {
+  padding-bottom: 5.5rem !important;
+}
+
+@media (min-width: 992px) {
+  #login-form {
+    box-shadow: none;
+  }
+
+  #container-login-form {
+    background: #fff !important;
+  }
 }

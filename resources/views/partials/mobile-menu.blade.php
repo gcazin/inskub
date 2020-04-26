@@ -1,27 +1,32 @@
-@auth
-    <div id="mobile-menu" class="nav-mobile lg:hidden fixed bottom-0 right-0 left-0 bg-white border-t-2 border-gray-400"
-     style="height: 65px">
-    <div class="w-11/12 mx-auto flex justify-between text-center text-gray-600">
-        <a href="{{ route('post.index') }}" class="px-2 py-2 flex-1 focus:text-blue-700">
-            <ion-icon class="text-2xl" name="home-outline"></ion-icon>
-            <span class="text-sm block" style="font-size: 0.775rem">Accueil</span>
-        </a>
-            <a href="{{ route('discover') }}" class="px-2 py-2 flex-1 focus:text-blue-700">
-                <ion-icon class="text-2xl" name="grid-outline"></ion-icon>
-                <span class="text-sm block" style="font-size: 0.775rem">Découvrir</span>
-            </a>
-            <a href="{{ route('post.create') }}" class="px-2 py-2 flex-1 focus:text-blue-700">
-                <ion-icon class="text-2xl" name="create-outline"></ion-icon>
-                <span class="text-sm block" style="font-size: 0.775rem">Publier</span>
-            </a>
-            <a href="{{ route('chat.index') }}" class="px-2 py-2 flex-1 focus:text-blue-700">
-                <ion-icon class="text-2xl" name="chatbubbles-outline"></ion-icon>
-                <span class="text-sm block" style="font-size: 0.775rem">Messages</span>
-            </a>
-            <a href="{{ route('user.profile', auth()->id()) }}" class="px-2 py-2 flex-1 focus:text-blue-700">
-                <ion-icon class="text-2xl" name="person-outline"></ion-icon>
-                <span class="text-sm block" style="font-size: 0.775rem">Profil</span>
-            </a>
-    </div>
+<div class="d-flex justify-content-around text-center fixed-bottom bg-white py-3 px-4">
+    <a href="{{ route('index') }}" class="{{ (request()->is('/')) ? 'text-primary' : 'text-dark ' }}">
+        <ion-icon class="h4 m-0" name="home-outline"></ion-icon>
+    @if(request()->is('/'))
+        <!-- <span class="d-block" style="font-size: .8rem;">Accueil</span>-->
+        @endif
+    </a>
+    <a href="#" class="{{ (request()->is('projects')) ? 'text-primary' : 'text-dark ' }}">
+        <ion-icon class="h4 m-0" name="list-outline"></ion-icon>
+    @if(request()->is('projects'))
+        <!--<span class="d-block" style="font-size: .8rem;">Projet</span>-->
+        @endif
+    </a>
+    <a href="{{ route('discover') }}" class="{{ (request()->is('discover')) ? 'text-primary' : 'text-dark ' }}">
+        <ion-icon class="h4 m-0" name="apps-outline"></ion-icon>
+    @if(request()->is('discover'))
+        <!--<span class="d-block" style="font-size: .8rem;">Découvrir</span>-->
+        @endif
+    </a>
+    <a href="{{ route('chat.index') }}" class="{{ (request()->is('chat')) ? 'text-primary' : 'text-dark ' }}">
+        <ion-icon class="h4 m-0" name="chatbubbles-outline"></ion-icon>
+    @if(request()->is('chat'))
+        <!--<span class="d-block" style="font-size: .8rem;">Messagerie</span>-->
+        @endif
+    </a>
+    <a href="" class="{{ (request()->is('notifications')) ? 'text-primary' : 'text-dark ' }}">
+        <ion-icon class="h4 m-0" name="notifications-outline"></ion-icon>
+    @if(request()->is('notifications'))
+        <!--<span class="d-block" style="font-size: .8rem;">Notification</span>-->
+        @endif
+    </a>
 </div>
-@endauth

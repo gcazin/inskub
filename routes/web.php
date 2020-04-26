@@ -13,11 +13,11 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', 'HomeController@index')->name('index');
 Route::get('/discover', 'HomeController@discover')->name('discover');
 
 // Page d'accueil
 Route::namespace('Post')->name('post.')->group(function() {
-    Route::get('/', 'PostController@index')->name('index');
     Route::prefix('post')->group(function() {
         Route::get('/details/{id}', 'PostController@show')->name('show');
         Route::get('/create', 'PostController@create')->name('create');

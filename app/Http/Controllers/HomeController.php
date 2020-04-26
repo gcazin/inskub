@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Article;
+use App\Post;
 use App\Role;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Show the application dashboard.
      *
@@ -17,7 +21,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('index');
+        $posts = Post::all();
+        $user = User::class;
+        return view('index', compact('posts', 'user'));
     }
 
     public function discover()

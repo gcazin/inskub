@@ -1,11 +1,128 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap');
 
 $primary: #4299e1;
-$font-family-sans-serif:      -apple-system, BlinkMacSystemFont, "Open sans", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Open sans", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
 
 @import "./node_modules/bootstrap/scss/bootstrap";
 
 .form-control {
-    border-color: $gray-300;
+    border-color: $gray-300 !important;
+    border: 0;
+    border-bottom: 2px solid $gray-200;
+    border-radius: 0;
 }
 
+.form-control:focus {
+    box-shadow: none;
+    border-bottom-color: $primary !important;
+}
+
+.input-group-text {
+    background: $white !important;
+    border: 0;
+    border-radius: 0;
+}
+
+
+.input-group > .form-control:not(:first-child), .input-group > .custom-select:not(:first-child) {
+    border-left: 0 !important;
+    border-radius: 0;
+}
+
+.carousel-indicators li {
+    background: $blue;
+    height: 0;
+    width: 20px;
+    border-radius: 100%;
+}
+
+.checkbox.custom {
+    display: none;
+}
+
+.checkbox.custom + .card-body {
+    border: 1px solid transparent;
+    transition: 0.2s;
+}
+
+.checkbox.custom:checked + .card-body {
+    border: 1px solid rgba(129, 183, 255, 0.70);
+    background: rgba(129, 183, 255, 0.10);
+    color: $blue;
+}
+
+.dropnone .dropdown-toggle::before, .dropnone .dropdown-toggle::after {
+    display: none;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: $gray-400;
+    border-radius: $rounded-pill;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: $gray-400;
+}
+
+#login-form {
+    box-shadow: $box-shadow-sm;
+    background: $white;
+    z-index: 1;
+}
+
+.container-mobile {
+    width: 100%;
+}
+
+@include media-breakpoint-up(lg) {
+    .container-mobile {
+        width: 50%;
+    }
+}
+
+.pb-6,
+.py-6 {
+    padding-bottom: 3.5rem !important;
+}
+
+.pb-7,
+.py-7 {
+    padding-bottom: 4rem !important;
+}
+
+.pb-8,
+.py-8 {
+    padding-bottom: 4.5rem !important;
+}
+
+.pb-9,
+.py-9 {
+    padding-bottom: 5rem !important;
+}
+
+.pb-10,
+.py-10 {
+    padding-bottom: 5.5rem !important;
+}
+
+@include media-breakpoint-up(lg) {
+    #login-form {
+        box-shadow: none;
+    }
+    #container-login-form {
+        background: $white !important;
+    }
+}
