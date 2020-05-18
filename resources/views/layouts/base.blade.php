@@ -4,8 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name') }} @hasSection('title') - {{ $slot }} @endif</title>
+    <title>{{ config('app.name') }} @yield('title')</title>
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
     @livewireScripts
 </head>
 <body class="position-relative" style="background: #81b7ff29">
@@ -14,8 +17,17 @@
     @include('partials.menu')
 @endauth
 
-<div class="@if(isset($full)) container-fluid @else container container-mobile @endif pb-9">
-    @yield('content')
+<div id="container" class="pb-10">
+
+    @auth
+    <div class="row no-gutters">
+        @include('partials.left-sidebar')
+        @endauth
+
+        @yield('content')
+    @auth
+    </div>
+    @endauth
 </div>
 
 @auth
@@ -23,7 +35,10 @@
 @endauth
 
 <script src="{{ asset('js/index.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js"></script>
 <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
 @yield('script')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.16/js/bootstrap-select.min.js"></script>
 </body>
 </html>

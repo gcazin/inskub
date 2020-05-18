@@ -16,9 +16,12 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->longText('content');
+            $table->string('media')->nullable()->default(null);
+
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('visibility_id');
-            $table->string('media')->nullable();
+            $table->unsignedBigInteger('project_id')->nullable();
+
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

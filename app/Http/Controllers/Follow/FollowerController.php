@@ -6,8 +6,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 
-class FollowerController extends Controller
-{
+class FollowerController extends Controller {
     public function add(Request $request)
     {
         if($request->ajax()) {

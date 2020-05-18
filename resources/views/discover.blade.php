@@ -1,56 +1,35 @@
 @extends('layouts.base', ['full_width' => false])
 
+@section('title')
+    Découvrir
+@endsection
+
 @section('content')
 
-    @auth
-        <div class="lg:hidden mt-3 mb-4 lg:my-0">
-        @if(auth()->user()->role_id === 1) <!-- Admin -->
-            <a class="block {{ (request()->is('admin')) ? 'active' : '' }}" href="{{ route('admin.index') }}">
-                Administration
-            </a>
-        @elseif(auth()->user()->role_id === 2 || auth()->user()->role_id === 5) <!-- Salarié et étudiant -->
-            <div class="flex">
-                <a class="w-1/2 mr-3 block px-2 py-3 text-center text-blue-600 font-bold card" href="{{ route('job.index') }}">
-                    Emploi
-                </a>
-                <a class="w-1/2 block px-2 py-3 text-center text-blue-600 font-bold card" href="{{ route('formation.index') }}">
-                    Formation
-                </a>
-            </div>
-        @elseif(auth()->user()->role_id === 3) <!-- Entreprise -->
-            <a class="block px-2 py-3 text-center text-blue-600 font-bold card mb-2" href="{{ route('job.create') }}">
-                Proposer une offre d'emploi
-            </a>
-        @elseif(auth()->user()->role_id === 4) <!-- Ecole -->
-            <a class="block px-2 py-3 text-center text-blue-600 font-bold card mb-2" href="{{ route('formation.create') }}">
-                Proposer une formation
-            </a>
-            @endif
-        </div>
-    @endauth
-
-    @foreach($roles as $role)
-        <div class="group mb-5">
-            <div class="group__title p-2 rounded">
-                <h1 class="text-xl">{{ $role->display_name }}</h1>
-            </div>
-            <div class="flex group__content rounded-b overflow-x-auto scrolling-touch pb-4">
-                @foreach($role->users as $member)
-                    <div class="w-1/2 lg:w-1/4 bg-white rounded group__content-card text-center shadow mr-3" style="flex: 0 0 auto">
-                        <div class="flex justify-center py-4">
-                            <img class="h-16 rounded-full" src="{{ $user->find($member->id)::getAvatar($member->id) }}" alt="">
+    <div class="col-10 p-3">
+        @foreach($roles as $role)
+            <div class="group mb-5">
+                <div class="group__title rounded">
+                    <h1 class="text-xl">{{ $role->display_name }}</h1>
+                </div>
+                <div class="d-flex overflow-auto pb-4">
+                    @foreach($role->users as $member)
+                        <div class="w-25 text-center rounded bg-white shadow-sm mr-3" style="flex: 0 0 auto">
+                            <div class="flex justify-center py-4">
+                                <img class="h-16 rounded-circle border border-light" src="{{ $user->find($member->id)::getAvatar($member->id) }}" alt="">
+                            </div>
+                            <a href="{{ route('user.profile', $member->id) }}" class="pb-4 text-blue-800 hover:underline focus:underline">{{ $member->first_name }} {{ $member->last_name }}</a>
+                            <p class="pb-4 text-gray-600">
+                                {{ count(\App\User::find($member->id)->followers()->get()) }} abonnés
+                            </p>
+                            <p class="pb-4">
+                                <livewire:follow-user :user="$member->id">
+                            </p>
                         </div>
-                        <a href="{{ route('user.profile', $member->id) }}" class="pb-4 text-blue-800 hover:underline focus:underline">{{ $member->first_name }} {{ $member->last_name }}</a>
-                        <p class="pb-4 text-gray-600">
-                            {{ count(\App\User::find($member->id)->followers()->get()) }} abonnés
-                        </p>
-                        <p class="pb-4">
-                            <livewire:follow-user :user="$member->id">
-                        </p>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
-        </div>
-    @endforeach
+        @endforeach
+    </div>
 
 @endsection

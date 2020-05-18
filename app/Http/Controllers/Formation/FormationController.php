@@ -7,8 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class FormationController extends Controller
-{
+class FormationController extends Controller {
     /**
      * @var Formation $formation
      */
@@ -16,6 +15,7 @@ class FormationController extends Controller
 
     public function __construct(Formation $formation)
     {
+        $this->middleware('auth');
         $this->formation = $formation;
     }
 

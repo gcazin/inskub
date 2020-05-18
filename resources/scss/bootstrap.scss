@@ -1,31 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 
 $primary: #4299e1;
-$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Open sans", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Lato", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
 
 @import "./node_modules/bootstrap/scss/bootstrap";
 
-.form-control {
+.form-control.custom {
     border-color: $gray-300 !important;
     border: 0;
     border-bottom: 2px solid $gray-200;
     border-radius: 0;
 }
 
-.form-control:focus {
+.form-control.custom:focus {
     box-shadow: none;
     border-bottom-color: $primary !important;
 }
 
 .input-group-text {
-    background: $white !important;
-    border: 0;
-    border-radius: 0;
+    background: lighten($primary, 37%);
+    color: $primary;
 }
 
 
-.input-group > .form-control:not(:first-child), .input-group > .custom-select:not(:first-child) {
+.input-group > .form-control.custom:not(:first-child), .input-group > .custom-select:not(:first-child) {
     border-left: 0 !important;
     border-radius: 0;
 }
@@ -54,6 +52,10 @@ $font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Open sans", Roboto,
 
 .dropnone .dropdown-toggle::before, .dropnone .dropdown-toggle::after {
     display: none;
+}
+
+.border-gray {
+    border-color: $gray-400 !important;
 }
 
 /* width */
@@ -85,6 +87,7 @@ $font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Open sans", Roboto,
 
 .container-mobile {
     width: 100%;
+    margin: 0 auto;
 }
 
 @include media-breakpoint-up(lg) {
@@ -124,5 +127,103 @@ $font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Open sans", Roboto,
     }
     #container-login-form {
         background: $white !important;
+    }
+}
+
+a.menu-item {
+    text-decoration: none;
+}
+.menu-item {
+    border-left: 2px solid transparent;
+    transition: 0.3s border-left-color;
+    padding: .75rem 1.25rem;
+    color: $dark;
+
+    &:hover {
+        background: #F6FAFF;
+        border-left: 2px solid #1D65CC;
+    }
+}
+
+.menu-item.active {
+    border-left: 2px solid #1D65CC;
+    background: #F6FAFF;
+    color: #1D65CC;
+}
+
+.custom-file-label::after {
+    display: none;
+}
+
+.chat-person {
+    transition: 0.3s;
+}
+
+.chat-person:hover {
+    background: #F6FAFF;
+}
+
+.project__list-item {
+
+}
+
+@mixin badge-variant($bg) {
+    color: $bg;
+    background-color: rgba($bg, 0.1);
+}
+
+@each $color, $value in $theme-colors {
+    .badge-#{$color} {
+        @include badge-variant($value);
+    }
+}
+
+.alert {
+    border: 0;
+}
+
+@each $color, $value in $theme-colors {
+    .btn-outline-#{$color} {
+        @include button-outline-variant($value);
+    }
+}
+
+@mixin button-outline-variant($color, $color-hover: color-yiq($color), $active-background: $color, $active-border: $color) {
+    color: $color;
+    background: rgba($color, 0.3);
+    border-color: rgba($color, 0.1);
+
+    @include hover() {
+        color: $color-hover;
+        background-color: $active-background;
+        border-color: $active-border;
+    }
+
+    &:focus,
+    &.focus {
+        box-shadow: 0 0 0 $btn-focus-width rgba($color, .5);
+    }
+
+    &.disabled,
+    &:disabled {
+        color: $color;
+        background-color: transparent;
+    }
+
+    &:not(:disabled):not(.disabled):active,
+    &:not(:disabled):not(.disabled).active,
+    .show > &.dropdown-toggle {
+        color: color-yiq($active-background);
+        background-color: $active-background;
+        border-color: $active-border;
+
+        &:focus {
+            // Avoid using mixin so we can pass custom focus shadow properly
+            @if $enable-shadows and $btn-active-box-shadow != none {
+                box-shadow: $btn-active-box-shadow, 0 0 0 $btn-focus-width rgba($color, .5);
+            } @else {
+                box-shadow: 0 0 0 $btn-focus-width rgba($color, .5);
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row position-relative" style="height: 100vh">
-        <div class="position-relative px-0 d-none d-lg-block col-lg-6" style="background: rgba(129, 183, 255, 0.85)">
+        <div class="position-relative px-0 d-none d-lg-block col-lg-6" style="background: rgba(129, 183, 255, 0.16)">
             <svg class="position-absolute w-100" style="bottom: 0" xmlns="http://www.w3.org/2000/svg"
                  viewBox="0 0 1440 320">
                 <path fill="#fff" fill-opacity="1"
@@ -73,7 +73,7 @@
             <div class="container rounded-lg" id="login-form" style="width: 85%">
                 <h1 class="font-weight-light mb-1 mb-lg-4 mt-3 mt-lg-0 d-none d-lg-block">Inscrivez-vous</h1>
                 <h3 class="font-weight-light mb-1 mb-lg-4 mt-3 mt-lg-0 d-lg-none">Inscrivez-vous</h3>
-                <form action="{{ route('login') }}" method="post">
+                <form action="{{ route('register') }}" method="post">
                     @csrf
 
                     @if ($errors->any())
@@ -164,7 +164,7 @@
                                         </span>
                                     </div>
                                     <input type="text" name="last_name" class="form-control" placeholder="Nom"
-                                           aria-label="Adresse e-mail" aria-describedby="basic-addon1" autofocus>
+                                           aria-label="Adresse e-mail" aria-describedby="basic-addon1" autofocus value="{{ old('last_name') }}">
                                 </div>
                             </div>
 
@@ -176,7 +176,7 @@
                                         </span>
                                     </div>
                                     <input type="text" name="first_name" class="form-control" placeholder="Prénom"
-                                           aria-label="Adresse e-mail" aria-describedby="basic-addon1">
+                                           aria-label="Adresse e-mail" aria-describedby="basic-addon1" value="{{ old('first_name') }}">
                                 </div>
                             </div>
 
@@ -192,7 +192,7 @@
                             </span>
                             </div>
                             <input type="email" name="email" class="form-control" placeholder="Adresse e-mail"
-                                   aria-label="Adresse e-mail" aria-describedby="basic-addon1">
+                                   aria-label="Adresse e-mail" aria-describedby="basic-addon1" value="{{ old('email') }}">
                         </div>
                     </div>
 
@@ -219,7 +219,7 @@
                                                 <ion-icon name="lock-closed-outline"></ion-icon>
                                             </span>
                                     </div>
-                                    <input type="password" name="confirm-password" class="form-control"
+                                    <input type="password" name="password_confirmation" class="form-control"
                                            placeholder="Confirmation du mot de passe"
                                            aria-label="Confirmation du mot de passe" aria-describedby="basic-addon1">
                                 </div>

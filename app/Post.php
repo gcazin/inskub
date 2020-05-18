@@ -18,6 +18,14 @@ class Post extends Model
      */
     public function replies()
     {
-        return $this->hasMany('App\Reply_post');
+        return $this->hasMany(Reply_post::class);
+    }
+
+    /**
+     * Les posts appartiennent à un utilisateur
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

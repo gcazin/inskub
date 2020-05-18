@@ -16,18 +16,8 @@ class PostController extends Controller
 
     public function __construct(Post $post)
     {
+        $this->middleware('auth');
         $this->post = $post;
-    }
-
-    public function index()
-    {
-        $posts = $this->post::all();
-        return view('post.index', compact('posts'));
-    }
-
-    public function create()
-    {
-        return view('post.create');
     }
 
     public function show(int $id)
@@ -40,14 +30,19 @@ class PostController extends Controller
     {
         $post = $this->post;
         $post->content = $request->get('content');
-        $post->user_id = auth()->user()->id;
+        $post->user_id = auth()->id();
         $post->visibility_id = $request->get('visibility_id');
-        if($request->has('media')) {
-            $post->media = $request->file('media')->storeAs('posts', Str::random(40).'.'.$request->file('media')->extension(), ['disk' => 'public']);
+        if($request->has('project_id')) {
+            $post->project_id = $request->get('project_id');
         }
+        if($request->filled('media')) {
+            $post->media = $request->get('media')->storeAs('posts', Str::random(40).'.'.$request->file('media')->extension(), ['disk' => 'public']) ?? null;
+        }
+
+        $post->created_at = now();
         $post->save();
 
-        return redirect(route('post.index'));
+        return redirect(route('index'));
     }
 
     public function like($id)

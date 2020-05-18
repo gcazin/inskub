@@ -14,14 +14,13 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController@index')->name('index');
+Route::post('/', 'Post\PostController@store')->name('post.create');
 Route::get('/discover', 'HomeController@discover')->name('discover');
 
 // Page d'accueil
 Route::namespace('Post')->name('post.')->group(function() {
     Route::prefix('post')->group(function() {
         Route::get('/details/{id}', 'PostController@show')->name('show');
-        Route::get('/create', 'PostController@create')->name('create');
-        Route::post('/create', 'PostController@store');
         Route::post('/like/{id}', 'PostController@like')->name('like');
         Route::post('/{id}', 'ReplyPostController@store')->name('reply');
     });
@@ -79,6 +78,16 @@ Route::namespace('User')->name('user.')->group(function() {
 });
 
 /**
+ * CRUD des projets
+ */
+Route::get('/projects', 'Project\ProjectController@index')->name('project.index');
+Route::post('/projects', 'Project\ProjectController@store');
+Route::namespace('Project')->prefix('project')->name('project.')->group(function() {
+    Route::get('/{id}', 'ProjectController@show')->name('show');
+    Route::post('/{id}', 'ProjectController@storePost')->name('postStore');
+});
+
+/**
  * CRUD des formations
  */
 Route::get('/formations', 'Formation\FormationController@index')->name('formation.index');
@@ -89,7 +98,7 @@ Route::namespace('Formation')->prefix('formation')->name('formation.')->group(fu
 });
 
 /**
- * CRUD des formations
+ * CRUD des jobs
  */
 Route::get('/jobs', 'Job\JobController@index')->name('job.index');
 Route::namespace('Job')->prefix('job')->name('job.')->group(function() {
@@ -100,10 +109,9 @@ Route::namespace('Job')->prefix('job')->name('job.')->group(function() {
 
 Route::namespace('Chat')->name('chat.')->group(function() {
     // Messagerie privée
-    Route::get('/chat', 'ChatController@index')->name('index');
+    Route::get('/chat/{id?}', 'ChatController@show')->name('index');
     Route::get('/chat/create/{id}', 'ChatController@createDirectConversation')->name('createConversation');
     Route::get('/chat/create-groups', 'ChatController@createGroupConversation')->name('createGroupConversation');
-    Route::get('/chat/{id}', 'ChatController@chat')->name('chat');
     Route::post('/chat/{id}', 'ChatController@addParticipants')->name('addParticipants');
 });
 

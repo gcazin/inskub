@@ -1,7 +1,13 @@
-<div class="flex max-w-md bg-white shadow-lg rounded-lg overflow-hidden">
-    <div class="w-2 bg-gray-800"></div>
-    <div class="flex items-center px-2 py-3">
-            <h2 class="text-xl font-semibold text-gray-800">Hello john</h2>
-            <p class="text-gray-600">Sara was replied on the <a href="#" class="text-blue-500">Upload Image</a>.</p>
+<div role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-autohide="false">
+    <div class="toast-header">
+        <img src="..." class="rounded mr-2" alt="...">
+        <strong class="mr-auto">Bootstrap</strong>
+        <small>11 mins ago</small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body">
+        Hello, world! This is a toast message.
     </div>
 </div>

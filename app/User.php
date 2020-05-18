@@ -72,7 +72,7 @@ class User extends \Illuminate\Foundation\Auth\User
      */
     public static function getNumberFollowers($id): int
     {
-        $user = User::find($id);
+        $user = self::find($id);
         return count($user->followers()->get());
     }
 
@@ -83,13 +83,18 @@ class User extends \Illuminate\Foundation\Auth\User
      */
     public static function getNumberFollowings($id): int
     {
-        $user = User::find($id);
+        $user = self::find($id);
         return count($user->followings()->get());
     }
 
     public function posts()
     {
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Post::class)->where('project_id', '=', null);
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
     }
 
 }

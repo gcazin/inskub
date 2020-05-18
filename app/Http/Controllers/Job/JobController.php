@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class JobController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $jobs = DB::table('jobs')->orderByDesc('created_at')->simplePaginate(10);

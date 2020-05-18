@@ -10,6 +10,11 @@ use Illuminate\Routing\Redirector;
 
 class ReplyPostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * id, chat, post_id, user_id
      * @param Request $request

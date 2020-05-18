@@ -52,26 +52,22 @@ class ChatController extends Controller {
         $this->auth = $auth;
         $this->chat = $chat;
         $this->middleware('auth');
-    }
 
-    /**
-     * Boite de réception de la messagerie privée
-     *
-     * @return Factory|View
-     */
-    public function index()
-    {
-        $conversations = $this->chat
-            ->conversations()
-            ->setParticipant($this->user->find($this->auth->user()->id))
-            ->get()
-            ->toArray()['data'];
+        view()->composer('chat.layouts.base', function ($view) {
+            $conversations = $this->chat
+                ->conversations()
+                ->setParticipant($this->user::find($this->auth->user()->id))
+                ->get();
 
-        $conversations = Arr::pluck($conversations, 'conversation');
+            $conversations = $conversations->pluck('conversation');
 
-        $chat = $this->chat->conversations();
+            $user = User::class;
 
-        return view('chat.index', compact('conversations', 'chat'));
+            $view->with([
+                'conversations' => $conversations,
+                'user' => $user
+            ]);
+        });
     }
 
     /**
@@ -80,8 +76,6 @@ class ChatController extends Controller {
      * @param $id
      *
      * @return RedirectResponse
-     * @throws \Musonza\Chat\Exceptions\DirectMessagingExistsException
-     * @throws \Musonza\Chat\Exceptions\InvalidDirectMessageNumberOfParticipants
      */
     public function createDirectConversation($id): RedirectResponse
     {
@@ -92,7 +86,7 @@ class ChatController extends Controller {
         }
 
         if($conversation !== null) {
-            return redirect()->route('chat.chat', $conversation->id);
+            return redirect()->route('chat.index', $conversation->id);
         }
 
         $this->chat->createConversation([User::find($this->auth->id()), User::find($id)])->makeDirect();
@@ -120,9 +114,13 @@ class ChatController extends Controller {
      *
      * @return Factory|\Illuminate\View\View
      */
-    public function chat(int $id)
+    public function show(int $id = null)
     {
         $user = User::find($this->auth->user()->id);
+
+        if($id === null) {
+            return view('chat.show');
+        }
 
         $messages = $this->chat
             ->conversation($this->chat->conversations()->getById($id))
@@ -137,7 +135,7 @@ class ChatController extends Controller {
             ->get()
             ->toArray()['data'][0]['conversation']['participants'];
 
-        return view('chat.conversation', compact('messages', 'participants'));
+        return view('chat.show', compact('messages', 'participants'));
     }
 
     public function addParticipants(Request $request)

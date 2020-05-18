@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row position-relative" style="height: 100vh">
-        <div class="position-relative px-0 d-none d-lg-block col-lg-6" style="background: rgba(129, 183, 255, 0.85)">
+        <div class="position-relative px-0 d-none d-lg-block col-lg-6" style="background: rgba(129, 183, 255, 0.16)">
             <svg class="position-absolute w-100" style="bottom: 0" xmlns="http://www.w3.org/2000/svg"
                  viewBox="0 0 1440 320">
                 <path fill="#fff" fill-opacity="1"
