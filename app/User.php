@@ -62,7 +62,6 @@ class User extends \Illuminate\Foundation\Auth\User
             return 'https://avatars.dicebear.com/v2/initials/' . strtolower(trim(substr($user->first_name, 0, 1))) . ''.strtolower(trim(substr($user->last_name, 0, 1))).'.svg?options[fontSize]=40';
         }
         return self::find($id)->avatar;
-        //return asset('/storage/avatars/' . $user->avatar);
     }
 
     /**

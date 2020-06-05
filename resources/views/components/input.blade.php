@@ -4,9 +4,6 @@
             {{ $label }}
         </label>
     @endif
-    @error($name)
-    <p class="text-danger" role="alert">{{ $message }}</p>
-    @enderror
     <input
         autocomplete="off"
         type="{{ $type ?? 'text' }}"

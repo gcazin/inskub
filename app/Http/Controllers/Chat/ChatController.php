@@ -9,17 +9,9 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\View;
 use Illuminate\Validation\ValidationException;
 use Musonza\Chat\Chat;
-use Musonza\Chat\Facades\ChatFacade;
-use Musonza\Chat\Http\Controllers\ConversationController;
 use Musonza\Chat\Models\Conversation;
-use phpDocumentor\Reflection\DocBlock\Tags\Author;
-use phpDocumentor\Reflection\Types\Integer;
 use Throwable;
 
 class ChatController extends Controller {
@@ -54,12 +46,12 @@ class ChatController extends Controller {
         $this->middleware('auth');
 
         view()->composer('chat.layouts.base', function ($view) {
-            $conversations = $this->chat
-                ->conversations()
-                ->setParticipant($this->user::find($this->auth->user()->id))
+            $conversations = $this->chat->conversations()
+                ->setPaginationParams(['sorting' => 'desc'])
+                ->setParticipant($this->auth->user())
+                ->isPrivate()
+                ->perPage(10)
                 ->get();
-
-            $conversations = $conversations->pluck('conversation');
 
             $user = User::class;
 
@@ -89,8 +81,9 @@ class ChatController extends Controller {
             return redirect()->route('chat.index', $conversation->id);
         }
 
-        $this->chat->createConversation([User::find($this->auth->id()), User::find($id)])->makeDirect();
-        return redirect()->route('chat.index');
+        $conversation = $this->chat->createConversation([User::find($this->auth->id()), User::find($id)])->makeDirect();
+
+        return redirect()->route('chat.index', $conversation->id);
     }
 
     /**
@@ -125,8 +118,11 @@ class ChatController extends Controller {
         $messages = $this->chat
             ->conversation($this->chat->conversations()->getById($id))
             ->setParticipant($user)
-            ->getMessages()
-            ->toArray()['data'];
+            ->getMessages();
+
+//        if($id !== null) {
+//            $participants = $conversation->getById($id)->getParticipants();
+//        }
 
         $participants = $this->chat->conversations()->setPaginationParams(['sorting' => 'desc'])
             ->setParticipant($user)

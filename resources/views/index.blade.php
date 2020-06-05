@@ -1,35 +1,12 @@
 @extends('layouts.base', ['full' => true])
 
 @section('content')
-    <div class="col-lg-6 offset-lg-1 mt-3">
-        @include('partials.post-list')
-    </div>
+    <x-container>
+        <x-submit-post :action="route('index')"></x-submit-post>
+        <x-post-list :model="$posts"></x-post-list>
+    </x-container>
 
-    <x-right-sidebar>
-        <h6 class="title__section text-uppercase text-secondary px-3">Messagerie</h6>
-        <div class="d-flex flex-column overflow-hidden">
-            @forelse(auth()->user()->followings as $person)
-                <div class="chat-person position-relative d-inline-flex align-items-center py-2 px-3">
-                    <div style="width: 15%">
-                        <img class="rounded-circle" style="height: 2rem" src="{{ auth()->user()->getAvatar($person->id) }}" alt="">
-                    </div>
-                    <div style="width: 70%">
-                        <span class="mr-auto font-weight-bold">{{ $person->first_name }} {{ $person->last_name }}</span>
-                    </div>
-                    <div class="text-center" style="width: 15%">
-                        <span class="d-inline-block bg-success rounded-circle" style="height: 5px; width: 5px"></span>
-                    </div>
-                    <a class="position-absolute h-100 w-100" href="{{ route('chat.createConversation', $person->id) }}"></a>
-                </div>
-            @empty
-                <div class="px-3">
-                    <x-alert type="info">
-                        Aucun contact
-                    </x-alert>
-                </div>
-            @endforelse
-        </div>
-    </x-right-sidebar>
+    <x-right-sidebar-message></x-right-sidebar-message>
 @endsection
 
 @section('script')

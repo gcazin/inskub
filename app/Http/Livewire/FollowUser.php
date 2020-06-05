@@ -7,18 +7,18 @@ use Livewire\Component;
 
 class FollowUser extends Component
 {
-    public $user;
+    public $member;
 
-    public function mount($user)
+    public function mount($member)
     {
-        $this->user = $user;
+        $this->member = $member;
     }
 
     public function follow()
     {
         $user = User::find(auth()->user()->id);
 
-        $user->toggleFollow($this->user);
+        $user->toggleFollow($this->member);
 
         session()->flash('follow', 'Vous suivez maintenant ' . $user->name);
     }

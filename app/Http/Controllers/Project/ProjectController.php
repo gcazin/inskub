@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Post\PostController;
+use App\Http\Requests\StorePost;
+use App\Http\Requests\StoreProject;
 use App\Post;
 use App\Project;
 use App\ProjectUser;
 use App\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Musonza\Chat\Facades\ChatFacade;
 
@@ -36,7 +35,7 @@ class ProjectController extends Controller
         return view('project.show', compact('project', 'posts'));
     }
 
-    public function store(Request $request)
+    public function store(StoreProject $request)
     {
         $project = new Project();
         $project->title = $request->title;
@@ -63,14 +62,14 @@ class ProjectController extends Controller
         return redirect()->route('project.index')->with('project-created', 'Projet crée avec succès');
     }
 
-    public function storePost(Request $request)
+    public function storePost(StorePost $request)
     {
         $post = new Post();
         $post->content = $request->get('content');
         $post->user_id = auth()->id();
         $post->visibility_id = $request->get('visibility_id');
-        $post->project_id = $request->get('project_id');
-        if($request->filled('media')) {
+        $post->project_id = \request()->id;
+        if($request->has('media')) {
             $post->media = $request->file('media')->storeAs('posts', Str::random(40).'.'.$request->file('media')->extension(), ['disk' => 'public']);
         }
         $post->created_at = now();

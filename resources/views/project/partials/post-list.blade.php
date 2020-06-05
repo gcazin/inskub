@@ -86,7 +86,12 @@
                     </div>
                 </div>
 
-                <div class="card-body pt-0">{{ $post->content }}</div>
+                <div class="card-body pt-0">
+                    <p>{{ $post->content }}</p>
+                    @if($post->media !== null)
+                        <img class="w-50 rounded" src="{{ asset('storage/' . $post->media) }}" alt="">
+                    @endif
+                </div>
 
                 <div class="card-footer border-0 bg-white p-0">
                     <div class="d-flex px-4 py-1">

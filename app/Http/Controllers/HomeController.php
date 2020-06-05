@@ -6,7 +6,6 @@ use App\Post;
 use App\Role;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Support\Arr;
 
 class HomeController extends Controller
 {
@@ -30,8 +29,7 @@ class HomeController extends Controller
 
         $posts = $posts->merge($posts_followings->collapse())->sortByDesc('created_at');
 
-        $user = User::class;
-        return view('index', compact('posts', 'user'));
+        return view('index', compact('posts'));
     }
 
     public function discover()

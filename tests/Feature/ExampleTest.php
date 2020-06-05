@@ -2,11 +2,15 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
+    use DatabaseTransactions, DatabaseMigrations;
+
     /**
      * A basic test example.
      *
@@ -14,7 +18,9 @@ class ExampleTest extends TestCase
      */
     public function testBasicTest()
     {
-        $response = $this->get('/');
+        $user = factory(User::class)->make();
+
+        $response = $this->be($user)->get('/');
 
         $response->assertStatus(200);
     }

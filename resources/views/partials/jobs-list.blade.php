@@ -1,5 +1,4 @@
-@if(count($jobs) > 0)
-    @foreach($jobs as $job)
+    @forelse($jobs as $job)
         <div class="formation flex py-4 border-b border-gray-400">
             <div class="w-11/12 lg:w-full">
                 <div class="flex justify-between">
@@ -23,19 +22,19 @@
                 </div>
             </div>
         </div>
-    @endforeach
-    <div class="flex items-center py-3">
-        <div class="flex-1">
-            <span class="text-gray-700 text-sm">Page {{ $jobs->currentPage() }}</span>
+
+        <div class="flex items-center py-3">
+            <div class="flex-1">
+                <span class="text-gray-700 text-sm">Page {{ $jobs->currentPage() }}</span>
+            </div>
+            <div class="flex-1">
+                {{ $jobs->links() }}
+            </div>
         </div>
-        <div class="flex-1">
-            {{ $jobs->links() }}
+    @empty
+        <div class="px-3 pt-2 pb-1">
+            <div class="alert alert-info">
+                Vous n'avez encore ajouté aucune formations
+            </div>
         </div>
-    </div>
-@else
-    <div class="px-3 pt-2 pb-1">
-        <div class="alert alert-info">
-            Vous n'avez encore ajouté aucune formations
-        </div>
-    </div>
-@endif
+    @endforelse

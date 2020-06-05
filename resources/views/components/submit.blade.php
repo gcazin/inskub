@@ -1,3 +1,5 @@
-<button type="submit" class="btn btn-{{ $class ?? '' }}">
-    {{ $slot }}
-</button>
+<div class="text-right">
+    <button type="submit" class="btn btn-{{ $type ?? 'primary' }}">
+        {{ $slot }}
+    </button>
+</div>

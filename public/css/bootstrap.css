@@ -10076,16 +10076,17 @@ a.menu-item {
   transition: 0.3s border-left-color;
   padding: 0.75rem 1.25rem;
   color: #343a40;
+  border-radius: 0.3rem;
+  margin-bottom: 5px;
 }
 .menu-item:hover {
   background: #F6FAFF;
-  border-left: 2px solid #1D65CC;
 }
 
 .menu-item.active {
-  border-left: 2px solid #1D65CC;
   background: #F6FAFF;
   color: #1D65CC;
+  border: 1px solid #ecf3fc;
 }
 
 .custom-file-label::after {
@@ -10342,4 +10343,12 @@ a.menu-item {
 }
 .btn-outline-dark:not(:disabled):not(.disabled):active:focus, .btn-outline-dark:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-dark.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5);
+}
+
+.job-post {
+  transition: 0.3s background-color;
+}
+
+.job-post:hover {
+  background: #f2f8fd;
 }

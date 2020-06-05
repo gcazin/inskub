@@ -138,17 +138,18 @@ a.menu-item {
     transition: 0.3s border-left-color;
     padding: .75rem 1.25rem;
     color: $dark;
+    border-radius: $border-radius-lg;
+    margin-bottom: 5px;
 
     &:hover {
         background: #F6FAFF;
-        border-left: 2px solid #1D65CC;
     }
 }
 
 .menu-item.active {
-    border-left: 2px solid #1D65CC;
     background: #F6FAFF;
     color: #1D65CC;
+    border: 1px solid lighten(#1D65CC, 50%);
 }
 
 .custom-file-label::after {
@@ -226,4 +227,12 @@ a.menu-item {
             }
         }
     }
+}
+
+.job-post {
+    transition: 0.3s background-color;
+}
+
+.job-post:hover {
+    background: lighten($primary, 40%);
 }

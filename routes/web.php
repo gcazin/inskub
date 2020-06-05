@@ -47,6 +47,7 @@ Route::namespace('Auth')->group(function() {
 Route::namespace('User')->name('user.')->group(function() {
     // Partie "Mon compte"
     Route::get('/profil/{id}', 'UserController@index')->name('profile');
+    Route::post('/profil/{id}', 'UserController@storeAbout')->name('storeAbout');
     Route::get('/profil/{id}/followers', 'UserController@follower')->name('follower');
     Route::get('/profil/{id}/followings', 'UserController@following')->name('following');
 
@@ -85,6 +86,15 @@ Route::post('/projects', 'Project\ProjectController@store');
 Route::namespace('Project')->prefix('project')->name('project.')->group(function() {
     Route::get('/{id}', 'ProjectController@show')->name('show');
     Route::post('/{id}', 'ProjectController@storePost')->name('postStore');
+
+    Route::name('todo.')->group(function() {
+        Route::get('/{id}/todos', 'TodoController@index')->name('index');
+        Route::post('/{id}/todo/create', 'TodoController@store')->name('create');
+    });
+
+    Route::name('note.')->group(function() {
+        Route::post('/{id}/note/create', 'NoteController@store')->name('create');
+    });
 });
 
 /**

@@ -35,8 +35,8 @@ class PostController extends Controller
         if($request->has('project_id')) {
             $post->project_id = $request->get('project_id');
         }
-        if($request->filled('media')) {
-            $post->media = $request->get('media')->storeAs('posts', Str::random(40).'.'.$request->file('media')->extension(), ['disk' => 'public']) ?? null;
+        if($request->has('media')) {
+            $post->media = $request->file('media')->storeAs('posts', Str::random(40).'.'.$request->file('media')->extension(), ['disk' => 'public']);
         }
 
         $post->created_at = now();

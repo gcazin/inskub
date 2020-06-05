@@ -13,7 +13,8 @@ class TodoSeeder extends Seeder
     public function run()
     {
         factory(Todo::class, 40)->create()->each(function ($todo) {
-            $todo->save();
+            $todo->assigned()->save(factory(\App\User::class)->make());
+            $todo->project()->save(factory(\App\User::class)->make());
         });
     }
 }

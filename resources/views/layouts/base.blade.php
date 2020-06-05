@@ -4,10 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name') }} @yield('title')</title>
+    <title>{{ config('app.name') }} - @yield('title')</title>
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    @yield('head')
 
     @livewireScripts
 </head>
@@ -20,13 +21,13 @@
 <div id="container" class="pb-10">
 
     @auth
-    <div class="row no-gutters">
-        @include('partials.left-sidebar')
-        @endauth
+        <div class="row no-gutters">
+            @include('components.left-sidebar')
+            @endauth
 
-        @yield('content')
-    @auth
-    </div>
+            @yield('content')
+            @auth
+        </div>
     @endauth
 </div>
 

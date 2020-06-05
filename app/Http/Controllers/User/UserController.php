@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Post;
 use App\User;
+use App\UserFormation;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Auth\User as UserRepository;
@@ -53,7 +54,8 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $posts = Post::all()->where('user_id', $id);
-        return view('user.profile', compact('user', 'posts'));
+        $formations = UserFormation::all()->where('user_id', request()->route('id'))->sortByDesc('finish_date');
+        return view('user.profile', compact('user', 'posts', 'formations'));
     }
 
     public function follower($id)
@@ -88,6 +90,15 @@ class UserController extends Controller
     {
         $user = $this->auth->user();
         return view('user.edit', compact('user', $user));
+    }
+
+    public function storeAbout(Request $request)
+    {
+        $user = $this->auth->user();
+        $user->about = $request->get('about');
+        $user->save();
+
+        return redirect()->route('user.profile', $this->auth->id());
     }
 
     /**

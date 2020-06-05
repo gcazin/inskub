@@ -1,6 +1,6 @@
 <button wire:click="follow()"
-        class="btn btn-outline-{{ (App\User::find(auth()->user()->id)->isFollowing($user)) ? 'secondary'  : 'primary' }}">
-    {!!(App\User::find(auth()->user()->id)->isFollowing($user)) ? 'Suivi'  : 'Suivre' !!}
+        class="btn btn-outline-{{ auth()->user()->isFollowing($member) ? 'secondary'  : 'primary' }}">
+    {!! auth()->user()->isFollowing($member) ? 'Suivi'  : 'Suivre' !!}
 </button>
 
 @if (session()->has('follow'))

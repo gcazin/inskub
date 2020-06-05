@@ -1,4 +1,4 @@
-<div class="alert alert-{{ $type }} rounded-lg">
+<div class="alert alert-{{ $type }} rounded-lg mb-0">
     <ion-icon
         class="align-text-top h5 mb-0 mr-1"
         name=

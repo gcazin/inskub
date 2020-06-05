@@ -1,26 +1,23 @@
 @forelse(\App\UserFormation::all()->where('user_id', request()->route('id'))->sortByDesc('finish_date') as $formation)
-    <div class="formation flex py-4 border-b border-gray-400">
-        <div class="self-center w-3/12 lg:w-1/12">
-            <div class="text-center">
-                <ion-icon class="text-4xl text-blue-500" name="school-outline"></ion-icon>
+    <div class="job-post border rounded p-3">
+        <div class="row">
+            <div class="col">
+                <p class="h4 font-bold">
+                    <a class="text-decoration-none" href="{{ route('formation.show', $formation->id) }}">
+                        {{ $formation->school }}
+                    </a>
+                </p>
+                <p class="text-muted">{{ $formation->start_date }} - {{ $formation->finish_date }}</p>
             </div>
-        </div>
-        <div class="w-9/12 lg:w-11/12">
-            <div class="flex justify-between">
-                <h1 class="text-xl font-bold">
-                    {{ $formation->school }}
-                </h1>
-            </div>
-            <div>
-                <p class="text-xl text-gray-800">{{ $formation->degree }}</p>
-                <p class="text-sm">{{ $formation->start_date }} - {{ $formation->finish_date }}</p>
+            <div class="col h5 text-right">
+                <span class="badge badge-primary">
+                    {{ $formation->degree }}
+                </span>
             </div>
         </div>
     </div>
 @empty
-    <div class="pt-2 pb-1">
-        <div class="alert alert-info">
-            Aucune formation à afficher.
-        </div>
-    </div>
+    <x-alert type="info">
+        Aucune formation à afficher.
+    </x-alert>
 @endforelse

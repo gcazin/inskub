@@ -1,43 +1,50 @@
-@extends('layouts.base', ['full' => true])
+@extends('layouts.base')
 
 @section('content')
-    <div class="row no-gutters automatic-height border-top border-light" style="margin-top: -1rem;">
-        <!-- Conversations -->
-        <div class="col-2 col-lg-4 border-right border-light">
-            @foreach($conversations as $conversation)
-                @foreach($conversation->participants as $participant)
-                    @php $user = $user::find($participant['messageable_id']); @endphp
-                    @if($user->id !== auth()->id())
-                        <div class="card {{ $loop->first ? 'rounded-top-lg' : 'rounded-0' }} border-0 py-2 py-lg-0">
-                            <div class="container-fluid">
-                                <div class="row align-items-center">
-                                    <div class="col-lg-2 text-center">
-                                        <img class="rounded-circle" src="{{ $user->avatar }}" style="height: 50px" alt="">
-                                    </div>
-                                    <div class="d-none d-lg-block col-lg-8">
-                                        <p class="font-weight-bold h6">{{ $user->first_name }} {{ $user->last_name }}</p>
-                                        <p>message</p>
-                                    </div>
-                                    <div class="d-none d-lg-block col-lg-2">salut</div>
+
+    <div class="col-lg-10 mt-3 px-3 px-lg-0">
+
+        <div class="container-fluid">
+
+            <div class="row mx-2 shadow-sm">
+
+                <div class="col-lg-3 bg-white py-3 border-right rounded-left">
+                    @forelse($conversations as $conversation)
+                        @foreach($conversation->conversation->getParticipants()->reverse()->take(1) as $participant)
+                        <div class="menu-item {{ (int) request()->id === (int) $conversation->id ? 'active' : null }} position-relative">
+                            <div class="row align-items-center">
+                                <div class="col-lg-2 text-center">
+                                    <img class="rounded-circle" src="{{ \App\User::find($participant->id)->avatar }}" style="height: 50px" alt="">
                                 </div>
+                                <div class="d-none d-lg-block col-lg-8">
+                                    <p class="font-weight-bold h6">{{ \App\User::find($participant->id)->first_name }} {{ \App\User::find($participant->id)->last_name }}</p>
+                                    <p>{{ $conversation->conversation->last_message->body }}</p>
+                                </div>
+                                <a class="position-absolute w-100 h-100" href="{{ route('chat.index', $conversation->id) }}"></a>
                             </div>
-                            <a class="position-absolute w-100 h-100" href="{{ route('chat.index', $conversation->id) }}"></a>
                         </div>
-                    @endif
-                @endforeach
-            @endforeach
+                        @endforeach
+
+                    @empty
+                        <x-alert type="info">Aucune conversation à afficher</x-alert>
+                    @endforelse
+                </div>
+
+                <!-- Chat -->
+                <div class="col-lg-6 py-3 bg-white rounded-right">
+                    <!-- Chat -->
+                    @yield('chat')
+                </div>
+
+                <div class="col-lg-3 py-3 bg-white border-left rounded-right">
+                    <!-- Chat -->
+                    Settings
+                </div>
+            </div>
         </div>
 
-        <!-- Chat -->
-        <div class="col-10 col-lg-8 px-3 border-right border-light bg-white" style="height: 85%">
-            @yield('chat')
-        </div>
-
-        <!-- Informations -->
-        <!--<div class="col-lg-4 d-none d-lg-block  px-3 bg-white automatic-height">
-            salut
-        </div>-->
     </div>
+
 
 @endsection
 

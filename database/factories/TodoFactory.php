@@ -10,6 +10,7 @@ $factory->define(Todo::class, function (Faker $faker) {
         'title' => $faker->sentence,
         'description' => $faker->optional()->realText(),
         'deadline' => $faker->dateTimeBetween('2020-04-27'),
+        'assigned_to' => random_int(1,10),
         'project_id' => random_int(1,10),
         'user_id' => random_int(1,10)
     ];
