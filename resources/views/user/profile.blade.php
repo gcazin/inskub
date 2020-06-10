@@ -12,13 +12,11 @@
                 <img src="https://i.imgur.com/XNgxmzi.png" style="height: 100px; object-fit: cover" class="w-100 rounded-top" alt="">
             </div>
             <div class="d-flex justify-content-center bg-white" style="margin-top: -4rem">
-                <img alt="avatar" src="{{ $user::getAvatar($user->id) }}"
-                     class="rounded-circle border">
+                <img alt="avatar" src="{{ $user::getAvatar($user->id) }}" class="rounded-circle border">
             </div>
             <div class="container rounded-bottom">
                 <div class="row shadow-sm bg-white py-1">
                     <div class="col">
-
 
                         <div class="row">
                             <div class="col">
@@ -37,55 +35,69 @@
                             </div>
                         </div>
 
-
                         <p class="mb-3">
                             <a href="{{ route('user.follower', $user->id) }}">
-                                {{ \App\User::getNumberFollowers($user->id) }} abonnés
+                                {{ auth()->user()->followers->count() }} abonnés
                             </a> -
                             <a href="{{ route('user.following', $user->id) }}">
-                                {{ \App\User::getNumberFollowings($user->id) }} abonnements
+                                {{ auth()->user()->followings->count() }} abonnements
                             </a>
                         </p>
+
                     </div>
                 </div>
             </div>
         </div>
 
-        <x-section class="mb-3 animate__animated animate__zoomIn">
-            <div class="row">
-                <div class="col mb-3">
-                    <p class="h5">A propos</p>
-                </div>
-                @if($user->about !== null)
-                    <div class="col text-right">
-                        <button type="button" data-toggle="modal" data-target="#editUserAbout" class="btn btn-outline-primary">Modifier la description</button>
-                    </div>
-                @endif
-            </div>
-            @if($user->about !== null)
-                {{ $user->about }}
+        <x-about-user
+            title="A propos"
+            target="userAbout">
 
-                <x-modal name="editUserAbout" title="Modifier la description du profil">
-                    <x-form :action="route('user.profile', auth()->id())" name="about">
-                        <x-textarea label="Description" :value="$user->about" name="about"></x-textarea>
-                        <x-submit>Valider</x-submit>
-                    </x-form>
-                </x-modal>
-            @else
-                <button type="button" data-toggle="modal" data-target="#userAbout" class="btn btn-outline-primary">Ajouter une description</button>
-
-                <x-modal name="userAbout" title="Ajouter une description de profil">
-                    <x-form :action="route('user.profile', auth()->id())" name="about">
+            @if((int) auth()->id() === (int) request()->id)
+                <x-modal title="Ajouter une expérience" name="userAbout">
+                    <x-form :action="route('user.profile', auth()->id())">
                         <x-textarea label="Description" name="about"></x-textarea>
+
                         <x-submit>Valider</x-submit>
                     </x-form>
                 </x-modal>
             @endif
-        </x-section>
+        </x-about-user>
 
         <!-- Etudiants et salariés -->
     @if($user->role_id === 2 || $user->role_id === 5)
-        <!-- Formations -->
+        <!-- Expériences -->
+            <x-about-user
+                title="Expériences"
+                target="create-experience">
+                @include('user.partials.experiences-list')
+            </x-about-user>
+
+            <x-modal title="Ajouter une expérience" name="create-experience">
+                <x-form :action="route('user.experience.create')" method="post">
+
+                    <x-input label="Titre" name="title" placeholder="Intitulé du poste"></x-input>
+                    <x-input label="Entreprise" name="enterprise" placeholder="Entreprise concernée..."></x-input>
+                    <x-input label="Localisation" name="location" placeholder="Paris..."></x-input>
+                    <x-input label="Secteur" name="sector" placeholder="Assurance..."></x-input>
+
+                    <div class="row">
+                        <div class="col">
+                            <x-input label="Date de début" name="start_date" :placeholder="now()->year-1"></x-input>
+                        </div>
+
+                        <div class="col">
+                            <x-input label="Date de fin" name="finish_date" :placeholder="now()->year"></x-input>
+                        </div>
+                    </div>
+
+                    <x-input label="Description" name="description" placeholder="Informations en plus..."></x-input>
+
+                    <x-submit>Valider</x-submit>
+                </x-form>
+            </x-modal>
+
+            <!-- Formations -->
             <x-about-user
                 title="Formations"
                 target="create-formation">
@@ -111,42 +123,11 @@
                     <x-submit>Valider</x-submit>
                 </x-form>
             </x-modal>
-
-            <!-- Expériences -->
-            <x-about-user
-                title="Expériences"
-                target="create-experience">
-                @include('user.partials.experiences-list')
-            </x-about-user>
-
-        <x-modal title="Ajouter une expérience" name="create-experience">
-            <x-form :action="route('user.experience.create')" method="post">
-
-                <x-input label="Titre" name="title" placeholder="Intitulé du poste"></x-input>
-                <x-input label="Entreprise" name="enterprise" placeholder="Entreprise concernée..."></x-input>
-                <x-input label="Localisation" name="location" placeholder="Paris..."></x-input>
-                <x-input label="Secteur" name="sector" placeholder="Assurance..."></x-input>
-
-                <div class="row">
-                    <div class="col">
-                        <x-input label="Date de début" name="start_date" :placeholder="now()->year-1"></x-input>
-                    </div>
-
-                    <div class="col">
-                        <x-input label="Date de fin" name="finish_date" :placeholder="now()->year"></x-input>
-                    </div>
-                </div>
-
-                <x-input label="Description" name="description" placeholder="Informations en plus..."></x-input>
-
-                <x-submit>Valider</x-submit>
-            </x-form>
-        </x-modal>
     @endif
 
     <!-- Entreprise -->
-        @if($user->role_id === 3)
-            <!-- Emplois -->
+    @if($user->role_id === 3)
+        <!-- Emplois -->
             <x-about-user
                 title="Emplois proposés"
                 target="create-job">
@@ -178,11 +159,11 @@
                     <x-submit>Valider</x-submit>
                 </x-form>
             </x-modal>
-        @endif
+    @endif
 
     <!-- Ecole -->
-        @if($user->role_id === 4)
-            <!-- Formations -->
+    @if($user->role_id === 4)
+        <!-- Formations -->
             <x-about-user
                 title="Formations proposées"
                 target="create-formation">
@@ -213,6 +194,21 @@
                 </x-form>
             </x-modal>
         @endif
+
+        <x-about-user
+            title="Certifications"
+            target="create-certification">
+
+            @if((int) auth()->id() === (int) request()->id)
+                <x-modal title="Ajouter une expérience" name="create-certification">
+                    <x-form :action="route('user.profile', auth()->id())">
+                        <x-textarea label="Description" name="about"></x-textarea>
+
+                        <x-submit>Valider</x-submit>
+                    </x-form>
+                </x-modal>
+            @endif
+        </x-about-user>
     </x-container>
 
     <x-right-sidebar-message></x-right-sidebar-message>

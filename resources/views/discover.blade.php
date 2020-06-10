@@ -52,9 +52,11 @@
                             <p class="pb-4 text-gray-600">
                                 {{ $member->followers()->count() }} abonnés
                             </p>
-                            <p class="pb-4">
-                                <livewire:follow-user :member="$member->id">
-                            </p>
+                            @if($member->id !== auth()->id())
+                                <p class="pb-4">
+                                    <livewire:follow-user :member="$member->id">
+                                </p>
+                            @endif
                         </div>
                     @endforeach
                     <div class="col-lg-3 col-6 d-flex justify-content-center align-items-center">

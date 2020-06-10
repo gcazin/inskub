@@ -2,35 +2,35 @@
 
 @section('content')
 
-    <div class="w-11/12 lg:w-7/12 mx-auto">
-        <h1 class="text-2xl text-gray-700 mb-2">{{ count($user->followers) }} résultat{{ count($user->followers) < 0 ? 's' : '' }}</h1>
+    <x-container>
+        <h1 class="text-2xl text-gray-700 mb-2">{{ $user->followers->count() }} résultat{{ $user->followers->count() > 0 ? 's' : '' }}</h1>
         @forelse($user->followers as $follower)
-            <div class="bg-white rounded group__content-card shadow mr-3">
-                <div class="flex justify-center py-4">
-                    <div class="w-1/12">
-                        <img class="h-16 rounded-full" src="{{ \App\User::find($follower->id)::getAvatar($follower->id) }}" alt="">
+            <x-section class="mb-3">
+                <div class="row align-items-center">
+                    <div class="col-2 text-center">
+                        <img class="rounded-circle" style="height: 50px" src="{{ \App\User::find($follower->id)::getAvatar($follower->id) }}" alt="">
                     </div>
-                    <div class="w-8/12">
-                        <a href="{{ route('user.profile', $follower->id) }}" class="pb-4 text-blue-800 hover:underline focus:underline">{{ $follower->last_name }} {{ $follower->first_name }}</a>
-                        <p class="pb-4 text-gray-600">
-                            {{ count(\App\User::find($follower->id)->followers()->get()) }} abonnés
+                    <div class="col-8">
+                        <a href="{{ route('user.profile', $follower->id) }}" class="h4">{{ $follower->first_name }} {{ $follower->last_name }}</a>
+                        <p class="text-muted">
+                            {{ \App\User::find($follower->id)->followers()->count() }} abonnés
                         </p>
                     </div>
-                    <div class="w-2/12 self-center text-right">
-                        <p class="pb-4">
-                            <livewire:follow-user :user="$follower->id">
-                        </p>
+                    <div class="col-2 text-center">
+                        <a href="{{ route('chat.createConversation', $follower->id) }}">
+                            <ion-icon class="h3 text-primary" name="send-outline"></ion-icon>
+                        </a>
                     </div>
                 </div>
-            </div>
+            </x-section>
         @empty
-            <div class="pt-2 pb-1">
-                <div class="alert alert-info">
-                    Aucune relation à afficher.
-                </div>
-            </div>
+            <x-alert type="info">
+                Aucune relation à afficher.
+            </x-alert>
         @endforelse
-    </div>
+    </x-container>
+
+    <x-right-sidebar-message></x-right-sidebar-message>
 
 
 @endsection

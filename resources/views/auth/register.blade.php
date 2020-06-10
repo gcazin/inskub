@@ -63,81 +63,66 @@
             <div class="container rounded-lg" id="login-form" style="width: 85%">
                 <h1 class="font-weight-light mb-1 mb-lg-4 mt-3 mt-lg-0 d-none d-lg-block">Inscrivez-vous</h1>
                 <h3 class="font-weight-light mb-1 mb-lg-4 mt-3 mt-lg-0 d-lg-none">Inscrivez-vous</h3>
-                <form action="{{ route('register') }}" method="post">
-                    @csrf
-
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            Des erreurs se sont produites lors de la saisie de vos informations
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
+                <x-form :action="route('register')">
+                    <div class="row py-3 row-cols-2 row-cols-lg-5">
+                        <div class="col-12 col-lg pb-1">
+                            <div class="card text-center">
+                                <label for="role_id" class="position-absolute w-100 h-100"></label>
+                                <input type="radio" class="checkbox custom" name="role_id" id="role_id" value="2">
+                                <div class="card-body rounded">
+                                    <h5 class="card-title">
+                                        <ion-icon name="people-outline"></ion-icon>
+                                    </h5>
+                                    <p class="card-text" style="font-size: 0.80rem">Personne</p>
+                                </div>
+                            </div>
                         </div>
-                    @endif
-
-                    <div class="form-group">
-                        <div class="row py-3 row-cols-2 row-cols-lg-5 no-gutters">
-                            <div class="col-12 col-lg pb-1 pr-lg-1">
-                                <div class="card text-center">
-                                    <label for="role_id" class="position-absolute w-100 h-100"></label>
-                                    <input type="radio" class="checkbox custom" name="role_id" id="role_id" value="2">
-                                    <div class="card-body rounded">
-                                        <h5 class="card-title">
-                                            <ion-icon name="people-outline"></ion-icon>
-                                        </h5>
-                                        <p class="card-text" style="font-size: 0.80rem">Personne</p>
-                                    </div>
+                        <div class="col pb-1 pr-1">
+                            <div class="card text-center">
+                                <label for="student" class="position-absolute w-100 h-100"></label>
+                                <input type="radio" class="checkbox custom" name="role_id" id="student" value="3">
+                                <div class="card-body rounded">
+                                    <h5 class="card-title">
+                                        <ion-icon name="person-outline"></ion-icon>
+                                    </h5>
+                                    <p class="card-text" style="font-size: 0.80rem">Intermédiaire</p>
                                 </div>
                             </div>
-                            <div class="col pb-1 pr-1">
-                                <div class="card text-center">
-                                    <label for="student" class="position-absolute w-100 h-100"></label>
-                                    <input type="radio" class="checkbox custom" name="role_id" id="student" value="2">
-                                    <div class="card-body rounded">
-                                        <h5 class="card-title">
-                                            <ion-icon name="person-outline"></ion-icon>
-                                        </h5>
-                                        <p class="card-text" style="font-size: 0.80rem">Intermédiaire</p>
-                                    </div>
+                        </div>
+                        <div class="col pb-1">
+                            <div class="card text-center">
+                                <label for="school" class="position-absolute w-100 h-100"></label>
+                                <input type="radio" class="checkbox custom" name="role_id" id="school" value="4">
+                                <div class="card-body rounded">
+                                    <h5 class="card-title">
+                                        <ion-icon name="school-outline"></ion-icon>
+                                    </h5>
+                                    <p class="card-text" style="font-size: 0.80rem">Ecole</p>
                                 </div>
                             </div>
-                            <div class="col pb-1">
-                                <div class="card text-center">
-                                    <label for="school" class="position-absolute w-100 h-100"></label>
-                                    <input type="radio" class="checkbox custom" name="role_id" id="school" value="2">
-                                    <div class="card-body rounded">
-                                        <h5 class="card-title">
-                                            <ion-icon name="school-outline"></ion-icon>
-                                        </h5>
-                                        <p class="card-text" style="font-size: 0.80rem">Ecole</p>
-                                    </div>
+                        </div>
+                        <div class="col pr-1">
+                            <div class="card text-center">
+                                <label for="enterprise" class="position-absolute w-100 h-100"></label>
+                                <input type="radio" class="checkbox custom" name="role_id" id="enterprise"
+                                       value="5">
+                                <div class="card-body rounded">
+                                    <h5 class="card-title">
+                                        <ion-icon name="business-outline"></ion-icon>
+                                    </h5>
+                                    <p class="card-text" style="font-size: 0.80rem">Compagnie</p>
                                 </div>
                             </div>
-                            <div class="col pr-1">
-                                <div class="card text-center">
-                                    <label for="enterprise" class="position-absolute w-100 h-100"></label>
-                                    <input type="radio" class="checkbox custom" name="role_id" id="enterprise"
-                                           value="2">
-                                    <div class="card-body rounded">
-                                        <h5 class="card-title">
-                                            <ion-icon name="business-outline"></ion-icon>
-                                        </h5>
-                                        <p class="card-text" style="font-size: 0.80rem">Compagnie</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card text-center">
-                                    <label for="other" class="position-absolute w-100 h-100"></label>
-                                    <input type="radio" class="checkbox custom" name="role_id" id="other" value="2">
-                                    <div class="card-body rounded">
-                                        <h5 class="card-title">
-                                            <ion-icon name="git-network-outline"></ion-icon>
-                                        </h5>
-                                        <p class="card-text" style="font-size: 0.80rem">Autres</p>
-                                    </div>
+                        </div>
+                        <div class="col">
+                            <div class="card text-center">
+                                <label for="other" class="position-absolute w-100 h-100"></label>
+                                <input type="radio" class="checkbox custom" name="role_id" id="other" value="6">
+                                <div class="card-body rounded">
+                                    <h5 class="card-title">
+                                        <ion-icon name="git-network-outline"></ion-icon>
+                                    </h5>
+                                    <p class="card-text" style="font-size: 0.80rem">Autres</p>
                                 </div>
                             </div>
                         </div>
@@ -153,8 +138,7 @@
                                             <ion-icon name="person-outline"></ion-icon>
                                         </span>
                                     </div>
-                                    <input type="text" name="last_name" class="form-control" placeholder="Nom"
-                                           aria-label="Adresse e-mail" aria-describedby="basic-addon1" autofocus value="{{ old('last_name') }}">
+                                    <input type="text" name="last_name" class="form-control" placeholder="Nom" autofocus value="{{ old('last_name') }}">
                                 </div>
                             </div>
 
@@ -209,9 +193,7 @@
                                                 <ion-icon name="lock-closed-outline"></ion-icon>
                                             </span>
                                     </div>
-                                    <input type="password" name="password_confirmation" class="form-control"
-                                           placeholder="Confirmation du mot de passe"
-                                           aria-label="Confirmation du mot de passe" aria-describedby="basic-addon1">
+                                    <input type="password" name="password_confirmation" class="form-control" placeholder="Confirmation du mot de passe">
                                 </div>
                             </div>
                         </div>
@@ -223,10 +205,8 @@
                             générales d'utilisation.</label>
                     </div>
 
-                    <div class="text-right">
-                        <button type="submit" class="btn btn-primary">S'inscrire</button>
-                    </div>
-                </form>
+                    <x-submit>S'inscrire</x-submit>
+                </x-form>
                 <hr>
                 <p>Déjà inscrit? <a href="{{ route('login') }}">Connectez-vous</a></p>
             </div>

@@ -57,7 +57,15 @@ class ProjectController extends Controller
             }
         }
 
-        ChatFacade::createConversation([User::find(auth()->id()), User::find($request->participants)]);
+        $participants = collect($request->participants)->map(function($participant) {
+            return User::find($participant);
+        });
+
+
+
+        $participants = [User::find(auth()->id()), ...$participants];
+
+        ChatFacade::createConversation($participants);
 
         return redirect()->route('project.index')->with('project-created', 'Projet crée avec succès');
     }

@@ -3,12 +3,14 @@
 @section('content')
 
     <div class="col-lg-10 mt-3 px-3 px-lg-0">
-
         <div class="container-fluid">
-
             <div class="row mx-2 shadow-sm">
 
                 <div class="col-lg-3 overflow-auto bg-white py-3 border-right rounded-left automatic-height">
+                    <div class="form-group">
+                        <button class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#create-conversation">Commencer une conversation</button>
+                    </div>
+
                     @forelse($conversations as $conversation)
                         @foreach($conversation->conversation->getParticipants()->reverse()->take(1) as $participant)
                             <div class="menu-item px-2 {{ (int) request()->id === (int) $conversation->id ? 'active' : null }} position-relative">
@@ -29,6 +31,40 @@
                             </div>
                         @endforeach
 
+                        <x-modal title="Commencer une conversation"  name="create-conversation">
+                            @forelse(auth()->user()->followings as $following)
+                                @if(\Musonza\Chat\Facades\ChatFacade::conversations()->between(auth()->user(), $following) === null)
+                                    <x-section class="mb-3">
+                                        <div class="row align-items-center">
+                                            <div class="col-2 text-center">
+                                                <img class="rounded-circle" style="height: 50px" src="{{ \App\User::find($following->id)::getAvatar($following->id) }}" alt="">
+                                            </div>
+                                            <div class="col-8">
+                                                <a href="{{ route('user.profile', $following->id) }}" class="h4">{{ $following->first_name }} {{ $following->last_name }}</a>
+                                                <p class="text-muted">
+                                                    {{ \App\User::find($following->id)->followers()->count() }} abonnés
+                                                </p>
+                                            </div>
+                                            <div class="col-2 text-center">
+                                                <a href="{{ route('chat.createConversation', $following->id) }}">
+                                                    <ion-icon class="h3 text-primary" name="send-outline"></ion-icon>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </x-section>
+                                @else
+                                    @if($loop->last)
+                                        <x-alert type="info">
+                                            Plus aucune conversation ne peut être démarré
+                                        </x-alert>
+                                    @endif
+                                @endif
+                            @empty
+                                <x-alert type="info">
+                                    Aucune relation à afficher.
+                                </x-alert>
+                            @endforelse
+                        </x-modal>
                     @empty
                         <x-alert type="info">Aucune conversation à afficher</x-alert>
                     @endforelse
@@ -46,9 +82,9 @@
                         <span class="text-muted">Options de la conversation</span>
                     </div>
                 @endif
+
             </div>
         </div>
-
     </div>
 
 
