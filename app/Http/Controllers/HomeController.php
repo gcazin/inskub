@@ -39,4 +39,10 @@ class HomeController extends Controller
         return view('discover', compact('user', 'roles'));
     }
 
+    public function discoverAll($role_id)
+    {
+        $role = Role::find($role_id);
+        return view('discover-all', compact('role'));
+    }
+
 }

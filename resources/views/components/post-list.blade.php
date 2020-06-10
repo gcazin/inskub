@@ -30,39 +30,37 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-right"
                                  aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
+                                @if($post->user_id === auth()->user()->id)
+                                    <a class="dropdown-item" href="#">Modifier</a>
+                                    <a class="dropdown-item text-danger" href="#">Supprimer</a>
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card-body pt-0">
+            <div class="card-body py-0">
                 <p>{{ $post->content }}</p>
                 @if($post->media !== null)
-                    <img class="w-50 rounded" src="{{ asset('storage/' . $post->media) }}" alt="">
+                    <img class="w-50 rounded my-2" src="{{ asset('storage/' . $post->media) }}" alt="">
                 @endif
             </div>
 
             <div class="card-footer border-0 bg-white p-0">
                 <div class="d-flex px-4 py-1">
-                    <div class="w-50"><ion-icon class="text-primary align-text-bottom" name="thumbs-up"></ion-icon> <span class="text-muted ml-1">0</span></div>
+                    <div class="w-50"><ion-icon class="text-primary align-text-bottom" name="thumbs-up"></ion-icon> <span class="text-muted ml-1">{{ $post->likers()->count() }}</span></div>
                     <div class="w-50 text-right text-muted">0 commentaire</div>
                 </div>
                 <div class="border-top border-gray row text-center no-gutters">
                     <div class="btn-group w-100" role="group">
-                        <a class="btn btn-light border-0">
-                            <ion-icon class="align-text-bottom" name="thumbs-up-outline"></ion-icon>
-                            J'aime
-                        </a>
+                        <livewire:like-post :post="$post" />
                         <a href="{{ route('post.show', $post->id) }}"
                            class="btn btn-light border-0">
                             <ion-icon class="align-text-bottom" name="chatbox-outline"></ion-icon>
                             Commenter
                         </a>
-                        <button class="share-button btn btn-light border-0">
+                        <button class="share-button btn btn-light border-0" data-toggle="modal" data-target="#share-modal">
                             <ion-icon class="align-text-bottom" name="share-social-outline"></ion-icon>
                             Partager
                         </button>

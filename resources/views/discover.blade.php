@@ -35,24 +35,31 @@
         <!-- Parties utilisateurs -->
         @foreach($roles as $role)
             <div class="my-3">
-                <div class="group__title rounded">
-                    <h1 class="text-xl">{{ $role->display_name }}</h1>
+                <div class="row">
+                    <div class="col">
+                        <h1 class="text-xl">{{ $role->display_name }}</h1>
+                    </div>
                 </div>
                 <div class="d-flex overflow-auto pb-4">
-                    @foreach($role->users as $member)
-                        <div class="col-lg-2 col-6 card border shadow-sm text-center mr-2">
+                    @foreach($role->users->take(10) as $member)
+                        <div class="col-lg-3 col-6 card border shadow-sm text-center mr-2">
                             <div class="flex justify-center py-4">
-                                <img style="height: 80px" class="rounded-circle border border-light" src="{{ $member->getAvatar($member->id) }}" alt="">
+                                <a href="{{ route('user.profile', $member->id) }}">
+                                    <img style="height: 80px" class="rounded-circle border border-light" src="{{ $member->getAvatar($member->id) }}" alt="">
+                                </a>
                             </div>
                             <a href="{{ route('user.profile', $member->id) }}" class="pb-4 text-blue-800 hover:underline focus:underline">{{ $member->first_name }} {{ $member->last_name }}</a>
                             <p class="pb-4 text-gray-600">
-                                {{ count($member->followers()->get()) }} abonnés
+                                {{ $member->followers()->count() }} abonnés
                             </p>
                             <p class="pb-4">
                                 <livewire:follow-user :member="$member->id">
                             </p>
                         </div>
                     @endforeach
+                    <div class="col-lg-3 col-6 d-flex justify-content-center align-items-center">
+                        <a href="{{ route('discover.all', $role->id) }}" class="btn btn-outline-primary">Voir tout</a>
+                    </div>
                 </div>
             </div>
         @endforeach

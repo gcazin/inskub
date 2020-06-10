@@ -8,21 +8,25 @@
 
             <div class="row mx-2 shadow-sm">
 
-                <div class="col-lg-3 bg-white py-3 border-right rounded-left">
+                <div class="col-lg-3 overflow-auto bg-white py-3 border-right rounded-left automatic-height">
                     @forelse($conversations as $conversation)
                         @foreach($conversation->conversation->getParticipants()->reverse()->take(1) as $participant)
-                        <div class="menu-item {{ (int) request()->id === (int) $conversation->id ? 'active' : null }} position-relative">
-                            <div class="row align-items-center">
-                                <div class="col-lg-2 text-center">
-                                    <img class="rounded-circle" src="{{ \App\User::find($participant->id)->avatar }}" style="height: 50px" alt="">
+                            <div class="menu-item px-2 {{ (int) request()->id === (int) $conversation->id ? 'active' : null }} position-relative">
+                                <div class="row overflow-auto align-items-center">
+                                    <div class="col-lg-2 d-none d-lg-block text-center">
+                                        <img class="rounded-circle" src="{{ \App\User::find($participant->id)->avatar }}" style="height: 40px" alt="">
+                                    </div>
+                                    <div class="col-4 col-lg-8">
+                                        <p class="font-weight-bold h6">{{ \App\User::find($participant->id)->first_name }} {{ \App\User::find($participant->id)->last_name }}</p>
+                                        @if(!empty($conversation->conversation->last_message->body))
+                                            <p>{{ $conversation->conversation->last_message->body }}</p>
+                                        @else
+                                            <p class="text-muted">Commencer a chatter!</p>
+                                        @endif
+                                    </div>
+                                    <a class="position-absolute w-100 h-100" href="{{ route('chat.index', $conversation->id) }}"></a>
                                 </div>
-                                <div class="d-none d-lg-block col-lg-8">
-                                    <p class="font-weight-bold h6">{{ \App\User::find($participant->id)->first_name }} {{ \App\User::find($participant->id)->last_name }}</p>
-                                    <p>{{ $conversation->conversation->last_message->body }}</p>
-                                </div>
-                                <a class="position-absolute w-100 h-100" href="{{ route('chat.index', $conversation->id) }}"></a>
                             </div>
-                        </div>
                         @endforeach
 
                     @empty
@@ -36,10 +40,12 @@
                     @yield('chat')
                 </div>
 
-                <div class="col-lg-3 py-3 bg-white border-left rounded-right">
-                    <!-- Chat -->
-                    Settings
-                </div>
+                @if(request()->route('id'))
+                    <div class="col-lg-3 py-3 bg-white border-left rounded-right">
+                        <!-- Chat -->
+                        <span class="text-muted">Options de la conversation</span>
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -57,7 +63,7 @@
         let navbar = document.querySelector('.navbar').clientHeight;
 
         let height = () => {
-            automatic.style.height = body.clientHeight - navbar + 'px';
+            automatic.style.height = body.clientHeight - 100 - navbar + 'px';
         }
         height()
         window.addEventListener('resize', () => {

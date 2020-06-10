@@ -1,11 +1,9 @@
 @forelse(\App\UserFormation::all()->where('user_id', request()->route('id'))->sortByDesc('finish_date') as $formation)
-    <div class="job-post border rounded p-3">
+    <div class="job-post border rounded p-3 mb-3">
         <div class="row">
             <div class="col">
                 <p class="h4 font-bold">
-                    <a class="text-decoration-none" href="{{ route('formation.show', $formation->id) }}">
-                        {{ $formation->school }}
-                    </a>
+                    {{ $formation->school }}
                 </p>
                 <p class="text-muted">{{ $formation->start_date }} - {{ $formation->finish_date }}</p>
             </div>

@@ -59,17 +59,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 py-4 bg-white d-flex align-items-center justify-content-center" id="container-login-form">
-            <svg class="position-fixed w-100 d-block d-lg-none" style="top: 0; transform: rotate(-180deg)"
-                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-                <path fill="#4299e1" fill-opacity="1"
-                      d="M0,224L80,202.7C160,181,320,139,480,149.3C640,160,800,224,960,224C1120,224,1280,160,1360,128L1440,96L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
-            </svg>
-            <svg class="position-fixed w-100 d-block d-lg-none" style="bottom: 0" xmlns="http://www.w3.org/2000/svg"
-                 viewBox="0 0 1440 320">
-                <path fill="#4299e1" fill-opacity="1"
-                      d="M0,224L80,202.7C160,181,320,139,480,149.3C640,160,800,224,960,224C1120,224,1280,160,1360,128L1440,96L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
-            </svg>
+        <div class="col-lg-6 py-4 d-flex align-items-center justify-content-center" id="container-login-form">
             <div class="container rounded-lg" id="login-form" style="width: 85%">
                 <h1 class="font-weight-light mb-1 mb-lg-4 mt-3 mt-lg-0 d-none d-lg-block">Inscrivez-vous</h1>
                 <h3 class="font-weight-light mb-1 mb-lg-4 mt-3 mt-lg-0 d-lg-none">Inscrivez-vous</h3>

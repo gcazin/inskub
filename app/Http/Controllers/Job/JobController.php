@@ -17,6 +17,7 @@ class JobController extends Controller
     public function index()
     {
         $jobs = DB::table('jobs')->orderByDesc('created_at')->simplePaginate(10);
+
         return view('job.index', compact('jobs'));
     }
 

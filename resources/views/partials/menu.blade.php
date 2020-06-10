@@ -9,14 +9,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <div class="input-group border-left border-gray">
-                <div class="input-group-prepend">
-                    <span class="input-group-text bg-white border-0" id="basic-addon1">
-                        <ion-icon class="h5 mb-0" name="search-outline"></ion-icon>
-                    </span>
-                </div>
-                <input type="text" class="form-control border-0 px-0" placeholder="Chercher sur le site" aria-label="Username" aria-describedby="basic-addon1" style="max-width: 30%">
-            </div>
+            <livewire:search-users>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item mt-2">
                     <a class="nav-link pb-0" href="{{ route('user.profile', auth()->id()) }}">

@@ -96,4 +96,9 @@ class User extends \Illuminate\Foundation\Auth\User
         return $this->hasMany(Project::class);
     }
 
+    public function formations()
+    {
+        return $this->hasMany(UserFormation::class);
+    }
+
 }

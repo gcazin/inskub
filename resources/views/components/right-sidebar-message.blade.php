@@ -1,7 +1,7 @@
 <div class="col-2 offset-1 position-sticky d-none d-lg-flex flex-column rounded-lg mt-3 pr-3">
     <x-section>
 
-        <h6 class="title__section text-uppercase text-secondary mb-4">Messagerie</h6>
+        <h6 class="title__section text-uppercase text-secondary mb-3">Messagerie</h6>
 
         @forelse(auth()->user()->followings as $person)
             <div class="row menu-item">

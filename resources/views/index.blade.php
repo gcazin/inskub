@@ -11,20 +11,18 @@
 
 @section('script')
     <script>
-        let shareButton = document.querySelector('.share-button');
+        let shareButton = document.querySelector('.share');
 
         shareButton.addEventListener('click', () => {
-            if (navigator.share) {
+            try {
                 navigator.share({
                     title: 'WebShare API Demo',
                     url: 'https://codepen.io/ayoisaiah/pen/YbNazJ'
                 }).then(() => {
                     console.log('Thanks for sharing!');
                 })
-                    .catch(console.error);
-            } else {
-                console.log('Votre navigateur ne supporte pas ça')
-                //shareDialog.classList.add('is-open');
+            } catch (e) {
+                alert(e)
             }
         });
     </script>

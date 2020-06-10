@@ -43,7 +43,29 @@
 
     <x-right-sidebar>
         <div class="d-flex flex-column overflow-hidden">
-            <div id="calendar"></div>
+            <div class="row no-gutters mb-3">
+                <div class="col">
+                    <p class="text-uppercase text-secondary">Calendrier</p>
+                </div>
+                <div class="col text-right" style="font-size: 0.875rem">{{ $project->daysLeft($project) }}</div>
+            </div>
+            <div id="calendar" class="mb-3" style="height: 200px"></div>
+
+            <h6 class="title__section text-uppercase text-secondary mb-3">Participants</h6>
+            @foreach($project->users as $participant)
+                <div class="row menu-item">
+                    <div class="col-2 px-0">
+                        <img class="rounded-circle" style="height: 2rem" src="{{ \App\User::getAvatar($participant->id) }}" alt="">
+                    </div>
+                    <div class="col-8">
+                        <span class="mr-auto font-weight-bold">{{ $participant->user->first_name }} {{ $participant->user->last_name }}</span>
+                    </div>
+                    <div class="col-1">
+                        <span class="d-inline-block bg-success rounded-circle" style="height: 5px; width: 5px"></span>
+                    </div>
+                    <a class="position-absolute h-100 w-100" href="{{ route('chat.createConversation', $participant->id) }}"></a>
+                </div>
+            @endforeach
         </div>
     </x-right-sidebar>
 
@@ -136,6 +158,7 @@
                 eventColor: '#4299e1',
                 eventTextColor: 'white',
                 themeSystem: 'bootstrap',
+                fixedWeekCount: false,
                 events: [
                         <?php foreach(\App\Todo::where('project_id', $project->id)->get() as $todo): ?>
                     {

@@ -26,6 +26,6 @@ class UserFormationController extends Controller
         $formation->user_id = auth()->id();
         $formation->save();
 
-        return redirect()->route('user.formation.create');
+        return redirect()->route('user.profile', auth()->id());
     }
 }

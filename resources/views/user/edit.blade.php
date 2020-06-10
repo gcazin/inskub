@@ -26,7 +26,7 @@
         <x-form :action="route('user.edit', auth()->id())" method="PUT" enctype>
             <div class="row mb-4">
                 <div class="col-4 text-center">
-                    <img class="rounded-circle" src="{{ \App\User::getAvatar($user->avatar) }}" alt="Avatar">
+                    <img class="rounded-circle" src="{{ \App\User::getAvatar($user->id) }}" alt="Avatar">
                 </div>
                 <div class="col">
                     <div class="custom-file">

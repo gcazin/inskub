@@ -16,11 +16,13 @@ class SearchUsers extends Component
     {
         $this->search = (string) request()->query('search', $this->search);
     }
-
     public function render()
     {
-        return view('livewire.search-users', [
-            'users' => User::where('first_name', 'LIKE','%'.$this->search.'%')->get(),
-        ]);
+        if(!empty($this->search)) {
+            return view('livewire.search-users', [
+                'users' => User::where('first_name', 'LIKE','%'.$this->search.'%')->get(),
+            ]);
+        }
+        return view('livewire.search-users', ['users' => []]);
     }
 }

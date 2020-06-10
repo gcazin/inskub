@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'HomeController@index')->name('index');
 Route::post('/', 'Post\PostController@store')->name('post.create');
 Route::get('/discover', 'HomeController@discover')->name('discover');
+Route::get('/discover/{role_id}', 'HomeController@discoverAll')->name('discover.all');
 
 // Page d'accueil
 Route::namespace('Post')->name('post.')->group(function() {

@@ -1,4 +1,4 @@
-<x-section class="mb-3">
+<x-section class="mb-3 animate__animated animate__zoomIn">
     <div class="row">
         <div class="col mb-3">
             <h5>{{ $title }}</h5>

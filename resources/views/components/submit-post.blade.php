@@ -7,7 +7,7 @@
                          style="height: 40px">
                 </div>
                 <div class="col-10">
-                    <textarea name="content" class="form-control rounded-0 border-0" placeholder="Ecrivez" autofocus="autofocus"></textarea>
+                    <textarea name="content" class="form-control" placeholder="Ecrivez" autofocus="autofocus"></textarea>
                     <img id="img-preview" class="d-none w-50 mt-3 rounded-lg mx-auto border border-gray" src="#" alt="">
                 </div>
             </div>

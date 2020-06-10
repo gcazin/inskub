@@ -1,5 +1,5 @@
 @forelse(\App\Job::all()->where('user_id', request()->route('id'))->sortByDesc('created_by') as $job)
-    <div class="job-post border rounded mb-3">
+    <div class="job-post p-3 border rounded mb-3">
         <div class="row">
             <div class="col">
                 <p class="h4 font-bold">

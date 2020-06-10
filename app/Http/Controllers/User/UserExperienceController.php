@@ -27,6 +27,6 @@ class UserExperienceController extends Controller
         $experience->user_id = auth()->id();
         $experience->save();
 
-        return redirect()->route('user.experience.create');
+        return redirect()->route('user.profile', auth()->id());
     }
 }

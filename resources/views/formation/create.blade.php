@@ -1,45 +1,23 @@
 @extends('layouts.base', ['full_width' => false, 'header' => false])
 
 @section('content')
-    <div class="lg:w-6/12 mx-auto">
+    <x-container>
         <h1 class="text-xl text-gray-700 mb-2">Publier une formation</h1>
-        <div class="bg-white px-2 pt-1 pb-4 shadow rounded">
-            <form action="{{ route('formation.create') }}" method="post">
-                @csrf
-
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <div class="form-group">
-                    <label for="title">Titre de votre formation</label>
-                    <input type="text" name="title" id="title" placeholder="Chef de projet..." value="{{ old('title') }}" required >
-                </div>
+        <x-section>
+            <x-form :action="route('formation.create')">
+                <x-input label="Titre de votre formation" name="title" placeholder="Chef de projet..." required></x-input>
 
 
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea name="description" id="description" placeholder="..." required maxlength="255">{{ old('description') }}</textarea>
-                </div>
+                <x-textarea label="Description" name="description" placeholder="..." required></x-textarea>
 
-                <div class="form-group">
-                    <label for="location">Localisation</label>
-                    <input type="text" name="location" id="location" placeholder="Paris" value="{{ old('location') }}">
-                </div>
+                <x-input label="Localisation" name="location" placeholder="Paris"></x-input>
 
-                <div class="form-group">
-                    <label for="salary">Prix d'entrée</label>
-                    <input type="number" name="entry_price" id="entry_price" placeholder="1300" value="{{ old('entry_price') }}">
-                </div>
+                <x-input type="number" label="Prix d'entrée" name="entry_price" placeholder="1300" required></x-input>
 
-                <button class="btn btn-blue btn-block" type="submit">Publier</button>
-            </form>
-        </div>
-    </div>
+                <x-submit>Publier</x-submit>
+            </x-form>
+        </x-section>
+    </x-container>
+
+    <x-right-sidebar-message></x-right-sidebar-message>
 @endsection

@@ -10,4 +10,5 @@ class Job extends Model
     {
         return $this->hasOne(Job_type::class);
     }
+
 }

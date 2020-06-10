@@ -2,7 +2,7 @@
     <div class="job-post border rounded p-3 mb-3">
         <div class="row">
             <div class="col">
-                <p class="h4 font-bold">
+                <p class="h4 font-bold ">
                     {{ $experience->title }}
                 </p>
                 <p class="text-xl text-gray-800">{{ $experience->enterprise }}</p>

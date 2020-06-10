@@ -5,7 +5,6 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Post;
 use App\User;
-use App\UserFormation;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Auth\User as UserRepository;
@@ -53,8 +52,8 @@ class UserController extends Controller
     public function index($id)
     {
         $user = User::findOrFail($id);
-        $posts = Post::all()->where('user_id', $id);
-        $formations = UserFormation::all()->where('user_id', request()->route('id'))->sortByDesc('finish_date');
+        $posts = Post::where('user_id', $id)->take(5)->get();
+        $formations = $user->formations();
         return view('user.profile', compact('user', 'posts', 'formations'));
     }
 

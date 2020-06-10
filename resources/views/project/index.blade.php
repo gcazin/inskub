@@ -100,9 +100,9 @@
             </div>
 
             <!-- Cartes -->
-            <div class="row mb-4">
+            <div class="row d-none d-lg-flex mb-4">
                 <!-- Nombres de projet -->
-                <div class="col-lg-4 mb-2 mb-lg-0">
+                <div class="col-4 mb-2 mb-lg-0">
                     <div class="card py-3">
                         <div class="card-body px-0 pb-0 pt-2">
                             <div class="row no-gutters">
@@ -118,7 +118,7 @@
                 </div>
 
                 <!-- Projet terminé -->
-                <div class="col-lg-4 mb-2 mb-lg-0">
+                <div class="col-4 mb-2 mb-lg-0">
                     <div class="card py-3">
                         <div class="card-body px-0 pb-0 pt-2">
                             <div class="row no-gutters">
@@ -134,7 +134,7 @@
                 </div>
 
                 <!-- Projets restant -->
-                <div class="col-lg-4 mb-2 mb-lg-0">
+                <div class="col-4 mb-2 mb-lg-0">
                     <div class="card py-3">
                         <div class="card-body px-0 pb-0 pt-2">
                             <div class="row no-gutters">
@@ -146,6 +146,7 @@
                                 </div>
                             </div>
                         </div>
+                        <a href="{{ route('project.show', $project->id) }}" class="position-absolute h-100 w-100" style="top: 0; bottom: 0; left: 0; right: 0"></a>
                     </div>
                 </div>
             </div>
@@ -173,29 +174,29 @@
             </div>
 
             <!-- Catégories -->
-            <div class="row mb-4 text-black-50" style="font-size: 0.9rem">
-                <div class="col-6">Titre</div>
-                <div class="col-2">Participants</div>
-                <div class="col-2">Statut</div>
-                <div class="col-2">A rendre avant le</div>
+            <div class="row mb-4 text-black-50 overflow-auto" style="font-size: 0.9rem">
+                <div class="col col-lg-6">Titre</div>
+                <div class="col col-lg-2">Participants</div>
+                <div class="col col-lg-2">Statut</div>
+                <div class="col col-lg-2 d-none d-lg-block">A rendre avant le</div>
             </div>
 
             <!-- Liste des projets -->
             <div class="row flex-column mb-4">
                 @forelse($projects->sortBy('finish') as $project)
-                    <div class="menu-item col px-lg-3 py-3" style="background: #F6FAFF">
+                    <div class="menu-item overflow-auto px-lg-3 py-3 position-relative" style="background: #F6FAFF">
                         <div class="row">
-                            <div class="col-6 h5 text-secondary">
+                            <div class="col col-lg-6 h5 text-secondary">
                                 {{ $project->title }}
                             </div>
-                            <div class="col-2">
+                            <div class="col col-lg-2">
                                 @if(count(\App\Project::find($project->id)->users))
                                     @foreach(\App\Project::find($project->id)->users()->take(3)->get() as $participant)
                                         <img class="rounded-circle" style="height: 30px" src="{{ \App\User::getAvatar($participant->user_id) }}" alt="">
                                     @endforeach
                                 @endif
                             </div>
-                            <div class="col-2 h5">
+                            <div class="col col-lg-2 h5">
                                 @if($project->finish !== 0)
                                     <span class="badge badge-pill badge-success">Terminé</span>
                                 @else
@@ -205,7 +206,7 @@
                                 </span>
                                 @endif
                             </div>
-                            <div class="col-2">
+                            <div class="col col-lg-2 d-none d-lg-block">
                            <span class="text-muted">
                                 {{ \App\Project::daysLeft($project) }}
                            </span>
