@@ -52,20 +52,27 @@
         <x-about-user
             title="A propos"
             target="userAbout">
-
-            @if((int) auth()->id() === (int) request()->id)
-                <x-modal title="Ajouter une expérience" name="userAbout">
-                    <x-form :action="route('user.profile', auth()->id())">
-                        <x-textarea label="Description" name="about"></x-textarea>
-
-                        <x-submit>Valider</x-submit>
-                    </x-form>
-                </x-modal>
-            @endif
+            @isset($user->about)
+                {{ $user->about }}
+            @else
+                <x-alert type="info">
+                    Aucune description renseignée
+                </x-alert>
+            @endisset
         </x-about-user>
 
-        <!-- Etudiants et salariés -->
-    @if($user->role_id === 2 || $user->role_id === 5)
+        @if((int) auth()->id() === (int) request()->id)
+            <x-modal title="Ajouter une expérience" name="userAbout">
+                <x-form :action="route('user.profile', auth()->id())">
+                    <x-textarea label="Description" name="about"></x-textarea>
+
+                    <x-submit>Valider</x-submit>
+                </x-form>
+            </x-modal>
+        @endif
+
+    <!-- Etudiants et salariés -->
+        @if($user->role_id === 2 || $user->role_id === 5)
         <!-- Expériences -->
             <x-about-user
                 title="Expériences"
@@ -123,10 +130,10 @@
                     <x-submit>Valider</x-submit>
                 </x-form>
             </x-modal>
-    @endif
+        @endif
 
     <!-- Entreprise -->
-    @if($user->role_id === 3)
+        @if($user->role_id === 3)
         <!-- Emplois -->
             <x-about-user
                 title="Emplois proposés"
@@ -159,10 +166,10 @@
                     <x-submit>Valider</x-submit>
                 </x-form>
             </x-modal>
-    @endif
+        @endif
 
     <!-- Ecole -->
-    @if($user->role_id === 4)
+        @if($user->role_id === 4)
         <!-- Formations -->
             <x-about-user
                 title="Formations proposées"
@@ -195,20 +202,20 @@
             </x-modal>
         @endif
 
-        <x-about-user
-            title="Certifications"
-            target="create-certification">
+        @if((int) auth()->id() === (int) request()->id)
+            <x-about-user
+                title="Certifications"
+                target="create-certification">
+            </x-about-user>
 
-            @if((int) auth()->id() === (int) request()->id)
-                <x-modal title="Ajouter une expérience" name="create-certification">
-                    <x-form :action="route('user.profile', auth()->id())">
-                        <x-textarea label="Description" name="about"></x-textarea>
+            <x-modal title="Ajouter une expérience" name="create-certification">
+                <x-form :action="route('user.profile', auth()->id())">
+                    <x-textarea label="Description" name="about"></x-textarea>
 
-                        <x-submit>Valider</x-submit>
-                    </x-form>
-                </x-modal>
-            @endif
-        </x-about-user>
+                    <x-submit>Valider</x-submit>
+                </x-form>
+            </x-modal>
+        @endif
     </x-container>
 
     <x-right-sidebar-message></x-right-sidebar-message>
