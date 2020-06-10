@@ -146,7 +146,6 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="{{ route('project.show', $project->id) }}" class="position-absolute h-100 w-100" style="top: 0; bottom: 0; left: 0; right: 0"></a>
                     </div>
                 </div>
             </div>
