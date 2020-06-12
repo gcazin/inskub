@@ -50,7 +50,11 @@
             <div class="card-footer border-0 bg-white p-0">
                 <div class="d-flex px-4 py-1">
                     <div class="w-50"><ion-icon class="text-primary align-text-bottom" name="thumbs-up"></ion-icon> <span class="text-muted ml-1">{{ $post->likers()->count() }}</span></div>
-                    <div class="w-50 text-right text-muted">{{ $post->replies()->count() }} commentaire</div>
+                    <div class="w-50 text-right text-muted">
+                        <a href="{{ route('post.show', $post->id) }}">
+                            {{ $post->replies()->count() }} commentaire{{ $post->replies()->count() > 1 ? 's' : null }}
+                        </a>
+                    </div>
                 </div>
                 <div class="border-top border-gray row text-center no-gutters">
                     <div class="btn-group w-100" role="group">

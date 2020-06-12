@@ -47,7 +47,9 @@
             <div class="card-footer border-0 bg-white p-0">
                 <div class="d-flex px-4 py-1">
                     <div class="w-50"><ion-icon class="text-primary align-text-bottom" name="thumbs-up"></ion-icon> <span class="text-muted ml-1">{{ $post->likers()->count() }}</span></div>
-                    <div class="w-50 text-right text-muted">{{ $post->replies()->count() }}  commentaire</div>
+                    <div class="w-50 text-right text-muted">
+                        {{ $post->replies()->count() }} commentaire{{ $post->replies()->count() > 1 ? 's' : null }}
+                    </div>
                 </div>
                 <div class="border-top border-gray row text-center no-gutters">
                     <div class="btn-group w-100" role="group">
@@ -74,7 +76,7 @@
             <p class="text-sm">Commentaires</p>
             @if(count($post->replies) > 0)
                 @foreach($post->replies as $reply)
-                    <div class="container">
+                    <div class="container mb-3">
                         <div class="row no-gutters">
                             <div class="col-1">
                                 <img class="rounded-circle" height="35" width="35"
@@ -105,10 +107,10 @@
                             <img class="rounded-circle" height="35" width="35"
                                  src="{{ auth()->user()->getAvatar(auth()->id()) }}" alt="">
                         </div>
-                        <div class="col-10">
+                        <div class="col-9">
                             <input name="message" class="form-control" type="text" placeholder="Votre message">
                         </div>
-                        <div class="col-1 text-center">
+                        <div class="col-2 text-center">
                             <button class="btn text-primary" type="submit">Publier</button>
                         </div>
                     </div>
