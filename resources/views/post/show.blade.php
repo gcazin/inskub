@@ -53,10 +53,7 @@
                 </div>
                 <div class="border-top border-gray row text-center no-gutters">
                     <div class="btn-group w-100" role="group">
-                        <a class="btn btn-light border-0">
-                            <ion-icon class="align-text-bottom" name="thumbs-up-outline"></ion-icon>
-                            J'aime
-                        </a>
+                        <livewire:like-post :post="$post" />
                         <a href="{{ route('post.show', $post->id) }}"
                            class="btn btn-light border-0">
                             <ion-icon class="align-text-bottom" name="chatbox-outline"></ion-icon>
