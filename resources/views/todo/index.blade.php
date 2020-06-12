@@ -112,7 +112,7 @@
         <div class="row">
             <div class="col">
                 @forelse(\App\Note::where('project_id', $project->id)->orderByDesc('created_at')->get() as $note)
-                    <div class="card mb-3">
+                    <div class="card mb-3 position-relative">
                         <div class="card-header bg-white pb-0">
                             <p class="font-weight-bold">{{ $note->title }}</p>
                         </div>
@@ -120,6 +120,7 @@
                             <p>{{ $note->description }}</p>
                         </div>
                     </div>
+                    <a href="{{ route('project.note.show', ['id' => $project->id, 'note_id' => $note->id]) }}" class="position-absolute h-100 w-100" style="left: 0; top: 0"></a>
                 @empty
                     <x-alert type="info">
                         Aucun élément à afficher ici
@@ -187,6 +188,7 @@
                 eventColor: '#4299e1',
                 eventTextColor: 'white',
                 themeSystem: 'bootstrap',
+                fixedWeekCount: false,
                 events: [
                         <?php foreach(\App\Todo::where('project_id', $project->id)->get() as $todo): ?>
                     {

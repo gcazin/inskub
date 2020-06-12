@@ -76,6 +76,14 @@ Route::namespace('User')->name('user.')->group(function() {
             Route::get('/create', 'UserExperienceController@create')->name('create');
             Route::post('/create', 'UserExperienceController@store');
         });
+
+        /**
+         * Crud des expériences de l'utilisateur
+         */
+        Route::name('skill.')->prefix('skill')->group(function() {
+            Route::get('/create', 'UserSkillController@create')->name('create');
+            Route::post('/create', 'UserSkillController@store');
+        });
     });
 });
 
@@ -94,6 +102,8 @@ Route::namespace('Project')->prefix('project')->name('project.')->group(function
     });
 
     Route::name('note.')->group(function() {
+        Route::get('/{id}/note/{note_id}', 'NoteController@show')->name('show');
+        Route::put('/{id}/note/{note_id}', 'NoteController@update');
         Route::post('/{id}/note/create', 'NoteController@store')->name('create');
     });
 });

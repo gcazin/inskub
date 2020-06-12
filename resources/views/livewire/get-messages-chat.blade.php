@@ -1,6 +1,6 @@
 <div wire:poll>
     <div class="overflow-y-auto" id="conversation">
-        @foreach($messages as $message)
+        @forelse($messages as $message)
             <div
                 id="message-{{$message['id']}}"
                 class="d-flex flex-column mb-2 {{ $message['is_sender'] === 1 ? 'justify-content-end' : null }}">
@@ -22,6 +22,8 @@
                     {{ \Carbon\Carbon::make($message['created_at'])->diffForHumans() }}
                 </small>
             </div>
-        @endforeach
+        @empty
+            <p class="text-muted">Commencer à chatter dès maintenant</p>
+        @endforelse
     </div>
 </div>

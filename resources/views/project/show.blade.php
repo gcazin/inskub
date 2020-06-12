@@ -148,17 +148,16 @@
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 locale: 'frLocale',
-                buttonText: {
-                    today: "Aujourd'hui",
-                    prev: '<',
-                    next: '>',
-                },
+                header: false,
                 plugins: [ 'dayGrid', 'bootstrap' ],
-                height: 500,
+                height: 400,
                 eventColor: '#4299e1',
                 eventTextColor: 'white',
                 themeSystem: 'bootstrap',
                 fixedWeekCount: false,
+                titleFormat: {
+                    weekDay: 'narrow'
+                },
                 events: [
                         <?php foreach(\App\Todo::where('project_id', $project->id)->get() as $todo): ?>
                     {

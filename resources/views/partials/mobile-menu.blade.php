@@ -1,4 +1,4 @@
-<div class="fixed-bottom d-lg-none text-center bg-white py-3 px-3 border-top border-gray">
+<div id="mobile-menu" class="fixed-bottom d-lg-none text-center bg-white py-3 px-3 border-top border-gray">
     <div class="row no-gutters">
         <div class="col">
             <a href="{{ route('index') }}" class="{{ (request()->is('/')) ? 'text-primary' : 'text-dark ' }}">

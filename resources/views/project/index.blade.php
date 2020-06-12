@@ -181,7 +181,7 @@
             </div>
 
             <!-- Liste des projets -->
-            <div class="row flex-column mb-4">
+            <div class="row flex-column mb-4" id="project-list">
                 @forelse($projects->sortBy('finish') as $project)
                     <div class="menu-item overflow-auto px-lg-3 py-3 position-relative" style="background: #F6FAFF">
                         <div class="row">
@@ -243,7 +243,7 @@
         $(document).ready(function(){
             $("#search-project").on("keyup", function() {
                 let value = $(this).val().toLowerCase();
-                $("#project-list li").filter(function() {
+                $("#project-list .menu-item").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });

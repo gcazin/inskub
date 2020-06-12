@@ -32,7 +32,7 @@ class StorePost extends FormRequest
     public function rules()
     {
         return [
-            'content' => ['required', 'max:255'],
+            'content' => ['max:255'],
             'visibility_id' => ['required'],
         ];
     }

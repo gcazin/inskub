@@ -29,7 +29,6 @@
                                  src="{{ \App\User::getAvatar(auth()->id()) }}" alt="">
                         </button>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="{{ route('user.profile', auth()->id()) }}">Profil</a>
                             <a class="dropdown-item text-danger" href="{{ route('user.logout') }}">Déconnexion</a>
                         </div>
                     </div>
@@ -49,6 +48,7 @@
                      src="{{ \App\User::getAvatar(auth()->id()) }}" alt="">
             </button>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{{ route('user.profile', auth()->id()) }}">Profil</a>
                 <a class="dropdown-item text-danger" href="{{ route('user.logout') }}">Déconnexion</a>
             </div>
         </div>

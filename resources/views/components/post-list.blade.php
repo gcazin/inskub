@@ -41,7 +41,7 @@
             </div>
 
             <div class="card-body py-0">
-                <p>{{ $post->content }}</p>
+                <p id="content">{!! preg_replace('~(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![\.,:])~i', '<a href="$0" target="_blank" title="$0">$0</a>', $post->content) !!}</p>
                 @if($post->media !== null)
                     <img class="w-50 rounded my-2" src="{{ asset('storage/' . $post->media) }}" alt="">
                 @endif

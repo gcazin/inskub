@@ -61,6 +61,37 @@
             @endisset
         </x-about-user>
 
+        <x-about-user
+            title="Dernières publications">
+
+            @forelse(\App\Post::where('user_id', $user->id)->take(5)->get() as $post)
+                <div class="job-post border rounded p-3 mb-3">
+                    <div class="row">
+                        <div class="col">
+                            <p class="font-bold">
+                                {{ $post->content }}
+                            </p>
+                        </div>
+                        <div class="col h5 text-right">
+                <span class="badge badge-primary">
+                    {{ $post->created_at->diffForHumans() }}
+                </span>
+                        </div>
+                    </div>
+                </div>
+                @if($loop->last)
+                    <div class="text-center">
+                        <a href="{{ $post }}" class="btn btn-primary mx-auto">Voir toutes les publications</a>
+                    </div>
+                @endif
+            @empty
+                <x-alert type="info">
+                    Aucune publication à afficher
+                </x-alert>
+            @endforelse
+
+        </x-about-user>
+
         @if((int) auth()->id() === (int) request()->id)
             <x-modal title="Ajouter une expérience" name="userAbout">
                 <x-form :action="route('user.profile', auth()->id())">
@@ -202,20 +233,18 @@
             </x-modal>
         @endif
 
-        @if((int) auth()->id() === (int) request()->id)
-            <x-about-user
-                title="Certifications"
-                target="create-certification">
-            </x-about-user>
+        <x-about-user
+            title="Compétences"
+            target="create-skill">
+            @include('user.partials.skills-list')
+        </x-about-user>
 
-            <x-modal title="Ajouter une expérience" name="create-certification">
-                <x-form :action="route('user.profile', auth()->id())">
-                    <x-textarea label="Description" name="about"></x-textarea>
-
-                    <x-submit>Valider</x-submit>
-                </x-form>
-            </x-modal>
-        @endif
+        <x-modal title="Ajouter une compétence" name="create-skill">
+            <x-form :action="route('user.skill.create')" method="post">
+                <x-input label="Titre" name="title" placeholder="Intitulé de la compétence"></x-input>
+                <x-submit>Valider</x-submit>
+            </x-form>
+        </x-modal>
     </x-container>
 
     <x-right-sidebar-message></x-right-sidebar-message>

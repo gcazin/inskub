@@ -108,6 +108,9 @@
       <path value="$PROJECT_DIR$/vendor/maximebf/debugbar" />
       <path value="$PROJECT_DIR$/vendor/barryvdh/laravel-debugbar" />
       <path value="$PROJECT_DIR$/vendor/symfony/debug" />
+      <path value="$PROJECT_DIR$/vendor/asika/autolink" />
+      <path value="$PROJECT_DIR$/vendor/windwalker/string" />
+      <path value="$PROJECT_DIR$/vendor/windwalker/dom" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.4" />
