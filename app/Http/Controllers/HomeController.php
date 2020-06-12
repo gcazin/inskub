@@ -24,10 +24,11 @@ class HomeController extends Controller
         $posts = User::find(auth()->id())->posts;
 
         $posts_followings = User::find(auth()->id())->followings->map(static function($user) {
-            return Post::where('user_id', $user->id)->where('visibility_id', '<>', 3)->where('project_id', '==', 'NULL')->get();
+            return Post::where('user_id', $user->id)->where('visibility_id', '<>', 3)->where('project_id', '=', null)->get();
         });
 
         $posts = $posts->merge($posts_followings->collapse())->sortByDesc('created_at');
+
 
         return view('index', compact('posts'));
     }
