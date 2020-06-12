@@ -28,8 +28,9 @@
                                         <ion-icon class="align-bottom" name="settings-outline"></ion-icon>
                                     </a>
                                 @else
-                                    <a class="h4" href="{{ route('chat.createConversation', $user->id) }}">
-                                        <ion-icon class="align-bottom" name="chatbubble-outline"></ion-icon>
+                                    <livewire:follow-user :member="$user->id">
+                                    <a class="h4 ml-1" href="{{ route('chat.createConversation', $user->id) }}">
+                                        <ion-icon class="align-text-bottom" name="chatbubble-outline"></ion-icon>
                                     </a>
                                 @endif
                             </div>

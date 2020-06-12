@@ -22,8 +22,14 @@ class ProjectController extends Controller
 
     public function index()
     {
-        $projects = auth()->user()->projects;
+        $project = auth()->user()->projects;
+        $project_participant = $project->map(static function($participant) {
+            return Project::all()->where('user_id', $participant->id);
+        });
+        $projects = $project->merge($project_participant->collapse());
+
         $carbon = new Carbon();
+
         return view('project.index', compact('projects', 'carbon'));
     }
 
