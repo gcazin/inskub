@@ -71,7 +71,7 @@
                 </div>
 
                 <!-- Chat -->
-                <div class="col-lg-6 py-3 bg-white rounded-right automatic-height {{ request()->id ? 'd-block' : 'd-none d-lg-block' }}">
+                <div class="col-lg-6 bg-white rounded-right automatic-height {{ request()->id ? 'd-block' : 'd-none d-lg-block' }}">
                     <!-- Chat -->
                     @yield('chat')
                 </div>
