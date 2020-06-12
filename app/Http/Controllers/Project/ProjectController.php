@@ -23,10 +23,14 @@ class ProjectController extends Controller
     public function index()
     {
         $project = auth()->user()->projects;
-        $project_participant = $project->map(static function($participant) {
-            return Project::all()->where('user_id', $participant->id);
+        $proje = ProjectUser::all()->map(static function($user) {
+            if($user->user_id === auth()->id()) {
+                return Project::where('id', '=', $user->project_id)->get();
+            }
         });
-        $projects = $project->merge($project_participant->collapse());
+
+
+        $projects = $project->merge($proje->collapse());
 
         $carbon = new Carbon();
 
