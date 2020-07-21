@@ -1,3 +1,12 @@
+@php
+    $conversations = \Musonza\Chat\Facades\ChatFacade::conversations()
+                ->setPaginationParams(['sorting' => 'desc'])
+                ->setParticipant(auth()->user())
+                ->isPrivate()
+                ->perPage(10)
+                ->get();
+@endphp
+
 <div class="position-sticky d-none d-lg-flex flex-column rounded-lg col-lg-2 mt-3 pl-3">
     <x-section>
         <h6 class="title__section text-uppercase text-secondary px-3 mb-3">Menu</h6>
@@ -13,7 +22,9 @@
                     <ion-icon class="h4 align-top mr-1" name="apps-outline"></ion-icon> Découvrir
                 </a>
                 <a class="menu-item" href="{{ route('chat.index') }}">
-                    <ion-icon class="h4 align-top mr-1" name="chatbubbles-outline"></ion-icon> Messagerie
+                    <ion-icon class="h4 align-top mr-1" name="chatbubbles-outline"></ion-icon>
+                    Messagerie
+                    <span class="badge badge-pill badge-primary">{{ $conversations->count() }}</span>
                 </a>
             </div>
             <div class="d-flex flex-column pb-3">
@@ -38,7 +49,13 @@
                     <ion-icon class="h4 align-top mr-1" name="apps-outline"></ion-icon> Découvrir
                 </a>
                 <a class="menu-item {{ request()->is('chat*') ? 'active' : null }}" href="{{ route('chat.index') }}">
-                    <ion-icon class="h4 align-top mr-1" name="chatbubbles-outline"></ion-icon> Messagerie
+                    <ion-icon class="h4 align-top mr-1" name="chatbubbles-outline"></ion-icon>
+                    Messagerie
+                    <span class="badge badge-pill badge-primary float-right">{{ $conversations->count() }}</span>
+                </a>
+                <a class="menu-item {{ request()->is('activity*') ? 'active' : null }}" href="{{ route('user.activity') }}">
+                    <ion-icon class="h4 align-top mr-1" name="bar-chart-outline"></ion-icon>
+                    Activité
                 </a>
             </div>
         @endif

@@ -10,6 +10,7 @@ use App\Project;
 use App\ProjectUser;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Musonza\Chat\Facades\ChatFacade;
 
@@ -23,14 +24,13 @@ class ProjectController extends Controller
     public function index()
     {
         $project = auth()->user()->projects;
-        $proje = ProjectUser::all()->map(static function($user) {
+        $project_user = ProjectUser::all()->map(static function($user) {
             if($user->user_id === auth()->id()) {
                 return Project::where('id', '=', $user->project_id)->get();
             }
         });
 
-
-        $projects = $project->merge($proje->collapse());
+        $projects = $project->merge($project_user->collapse());
 
         $carbon = new Carbon();
 
@@ -42,8 +42,33 @@ class ProjectController extends Controller
         $project = Project::find($id);
         $posts = $project->posts->sortByDesc('created_at');
 
+        $user = auth()->user();
+
+        /*$user->newSubscription('plans', 'main')->create();
+
+        dd(User::find(10)->subscribed('plans', 'main'));*/
+
         return view('project.show', compact('project', 'posts'));
     }
+
+    public function edit($id)
+    {
+        $project = Project::find($id);
+
+        return view('project.edit', compact('project'));
+    }
+
+    public function update($id, Request $request)
+    {
+        $project = Project::find($id);
+        $project->title = $request->title;
+        $project->description = $request->description;
+        $project->colour = $request->colour ?? '#4299e1';
+        $project->save();
+
+        return redirect()->route('project.index');
+    }
+
 
     public function store(StoreProject $request)
     {
@@ -71,8 +96,6 @@ class ProjectController extends Controller
             return User::find($participant);
         });
 
-
-
         $participants = [User::find(auth()->id()), ...$participants];
 
         ChatFacade::createConversation($participants);
@@ -94,5 +117,14 @@ class ProjectController extends Controller
         $post->save();
 
         return redirect()->route('project.show', $post->project_id);
+    }
+
+    public function destroy($id)
+    {
+        $project = Project::find($id);
+
+        $project->delete();
+
+        return redirect()->route('project.index');
     }
 }

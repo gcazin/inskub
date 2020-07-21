@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Cashier\Billable;
+use Laravel\Passport\HasApiTokens;
 use Musonza\Chat\Traits\Messageable;
 use Overtrue\LaravelFollow\Traits\CanBeFollowed;
 use Overtrue\LaravelFollow\Traits\CanFollow;
@@ -14,7 +16,7 @@ use Overtrue\LaravelFollow\Traits\CanLike;
  */
 class User extends \Illuminate\Foundation\Auth\User
 {
-    use Notifiable, Messageable, CanFollow, CanBeFollowed, CanLike;
+    use Notifiable, Messageable, CanFollow, CanBeFollowed, CanLike, HasApiTokens, Billable;
 
     /**
      * The attributes that are mass assignable.

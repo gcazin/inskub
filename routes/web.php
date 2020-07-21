@@ -17,12 +17,16 @@ Route::get('/', 'HomeController@index')->name('index');
 Route::post('/', 'Post\PostController@store')->name('post.create');
 Route::get('/discover', 'HomeController@discover')->name('discover');
 Route::get('/discover/{role_id}', 'HomeController@discoverAll')->name('discover.all');
+Route::get('/experts', 'Expert\ExpertController@index')->name('expert.index');
 
 // Page d'accueil
 Route::namespace('Post')->name('post.')->group(function() {
     Route::prefix('post')->group(function() {
         Route::get('/details/{id}', 'PostController@show')->name('show');
         Route::post('/like/{id}', 'PostController@like')->name('like');
+        Route::get('/edit/{id}', 'PostController@edit')->name('edit');
+        Route::put('/edit/{id}', 'PostController@update')->name('update');
+        Route::delete('/delete/{id}', 'PostController@destroy')->name('destroy');
         Route::post('/{id}', 'ReplyPostController@store')->name('reply');
     });
 });
@@ -51,6 +55,8 @@ Route::namespace('User')->name('user.')->group(function() {
     Route::post('/profil/{id}', 'UserController@storeAbout')->name('storeAbout');
     Route::get('/profil/{id}/followers', 'UserController@follower')->name('follower');
     Route::get('/profil/{id}/followings', 'UserController@following')->name('following');
+    Route::get('/activity', 'UserController@activity')->name('activity');
+
 
     Route::prefix('mon-compte')->group(function() {
 
@@ -94,6 +100,9 @@ Route::get('/projects', 'Project\ProjectController@index')->name('project.index'
 Route::post('/projects', 'Project\ProjectController@store');
 Route::namespace('Project')->prefix('project')->name('project.')->group(function() {
     Route::get('/{id}', 'ProjectController@show')->name('show');
+    Route::get('/edit/{id}', 'ProjectController@edit')->name('edit');
+    Route::put('/edit/{id}', 'ProjectController@update')->name('update');
+    Route::delete('/delete/{id}', 'ProjectController@destroy')->name('destroy');
     Route::post('/{id}', 'ProjectController@storePost')->name('postStore');
 
     Route::name('todo.')->group(function() {
@@ -105,6 +114,10 @@ Route::namespace('Project')->prefix('project')->name('project.')->group(function
         Route::get('/{id}/note/{note_id}', 'NoteController@show')->name('show');
         Route::put('/{id}/note/{note_id}', 'NoteController@update');
         Route::post('/{id}/note/create', 'NoteController@store')->name('create');
+    });
+
+    Route::name('post.')->group(function() {
+        Route::get('/{id}/post/{post_id}', 'PostController@show')->name('show');
     });
 });
 
@@ -131,6 +144,7 @@ Route::namespace('Job')->prefix('job')->name('job.')->group(function() {
 Route::namespace('Chat')->name('chat.')->group(function() {
     // Messagerie privée
     Route::get('/chat/{id?}', 'ChatController@show')->name('index');
+    Route::delete('/chat/{id}', 'ChatController@destroy')->name('destroy');
     Route::get('/chat/create/{id}', 'ChatController@createDirectConversation')->name('createConversation');
     Route::get('/chat/create-groups', 'ChatController@createGroupConversation')->name('createGroupConversation');
     Route::post('/chat/{id}', 'ChatController@addParticipants')->name('addParticipants');

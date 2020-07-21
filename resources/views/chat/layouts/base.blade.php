@@ -79,7 +79,13 @@
                 @if(request()->route('id'))
                     <div class="col-lg-3 py-3 bg-white d-none d-lg-block border-left rounded-right">
                         <!-- Chat -->
-                        <span class="text-muted">Options de la conversation</span>
+                        <span class="text-muted d-block mb-2">Options de la conversation</span>
+                        <a href="{{ route('user.profile', $conversation->conversation->participants[0]->messageable->id) }}" class="list-item">Voir le profil</a>
+                        <div class="form-group">
+                            <x-form :action="route('chat.destroy', $conversation->id)" method="DELETE">
+                                <button type="submit" class="btn btn-outline-danger">Supprimer</button>
+                            </x-form>
+                        </div>
                     </div>
                 @endif
 

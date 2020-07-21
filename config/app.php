@@ -179,6 +179,7 @@ return [
          * Custom packages...
          */
         Overtrue\LaravelFollow\FollowServiceProvider::class,
+        \Mollie\Laravel\MollieServiceProvider::class,
 
     ],
 

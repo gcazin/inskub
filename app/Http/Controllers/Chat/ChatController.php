@@ -6,13 +6,10 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 use Musonza\Chat\Chat;
 use Musonza\Chat\Models\Conversation;
-use Throwable;
 
 class ChatController extends Controller {
 
@@ -148,52 +145,11 @@ class ChatController extends Controller {
         return redirect()->back();
     }
 
-    /**
-     * Création d'un chat
-     *
-     * @param Request $request
-     * @return JsonResponse
-     * @throws ValidationException
-     * @throws Throwable
-     */
-    /*public function store(Request $request)
+    public function destroy($id)
     {
-        if($request->ajax()) {
-            $this->talk->setAuthUserId($this->auth->user()->id);
+        $this->chat->conversation(Conversation::find($id))->removeParticipants(User::find($this->auth->user()->id));
 
-            $rules = [
-                'chat-data' => 'required',
-                '_id'=>'required'
-            ];
-
-            $this->validate($request, $rules);
-
-            $body = $request->input('chat-data');
-            $userId = $request->input('_id');
-
-            if ($chat = $this->talk->sendMessageByUserId($userId, $body)) {
-                $html = view('chat.ajax.new-chat', compact('chat'))->render();
-                return response()->json(['status' => 'success', 'html' => $html], 200);
-            }
-        }
-    }*/
-
-    /**
-     * Supprimer un chat
-     *
-     * @param Request $request
-     * @param $id
-     * @return JsonResponse
-     */
-    /*public function delete(Request $request, $id)
-    {
-        if ($request->ajax()) {
-            if($this->talk->deleteMessage($id)) {
-                return response()->json(['status'=>'success'], 200);
-            }
-
-            return response()->json(['status'=>'errors', 'msg'=>'something went wrong'], 401);
-        }
-    }*/
+        return redirect()->route('chat.index');
+    }
 
 }

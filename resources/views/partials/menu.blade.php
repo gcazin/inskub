@@ -1,7 +1,7 @@
 <nav class="navbar d-none d-lg-block navbar-expand-lg navbar-light bg-white border-bottom border-gray">
     <div class="container-fluid px-0">
         <a class="navbar-brand" href="{{ route('index') }}">
-            <img style="width: 50px" src="{{ asset('storage/images/logo.png') }}" alt="">{{ env('APP_NAME') }}
+            <img style="width: 110px" src="{{ asset('storage/images/logo.png') }}" alt="">{{ env('APP_NAME') }}
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

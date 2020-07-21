@@ -8,6 +8,7 @@
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <link rel="icon" href="{{ asset('storage/images/favicon-96x96.png') }}" />
     @yield('head')
 </head>
 <body class="position-relative" style="background: #81b7ff29">

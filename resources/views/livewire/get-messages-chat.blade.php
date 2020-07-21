@@ -1,9 +1,10 @@
 <div wire:poll>
     <div class="overflow-y-auto" id="conversation">
-        @forelse($messages as $message)
+        <div class="px-3 py-4 shadow-sm"><span class="text-muted">Conversation avec </span></div>
+        @forelse(collect()$messages as $message)
             <div
                 id="message-{{$message['id']}}"
-                class="d-flex flex-column mb-2 {{ $message['is_sender'] === 1 ? 'justify-content-end' : null }}">
+                class="d-flex flex-column mb-2 p-3 {{ $message['is_sender'] === 1 ? 'justify-content-end' : null }}">
 
                 <div class="d-flex w-100 flex-row @if($message['is_sender'] === 1) justify-content-end @endif">
                     <!-- Destinataire -->

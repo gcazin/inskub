@@ -100,6 +100,16 @@ class UserController extends Controller
         return redirect()->route('user.profile', $this->auth->id());
     }
 
+    public function activity()
+    {
+        $user = $this->auth->user();
+
+        $posts = $user->posts;
+        $projects = $user->projects;
+
+        return view('activity', compact('posts', 'projects'));
+    }
+
     /**
      * Mise à jour du profil
      *
