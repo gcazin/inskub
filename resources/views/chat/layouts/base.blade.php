@@ -47,22 +47,23 @@
                     </x-modal>
 
                     @forelse($conversations as $conversation)
-                        @foreach($conversation->conversation->getParticipants()->reverse()->take(1) as $participant)
+                        @foreach($conversation->conversation->getParticipants()->take(1) as $participant)
                             <div class="menu-item border-bottom px-2 {{ (int) request()->id === (int) $conversation->id ? 'active' : null }} position-relative">
-                                <div class="row overflow-auto align-items-center">
-                                    <div class="col-2 col-lg-2 text-center">
-                                        <img class="rounded-circle" src="{{ \App\User::find($participant->id)->avatar }}" style="height: 40px" alt="">
+                                <div class="position-relative">
+                                    <div class="mb-3">
+                                        <img class="img-fluid mr-2 rounded-circle" src="{{ \App\User::find($participant->id)->avatar }}" style="height: 40px" alt="">
+                                        <span class="font-weight-bold h6">{{ \App\User::find($participant->id)->first_name }} {{ \App\User::find($participant->id)->last_name }}</span>
                                     </div>
-                                    <div class="col-10 align-self-center col-lg-8">
-                                        <p class="font-weight-bold h6">{{ \App\User::find($participant->id)->first_name }} {{ \App\User::find($participant->id)->last_name }}</p>
+                                    <div class="">
                                         @if(!empty($conversation->conversation->last_message->body))
                                             <p>{{ $conversation->conversation->last_message->body }}</p>
                                         @else
-                                            <p class="text-muted">Commencer a chatter!</p>
+                                            <span class="text-muted">Commencer a chatter!</span>
                                         @endif
                                     </div>
-                                    <a class="position-absolute w-100 h-100" href="{{ route('chat.index', $conversation->id) }}"></a>
+                                    <a class="position-absolute w-100 h-100" style="top: 0" href="{{ route('chat.index', $conversation->id) }}"></a>
                                 </div>
+
                             </div>
                         @endforeach
                     @empty
@@ -80,10 +81,9 @@
                     <div class="col-lg-3 py-3 bg-white d-none d-lg-block border-left rounded-right">
                         <!-- Chat -->
                         <span class="text-muted d-block mb-2">Options de la conversation</span>
-                        <a href="{{ route('user.profile', $conversation->conversation->participants[0]->messageable->id) }}" class="list-item">Voir le profil</a>
                         <div class="form-group">
                             <x-form :action="route('chat.destroy', $conversation->id)" method="DELETE">
-                                <button type="submit" class="btn btn-outline-danger">Supprimer</button>
+                                <button type="submit" class="btn btn-outline-danger">Supprimer la conversation</button>
                             </x-form>
                         </div>
                     </div>
