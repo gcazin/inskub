@@ -53,11 +53,12 @@
                         <div class="form-group">
                             <label for="participants">Participant</label>
                             @if(count(auth()->user()->followings) > 0)
-                                <select name="participants[]" class="form-control" id="participants" multiple>
-                                    @foreach(auth()->user()->followings as $following)
-                                        <option value="{{ $following->id }}">{{ $following->first_name }} {{ $following->last_name }}</option>
-                                    @endforeach
-                                </select>
+                                @foreach(auth()->user()->followings as $following)
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" name="participants[]" class="custom-control-input" id="following-{{ $following->id }}" value="{{ $following->id }}">
+                                        <label class="custom-control-label" for="following-{{ $following->id }}">{{ $following->first_name }} {{ $following->last_name }}</label>
+                                    </div>
+                                @endforeach
                             @else
                                 <x-alert type="warning">
                                     Vous ne suivez personne pour l'instant

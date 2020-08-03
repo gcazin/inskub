@@ -69,5 +69,25 @@ $user = \App\User::select(['first_name', 'last_name', 'avatar'])->findOrFail($po
                 </button>
             </div>
         </div>
+
+        <div class="bg-white px-1 py-3 rounded shadow-sm">
+            <form action="{{ route('post.reply', $post->id) }}" method="post">
+                @csrf
+                <div class="container px-0">
+                    <div class="row no-gutters">
+                        <div class="col-1 text-center">
+                            <img class="rounded-circle" height="35" width="35"
+                                 src="{{ auth()->user()->getAvatar(auth()->id()) }}" alt="">
+                        </div>
+                        <div class="col-9">
+                            <input name="message" class="form-control" type="text" placeholder="Votre message">
+                        </div>
+                        <div class="col-2 text-center">
+                            <button class="btn text-primary" type="submit">Publier</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

@@ -18,6 +18,9 @@
                 <a class="menu-item {{ request()->is('projects') ? 'active' : null }}" href="{{ route('project.index') }}">
                     <ion-icon class="h4 align-top mr-1" name="list-outline"></ion-icon> Projet
                 </a>
+                <a class="menu-item {{ request()->is('experts*') ? 'active' : null }}" href="{{ route('expert.index') }}">
+                    <ion-icon class="h4 align-top mr-1" name="people-outline"></ion-icon> Expert
+                </a>
                 <a class="menu-item" href="{{ route('discover') }}">
                     <ion-icon class="h4 align-top mr-1" name="apps-outline"></ion-icon> Découvrir
                 </a>
@@ -44,6 +47,9 @@
                 </a>
                 <a class="menu-item {{ request()->is('projects*') ? 'active' : null }}" href="{{ route('project.index') }}">
                     <ion-icon class="h4 align-top mr-1" name="list-outline"></ion-icon> Projet
+                </a>
+                <a class="menu-item {{ request()->is('experts*') ? 'active' : null }}" href="{{ route('expert.index') }}">
+                    <ion-icon class="h4 align-top mr-1" name="people-outline"></ion-icon> Expert
                 </a>
                 <a class="menu-item {{ request()->is('discover*') ? 'active' : null }}" href="{{ route('discover') }}">
                     <ion-icon class="h4 align-top mr-1" name="apps-outline"></ion-icon> Découvrir

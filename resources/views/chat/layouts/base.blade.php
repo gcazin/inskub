@@ -41,7 +41,8 @@
                             @endif
                         @empty
                             <x-alert type="info">
-                                Aucune relation à afficher.
+                                Vous ne suivez aucune personne pour l'instant, rendez-vous dans l'espace <a
+                                    href="{{ route('discover') }}">découvrir</a> pour commencer à chatter!
                             </x-alert>
                         @endforelse
                     </x-modal>
@@ -67,7 +68,7 @@
                             </div>
                         @endforeach
                     @empty
-                        <x-alert type="info">Aucune conversation à afficher</x-alert>
+                        <x-alert type="info">Aucune conversation à afficher.</x-alert>
                     @endforelse
                 </div>
 

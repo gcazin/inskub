@@ -76,14 +76,12 @@
                 <x-textarea label="Description" name="description"></x-textarea>
 
                 <div class="form-group">
-                    <label for="assigned_to">Assigné à</label>
-                    <select name="assigned_to" class="form-control" id="assigned_to">
-                        @foreach($project->users as $participant)
-                            <option value="{{ $participant->user_id }}">
-                                {{ \App\User::find($participant->user_id)->first_name }} {{ \App\User::find($participant->user_id)->last_name }}
-                            </option>
-                        @endforeach
-                    </select>
+                    @foreach($project->users as $participant)
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="assigned_to" class="custom-control-input" id="customCheck1" value="{{ $participant->user_id }}">
+                            <label class="custom-control-label" for="customCheck1">{{ \App\User::find($participant->user_id)->first_name }} {{ \App\User::find($participant->user_id)->last_name }}</label>
+                        </div>
+                    @endforeach
                 </div>
 
                 <div class="form-group">

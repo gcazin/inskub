@@ -10351,3 +10351,7 @@ a.menu-item {
 .job-post:hover {
   background: #f2f8fd;
 }
+
+.btn {
+  border-radius: 1rem !important;
+}

@@ -2,9 +2,9 @@
     <div class="card-body p-0">
         <x-form :action="$action" method="post" enctype>
             <div class="row px-3 pt-2">
-                <div class="col-2 text-center">
+                <div class="col-2 text-center align-self-center">
                     <img src="{{ \App\User::getAvatar(auth()->id()) }}" class="rounded-circle border border-light" alt=""
-                         style="height: 40px">
+                         style="height: 50px">
                 </div>
                 <div class="col-10">
                     <textarea name="content" class="form-control" placeholder="Ecrivez" autofocus="autofocus"></textarea>
