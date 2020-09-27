@@ -14,7 +14,7 @@
                     <x-modal title="Commencer une conversation"  name="create-conversation">
                         @forelse(auth()->user()->followings as $following)
                             @if(\Musonza\Chat\Facades\ChatFacade::conversations()->between(auth()->user(), $following) === null)
-                                <x-section class="mb-3">
+                                <div class="menu-item">
                                     <div class="row align-items-center">
                                         <div class="col-2 text-center">
                                             <img class="rounded-circle" style="height: 50px" src="{{ \App\User::find($following->id)::getAvatar($following->id) }}" alt="">
@@ -31,7 +31,7 @@
                                             </a>
                                         </div>
                                     </div>
-                                </x-section>
+                                </div>
                             @else
                                 @if($loop->last)
                                     <x-alert type="info">
@@ -47,22 +47,28 @@
                         @endforelse
                     </x-modal>
 
-                    @forelse($conversations as $conversation)
-                        @foreach($conversation->conversation->getParticipants()->take(1) as $participant)
-                            <div class="menu-item border-bottom px-2 {{ (int) request()->id === (int) $conversation->id ? 'active' : null }} position-relative">
+                    <div class="btn-group btn-block mb-3" role="group" aria-label="Basic example">
+                        <a href="{{ route('chat.index', ['type' => '0']) }}" class="btn btn-btn btn-{{ request()->type === null || (int) request()->type === 0 ? 'primary' : 'outline-primary' }} btn-sm" style="border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important;">Personnel</a>
+                        <a href="{{ route('chat.index', ['type' => '1']) }}" class="btn btn-{{ request()->type !== null && (int) request()->type === 1 ? 'primary' : 'outline-primary' }} btn-sm" style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">Expertise</a>
+                    </div>
+                    @forelse($conversations->where('type_id', '=', request()->type) as $conversation)
+                        @foreach($conversation->conversation->getParticipants()->where('id', '<>', auth()->id()) as $participant)
+                            <div class="menu-item border-bottom px-2 position-relative">
                                 <div class="position-relative">
                                     <div class="mb-3">
                                         <img class="img-fluid mr-2 rounded-circle" src="{{ \App\User::find($participant->id)->avatar }}" style="height: 40px" alt="">
-                                        <span class="font-weight-bold h6">{{ \App\User::find($participant->id)->first_name }} {{ \App\User::find($participant->id)->last_name }}</span>
+                                        <span class="font-weight-bold h6">{{ $conversation->type_id === 0 ? \App\User::find($participant->id)->first_name
+.' '.\App\User::find($participant->id)->last_name : json_decode($conversation->data)->title }}</span>
                                     </div>
                                     <div class="">
                                         @if(!empty($conversation->conversation->last_message->body))
-                                            <p>{{ $conversation->conversation->last_message->body }}</p>
+                                            <p>{{ decrypt($conversation->conversation->last_message->body) }} @if($conversation->conversation->last_message->is_sender === 0 && $conversation->conversation->last_message->is_seen === 0) <span class="float-right bg-primary rounded-circle" style="height: 10px; width: 10px"></span> @endif</p>
+
                                         @else
                                             <span class="text-muted">Commencer a chatter!</span>
                                         @endif
                                     </div>
-                                    <a class="position-absolute w-100 h-100" style="top: 0" href="{{ route('chat.index', $conversation->id) }}"></a>
+                                    <a class="position-absolute w-100 h-100" style="top: 0" href="{{ route('chat.index', ['id' => $conversation->id, 'type' => request()->type ?: 0]) }}"></a>
                                 </div>
 
                             </div>
@@ -83,7 +89,7 @@
                         <!-- Chat -->
                         <span class="text-muted d-block mb-2">Options de la conversation</span>
                         <div class="form-group">
-                            <x-form :action="route('chat.destroy', $conversation->id)" method="DELETE">
+                            <x-form :action="route('chat.destroy', $conversations[0]->id)" method="DELETE">
                                 <button type="submit" class="btn btn-outline-danger">Supprimer la conversation</button>
                             </x-form>
                         </div>
@@ -107,7 +113,7 @@
         let navbar = document.querySelector('.navbar').clientHeight;
 
         let height = () => {
-            for(i = 0; i < automatic.length; i++) {
+            for(let i = 0; i < automatic.length; i++) {
                 automatic[i].style.height = body.clientHeight - (mobileMenu + 50) - 100 - navbar + 'px';
             }
             console.log(automatic)

@@ -1,5 +1,9 @@
 @extends('layouts.base', ['full' => true])
 
+@section('title')
+Accueil
+@endsection
+
 @section('content')
     <x-container>
         <x-submit-post :action="route('index')"></x-submit-post>

@@ -27,7 +27,8 @@ class StoreProject extends FormRequest
             'title' => ['required', 'max:100'],
             'description' => ['max:255'],
             'deadline' => ['required'],
-            'private' => ['required']
+            'private' => ['required'],
+            'type' => ['required']
         ];
     }
 }

@@ -1,17 +1,23 @@
 @forelse($formations as $formation)
-    <div class="card mb-3">
-        <div class="card-header bg-white border-0">
-            <a class="h4" href="{{ route('formation.show', $formation->id) }}">
-                {{ $formation->title }}
-            </a>
+    <div class="d-flex bg-white shadow-sm rounded mb-3 px-1 py-3">
+        <div class="col-lg-1 d-flex text-center align-self-center">
+            <img class="rounded-circle" style="height: 50px" src="{{ \App\User::getAvatar($formation->user_id) }}" alt="">
         </div>
-        <div class="card-body">
-            <p class="text-muted">
-                Publiée par
-                <img class="rounded-circle" style="height: 40px" src="{{ \App\User::getAvatar($formation->user_id) }}" alt="">
-                {{ \App\User::find($formation->user_id)->last_name }}
+        <div class="col-lg-11">
+            <p class="h4">
+                <a href="{{ route('formation.show', $formation->id) }}">{{ $formation->title }}</a>
             </p>
+            <p>{{ $formation->description }}</p>
+            <div class="row">
+                <div class="col text-muted">
+                    Publiée par {{ \App\User::find($formation->user_id)->last_name }} {{ \Carbon\Carbon::create($formation->created_at)->diffForHumans() }}
+                </div>
+                <div class="col text-right">
+                    <a class="btn btn-outline-primary" href="{{ route('formation.show', $formation->id) }}">Postuler</a>
+                </div>
+            </div>
         </div>
+        <div class="col-lg-5"></div>
     </div>
 @empty
     <x-alert type="info">

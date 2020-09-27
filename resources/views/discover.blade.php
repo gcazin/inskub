@@ -7,7 +7,7 @@
 @section('content')
 
     <x-container>
-
+        <h2 class="text-black-50 mb-4">Découvrir</h2>
         <!-- Offres d'emploi, proposer une formation etc. -->
         <div class="card">
             <div class="card-body">

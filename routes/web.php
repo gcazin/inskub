@@ -17,7 +17,21 @@ Route::get('/', 'HomeController@index')->name('index');
 Route::post('/', 'Post\PostController@store')->name('post.create');
 Route::get('/discover', 'HomeController@discover')->name('discover');
 Route::get('/discover/{role_id}', 'HomeController@discoverAll')->name('discover.all');
-Route::get('/experts', 'Expert\ExpertController@index')->name('expert.index');
+
+Route::namespace('Notification')->name('notification.')->group(function() {
+    Route::get('/notifications', 'NotificationController@index')->name('index');
+    Route::get('/notifications/mark-as-read', 'NotificationController@markAllAsRead')->name('markAllAsRead');
+});
+
+Route::namespace('Expert')->name('expert.')->group(function() {
+    Route::prefix('expert')->group(function() {
+        Route::get('/', 'ExpertController@index')->name('index');
+        Route::get('/search', 'ExpertController@search')->name('search');
+        Route::post('/search', 'ExpertController@searchExperts');
+        Route::post('/{id}/request-expertise', 'ExpertController@requestExpertise')->name('request');
+        Route::get('/{id}/accept-expertise', 'ExpertController@acceptExpertise')->name('acceptExpertise');
+    });
+});
 
 // Page d'accueil
 Route::namespace('Post')->name('post.')->group(function() {

@@ -19,6 +19,7 @@ class CreateChatTables extends Migration
             $table->boolean('private')->default(true);
             $table->boolean('direct_message')->default(false);
             $table->text('data')->nullable();
+            $table->integer('type_id')->default(0);
             $table->timestamps();
         });
 

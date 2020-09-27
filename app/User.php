@@ -103,8 +103,9 @@ class User extends \Illuminate\Foundation\Auth\User
         return $this->hasMany(UserFormation::class);
     }
 
-    public function skills() {
-        return $this->hasMany(UserSkill::class);
+    public function skills()
+    {
+        return $this->hasMany(UserSkillPivot::class, 'id');
     }
 
 }

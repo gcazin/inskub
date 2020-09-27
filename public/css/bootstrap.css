@@ -9944,6 +9944,10 @@ h3 {
     border-color: #dee2e6;
   }
 }
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+  background: var(--light) !important;
+}
+
 .form-control.custom {
   border-color: #dee2e6 !important;
   border: 0;

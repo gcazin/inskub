@@ -4,7 +4,7 @@
         <h6 class="title__section text-uppercase text-secondary mb-3">Messagerie</h6>
 
         @forelse(auth()->user()->followings as $person)
-            <div class="row menu-item">
+            <div class="row menu-item position-relative">
                 <div class="col-2 px-0">
                     <img class="rounded-circle" style="height: 2rem" src="{{ $person->getAvatar($person->id) }}" alt="">
                 </div>

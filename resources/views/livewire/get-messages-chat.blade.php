@@ -1,5 +1,8 @@
 <div wire:poll>
     <div class="overflow-y-auto" id="conversation">
+        <div class="w-50 m-auto pt-3">
+            <x-alert type="warning">Les messages envoyés dans cette discussion sont chiffrés de bout en bout. Appuyez pour plus d'informations.</x-alert>
+        </div>
         @forelse($messages as $message)
             <div
                 id="message-{{$message['id']}}"
@@ -7,11 +10,8 @@
 
                 <div class="d-flex w-100 flex-row @if($message['is_sender'] === 1) justify-content-end @endif">
                     <!-- Destinataire -->
-                    @if(!$direct && $message['is_sender'] === 0)
-                        <img class="h-10 rounded-full mr-2" src="{{ \App\User::getAvatar($message['sender']['id']) }}" alt="">
-                    @endif
                     <div class="w-50 @if($message['is_sender'] === 1) {{'bg-primary text-white'}} @else {{'bg-light'}} @endif rounded-lg px-2 py-2">
-                        <p class="@if($message['is_sender'] === 1) {{'text-white'}} @else {{''}} @endif">{{$message['body']}}</p>
+                        <p class="@if($message['is_sender'] === 1) {{'text-white'}} @else {{''}} @endif">{{ decrypt($message['body']) }}</p>
                     <!--<div class="text-right">
                                 <a href="#" data-message-id="{{$message['id']}}" title="Delete Message"><i class="fa fa-close"></i></a>
                             </div>-->

@@ -1,5 +1,9 @@
 @extends('layouts.base')
 
+@section('title')
+    Tâches du projet {{ $project->title }}
+@endsection
+
 @section('head')
     <link rel="stylesheet" href="https://unpkg.com/@fullcalendar/core@4.4.0/main.min.css">
     <link rel="stylesheet" href="https://unpkg.com/@fullcalendar/daygrid@4.4.0/main.min.css">

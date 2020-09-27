@@ -1,5 +1,9 @@
 @extends('layouts.base')
 
+@section('title')
+    Créer une formation
+@endsection
+
 @section('content')
     <x-container>
         <x-section class="mb-3">

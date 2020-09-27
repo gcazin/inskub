@@ -16,12 +16,12 @@ class PostController extends Controller
 
     public function __construct(Post $post)
     {
-        $this->middleware('auth');
         $this->post = $post;
     }
 
     public function show(int $id)
     {
+        $this->middleware('guest');
         $post = Post::all()->find($id);
         return view('post.show', compact('post'));
     }

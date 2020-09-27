@@ -1,5 +1,9 @@
 @extends('layouts.base')
 
+@section('title')
+    Modifier les options du compte
+@endsection
+
 @section('content')
     <x-account-content title="Changer vos préférences générales">
 

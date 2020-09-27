@@ -2,6 +2,11 @@
 
 @section('head')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+@endsection
+
+@section('title')
+    Profil de {{ ucfirst($user->first_name) }} {{ ucfirst($user->last_name) }}
 @endsection
 
 @section('content')
@@ -242,11 +247,27 @@
 
         <x-modal title="Ajouter une compétence" name="create-skill">
             <x-form :action="route('user.skill.create')" method="post">
-                <x-input label="Titre" name="title" placeholder="Intitulé de la compétence"></x-input>
+                <div class="form-group">
+                    <label>Domaine de compétence</label>
+                    <select class="skills form-control" id="skills" name="skills[]" multiple style="width: 100%">
+                        @foreach(\App\UserSkill::all() as $skill)
+                            <option value="{{ $skill->id }}">{{ ucfirst($skill->title) }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <x-submit>Valider</x-submit>
             </x-form>
         </x-modal>
     </x-container>
 
     <x-right-sidebar-message></x-right-sidebar-message>
+@endsection
+
+@section('script')
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.skills').select2();
+        });
+    </script>
 @endsection

@@ -20,7 +20,8 @@ class CreateProjectsTable extends Migration
             $table->date('deadline');
             $table->boolean('finish')->default(0);
             $table->string('colour');
-            $table->string('private')->default(0);
+            $table->integer('private')->default(0);
+            $table->integer('type')->default(0);
 
             $table->unsignedBigInteger('user_id');
             $table->timestamps();

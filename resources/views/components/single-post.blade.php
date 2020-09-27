@@ -75,7 +75,7 @@
                         <div class="col-1">
                             <a href="{{ route('user.profile', $reply->user_id) }}">
                                 <img class="rounded-circle" height="35" width="35"
-                                     src="{{ auth()->user()->getAvatar($reply->user_id) }}" alt="">
+                                     src="{{ \App\User::getAvatar($reply->user_id) }}" alt="">
                             </a>
                         </div>
                         <div class="col-11 bg-light rounded border px-3 py-2">

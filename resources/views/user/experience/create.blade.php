@@ -1,5 +1,9 @@
 @extends('layouts.base')
 
+@section('title')
+    Créer une expérience
+@endsection
+
 @section('content')
     <div class="w-11/12 lg:w-8/12 mx-auto">
         <h1 class="text-xl mb-2 text-gray-800">Ajouter une expérience</h1>

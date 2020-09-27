@@ -1,5 +1,9 @@
 @extends('layouts.base', ['full' => true])
 
+@section('head')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+@endsection
+
 @section('content')
     <div class="row position-relative" style="height: 100vh">
         <div class="position-relative px-0 d-none d-lg-block col-lg-6" style="background: rgba(129, 183, 255, 0.16)">
@@ -64,6 +68,8 @@
                 <h1 class="font-weight-light mb-1 mb-lg-4 mt-3 mt-lg-0 d-none d-lg-block">Inscrivez-vous</h1>
                 <h3 class="font-weight-light mb-1 mb-lg-4 mt-3 mt-lg-0 d-lg-none">Inscrivez-vous</h3>
                 <x-form :action="route('register')">
+
+                    <!-- Choix du rôle -->
                     <div class="row py-3 row-cols-2 row-cols-lg-5">
                         <div class="col-12 col-lg pb-1">
                             <div class="card text-center">
@@ -79,7 +85,7 @@
                         </div>
                         <div class="col pb-1 pr-1">
                             <div class="card text-center">
-                                <label for="student" class="position-absolute w-100 h-100"></label>
+                                <label for="student" class="position-absolute w-100 h-100" ></label>
                                 <input type="radio" class="checkbox custom" name="role_id" id="student" value="3">
                                 <div class="card-body rounded">
                                     <h5 class="card-title">
@@ -128,9 +134,11 @@
                         </div>
                     </div>
 
+                    <!-- Identité -->
                     <div class="form-group">
                         <div class="row row-cols-1 row-cols-lg-2">
 
+                            <!-- Nom -->
                             <div class="col">
                                 <div class="input-group mb-3 mb-lg-0">
                                     <div class="input-group-prepend">
@@ -142,6 +150,7 @@
                                 </div>
                             </div>
 
+                            <!-- Prénom -->
                             <div class="col">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -170,6 +179,39 @@
                         </div>
                     </div>
 
+                    <!-- Departement -->
+                    <div class="form-group" id="department-container">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">
+                                <ion-icon name="location-outline"></ion-icon>
+                            </span>
+                            </div>
+                            <select class="departments form-control d-block" id="department" name="department">
+                                @foreach(\App\Department::all()->sortBy('code') as $department)
+                                    <option value="{{ $department->code }}">{{ $department->code .' - '. $department->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Compagnie -->
+                    <div class="form-group" id="company-container">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">
+                                <ion-icon name="location-outline"></ion-icon>
+                            </span>
+                            </div>
+                            <select class="companies form-control d-block" id="company" name="company">
+                                @foreach(\App\Company::all()->sortBy('name') as $company)
+                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Mot de passe -->
                     <div class="form-group">
                         <div class="row row-cols-1 row-cols-lg-2">
                             <div class="col">
@@ -186,7 +228,7 @@
                                 </div>
                             </div>
                             <div class="col">
-                                <!-- Mot de passe -->
+                                <!-- Confirmation du mot de passe -->
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
@@ -215,12 +257,41 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('js/particles.min.js') }}"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            /*$('.departments').select2();*/
+        });
+    </script>
+    {{--<script src="{{ asset('js/particles.min.js') }}"></script>
     <script>
         /* particlesJS.load(@dom-id, @path-json, @callback (optional)); */
         particlesJS.load('particles-js', '{{ asset('js/particlesjs-config.json') }}', function () {
             console.log('callback - particles.js config loaded');
+        });
+    </script>--}}
+    <script>
+        $(document).ready(function() {
+            let department = $('#department-container')
+
+            let company = $('#company-container')
+
+            $(department).hide()
+            $(company).hide()
+            $('input[name="role_id"]').click(function() {
+                if ($('#student').is(':checked')) {
+                    $(department).show()
+                }
+                if($('#enterprise').is(':checked')) {
+                    $(company).show()
+                }
+                if(!$('#enterprise').is(':checked')) {
+                    $(company).hide()
+                }
+                if(!$('#student').is(':checked')) {
+                    $(department).hide()
+                }
+            });
         });
     </script>
 @endsection

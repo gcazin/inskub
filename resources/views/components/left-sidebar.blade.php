@@ -5,6 +5,9 @@
                 ->isPrivate()
                 ->perPage(10)
                 ->get();
+
+    $unreadCount = \Musonza\Chat\Facades\ChatFacade::messages()->setParticipant(auth()->user())->unreadCount();
+
 @endphp
 
 <div class="position-sticky d-none d-lg-flex flex-column rounded-lg col-lg-2 mt-3 pl-3">
@@ -18,7 +21,7 @@
                 <a class="menu-item {{ request()->is('projects') ? 'active' : null }}" href="{{ route('project.index') }}">
                     <ion-icon class="h4 align-top mr-1" name="list-outline"></ion-icon> Projet
                 </a>
-                <a class="menu-item {{ request()->is('experts*') ? 'active' : null }}" href="{{ route('expert.index') }}">
+                <a class="menu-item {{ request()->is('expert*') ? 'active' : null }}" href="{{ route('expert.search') }}">
                     <ion-icon class="h4 align-top mr-1" name="people-outline"></ion-icon> Expert
                 </a>
                 <a class="menu-item" href="{{ route('discover') }}">
@@ -27,7 +30,7 @@
                 <a class="menu-item" href="{{ route('chat.index') }}">
                     <ion-icon class="h4 align-top mr-1" name="chatbubbles-outline"></ion-icon>
                     Messagerie
-                    <span class="badge badge-pill badge-primary">{{ $conversations->count() }}</span>
+                    <span class="badge badge-pill badge-primary">{{ $unreadCount }}</span>
                 </a>
             </div>
             <div class="d-flex flex-column pb-3">
@@ -48,7 +51,7 @@
                 <a class="menu-item {{ request()->is('projects*') ? 'active' : null }}" href="{{ route('project.index') }}">
                     <ion-icon class="h4 align-top mr-1" name="list-outline"></ion-icon> Projet
                 </a>
-                <a class="menu-item {{ request()->is('experts*') ? 'active' : null }}" href="{{ route('expert.index') }}">
+                <a class="menu-item {{ request()->is('expert*') ? 'active' : null }}" href="{{ route('expert.search') }}">
                     <ion-icon class="h4 align-top mr-1" name="people-outline"></ion-icon> Expert
                 </a>
                 <a class="menu-item {{ request()->is('discover*') ? 'active' : null }}" href="{{ route('discover') }}">
@@ -57,7 +60,8 @@
                 <a class="menu-item {{ request()->is('chat*') ? 'active' : null }}" href="{{ route('chat.index') }}">
                     <ion-icon class="h4 align-top mr-1" name="chatbubbles-outline"></ion-icon>
                     Messagerie
-                    <span class="badge badge-pill badge-primary float-right">{{ $conversations->count() }}</span>
+
+                    {!! $unreadCount !== 0 ? '<span class="badge badge-pill badge-primary float-right">'.$unreadCount.'</span>' : '' !!}
                 </a>
                 <a class="menu-item {{ request()->is('activity*') ? 'active' : null }}" href="{{ route('user.activity') }}">
                     <ion-icon class="h4 align-top mr-1" name="bar-chart-outline"></ion-icon>

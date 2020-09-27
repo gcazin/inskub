@@ -10,9 +10,11 @@
                 <livewire:create-message-chat :conversation="@request()->route('id')" />
             </div>
         @else
-            <x-alert type="info">
-                Aucune conversation selectionné
-            </x-alert>
+            <div class="m-3">
+                <x-alert type="info">
+                    Aucune conversation selectionné
+                </x-alert>
+            </div>
         @endif
     </div>
 @endsection

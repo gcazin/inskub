@@ -17,11 +17,18 @@ class CreateUserSkillsTable extends Migration
             $table->id();
             $table->string('title');
 
-            $table->unsignedBigInteger('user_id');
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users');
         });
+
+        $skills = [
+            'bâtiment', 'construction', 'réparation automobile', 'agriculture', 'transport aérien', 'transport maritime', 'médecine', 'objets d\'art'
+        ];
+
+        foreach($skills as $skill) {
+            \Illuminate\Support\Facades\DB::table('user_skills')->insert([
+                'title' => $skill
+            ]);
+        }
     }
 
     /**

@@ -13,7 +13,7 @@
             <!-- Titre et bouton -->
             <div class="row mb-4">
                 <div class="col-lg">
-                    <h3 class="text-black-50">Projet(s)</h3>
+                    <h2 class="text-black-50">Projet(s)</h2>
                 </div>
                 <div class="col-lg text-right">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".new-project">
@@ -236,9 +236,11 @@
                             </div>
                         </div>
                     @empty
-                        <x-alert type="info">
-                            Créer votre premier projet dès maintenant!
-                        </x-alert>
+                        <div class="mx-3 mb-3">
+                            <x-alert type="info">
+                                Créer votre premier projet dès maintenant!
+                            </x-alert>
+                        </div>
                     @endforelse
                 </div>
             </div>

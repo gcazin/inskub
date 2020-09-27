@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration
             $table->integer('department')->nullable();
             $table->integer('tel')->nullable();
             $table->integer('adresse')->nullable();
+            $table->integer('company')->nullable();
             $table->longText('about')->nullable();
 
             $table->string('mollie_customer_id')->nullable();

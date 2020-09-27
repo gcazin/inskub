@@ -19,6 +19,227 @@
             display: none !important;
         }
     </style>
+    <style>
+        .primary-color, ul.stepper li.active a .circle, ul.stepper li.completed a .circle {
+            background-color: #4285f4 !important;
+        }
+        ul.stepper {
+            overflow-x: hidden;
+            overflow-y: auto;
+            counter-reset: section;
+            margin: 0;
+            padding: 0;
+        }
+
+        ul.stepper li a {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        ul.stepper li a .circle {
+            width: 1.75rem;
+            height: 1.75rem;
+            line-height: 1.7rem;
+            color: #fff;
+            text-align: center;
+            background: rgba(0,0,0,0.38);
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        ul.stepper li a .label {
+            display: inline-block;
+            color: rgba(0,0,0,0.38)
+        }
+
+        ul.stepper li.active a .label,ul.stepper li.completed a .label {
+            font-weight: 600;
+            color: rgba(0,0,0,0.87)
+        }
+
+        .stepper-horizontal {
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+        }
+
+        .stepper-horizontal li {
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-transition: .5s;
+            transition: .5s
+        }
+
+        .stepper-horizontal li a .label {
+            margin-top: .63rem
+        }
+
+        .stepper-horizontal li:not(:last-child):after {
+            position: relative;
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            height: 1px;
+            margin: .5rem 0 0 0;
+            content: "";
+            background-color: rgba(0,0,0,0.1)
+        }
+
+        .stepper-horizontal li:not(:first-child):before {
+            position: relative;
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            height: 1px;
+            margin: .5rem 0 0 0;
+            content: "";
+            background-color: rgba(0,0,0,0.1)
+        }
+
+        @media(max-width: 47.9375rem) {
+            .stepper-horizontal {
+                -webkit-box-orient:vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                flex-direction: column
+            }
+
+            .stepper-horizontal li {
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                -webkit-box-align: start;
+                -ms-flex-align: start;
+                align-items: flex-start
+            }
+
+            .stepper-horizontal li a .label {
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-flow: column nowrap;
+                flex-flow: column nowrap;
+                -webkit-box-ordinal-group: 3;
+                -ms-flex-order: 2;
+                order: 2;
+                margin-top: .2rem
+            }
+
+            .stepper-horizontal li:not(:last-child):after {
+                position: absolute;
+                top: 3.75rem;
+                left: 2.19rem;
+                width: 1px;
+                height: calc(100% - 40px);
+                content: ""
+            }
+        }
+
+        .stepper-horizontal>li:not(:last-of-type) {
+            margin-bottom: 0 !important
+        }
+
+        .stepper-vertical {
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between
+        }
+
+        .stepper-vertical li {
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            -webkit-box-align: start;
+            -ms-flex-align: start;
+            align-items: flex-start
+        }
+
+        .stepper-vertical li a {
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-item-align: start;
+            align-self: flex-start
+        }
+
+        .stepper-vertical li a .circle {
+            -webkit-box-ordinal-group: 2;
+            -ms-flex-order: 1;
+            order: 1
+        }
+
+        .stepper-vertical li a .label {
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-flow: column nowrap;
+            flex-flow: column nowrap;
+            -webkit-box-ordinal-group: 3;
+            -ms-flex-order: 2;
+            order: 2;
+            margin-top: .2rem
+        }
+
+        .stepper-vertical li.completed a .label {
+            font-weight: 500
+        }
+
+        .stepper-vertical li .step-content {
+            display: block;
+            padding: .94rem;
+            margin-top: 0;
+            margin-left: 3.13rem
+        }
+
+        .stepper-vertical li .step-content p {
+            font-size: .88rem
+        }
+
+        .stepper-vertical li:not(:last-child):after {
+            position: absolute;
+            top: 3.44rem;
+            left: 2.19rem;
+            width: 1px;
+            height: calc(100% - 40px);
+            content: "";
+            background-color: rgba(0,0,0,0.1)
+        }
+    </style>
+@endsection
+
+@section('title')
+    Projet "{{ $project->title }}"
 @endsection
 
 @section('content')
@@ -36,7 +257,52 @@
             <p class="text-muted h5">{{ $project->description }}</p>
         </x-section>
 
+        <!-- Stepper de l'expertise -->
+        <x-section class="mb-3">
+            @if($project->type === 1)
+                <div class="steps">
+                    <!-- Horizontal Steppers -->
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <!-- Stepers Wrapper -->
+                            <ul class="stepper stepper-horizontal">
+
+                                <!-- First Step -->
+                                <li class="completed">
+                                    <a href="#!">
+                                        <span class="circle">1</span>
+                                        <span class="label">Demande d'expertise</span>
+                                    </a>
+                                </li>
+
+                                <!-- Second Step -->
+                                <li class="active">
+                                    <a href="#!">
+                                        <span class="circle">2</span>
+                                        <span class="label">Expertise en cours</span>
+                                    </a>
+                                </li>
+
+                                <!-- Third Step -->
+                                <li class="warning">
+                                    <a href="#!">
+                                        <span class="circle">3</span>
+                                        <span class="label">Expertise terminée</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                            <!-- /.Stepers Wrapper -->
+
+                        </div>
+                    </div>
+                </div>
+            @endif
+        </x-section>
+
         <x-submit-post :action="route('project.postStore', $project->id)"></x-submit-post>
+
         <x-post-list :model="$posts"></x-post-list>
 
     </x-container>
@@ -69,6 +335,7 @@
         </div>
     </x-right-sidebar>
 
+    <!-- Modal de création d'une tâche -->
     <div class="modal fade new-todo" tabindex="-1" role="dialog" aria-labelledby="new-todo" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -105,24 +372,7 @@
 @endsection
 
 @section('script')
-    <script>
-        let shareButton = document.querySelector('.share-button');
-
-        shareButton.addEventListener('click', () => {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'WebShare API Demo',
-                    url: 'https://codepen.io/ayoisaiah/pen/YbNazJ'
-                }).then(() => {
-                    console.log('Thanks for sharing!');
-                })
-                    .catch(console.error);
-            } else {
-                console.log('Votre navigateur ne supporte pas ça')
-                //shareDialog.classList.add('is-open');
-            }
-        });
-    </script>
+    <!-- Preview d'une image -->
     <script>
         function displayPreview(input) {
             if (input.files && input.files[0]) {
@@ -141,8 +391,9 @@
             displayPreview(this);
         });
     </script>
-    <script>
 
+    <!-- Calendrier -->
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
 

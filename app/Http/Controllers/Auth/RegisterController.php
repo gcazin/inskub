@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Skill;
-use App\Skill_pivot;
-use App\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
+use App\User;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -60,6 +57,7 @@ class RegisterController extends Controller
             'department' => ['integer'],
             'tel' => [''],
             'adresse' => [''],
+            'company' => ['integer'],
         ]);
     }
 
@@ -77,9 +75,10 @@ class RegisterController extends Controller
         $user->last_name = $data['last_name'];
         $user->email = $data['email'];
         $user->password = Hash::make($data['password']);
-        $user->department = $data['departement'] ?? null;
+        $user->department = $data['department'] ?? null;
         $user->tel = $data['tel'] ?? null;
         $user->adresse = $data['adresse'] ?? null;
+        $user->company = $data['company'] ?? null;
         $user->save();
 
         return $user;

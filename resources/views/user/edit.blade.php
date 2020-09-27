@@ -1,5 +1,9 @@
 @extends('layouts.base')
 
+@section('title')
+    Modifier les informations du compte
+@endsection
+
 @section('content')
     <x-account-content title="Modifier des éléments de votre profil">
 

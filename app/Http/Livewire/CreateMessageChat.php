@@ -18,7 +18,7 @@ class CreateMessageChat extends Component
 
     public function submit()
     {
-        Chat::message($this->message)
+        Chat::message(encrypt($this->message))
             ->from(User::find(auth()->id()))
             ->to(Conversation::find($this->conversation))
             ->send();

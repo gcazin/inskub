@@ -19,21 +19,16 @@
             </a>
         </div>
         <div class="col">
+            <a href="{{ route('expert.index') }}" class="{{ (request()->is('expert*')) ? 'text-primary' : 'text-dark ' }}">
+                <ion-icon class="h4 align-top mr-1" name="people-outline"></ion-icon>
+                <span class="d-block text-muted" style="font-size: .750rem;">Expert</span>
+            </a>
+        </div>
+        <div class="col">
             <a href="{{ route('chat.index') }}" class="{{ (request()->is('chat')) ? 'text-primary' : 'text-dark ' }}">
                 <ion-icon class="h4 m-0" name="chatbubbles-outline"></ion-icon>
                 <span class="d-block text-muted" style="font-size: .750rem;">Messagerie</span>
             </a>
         </div>
-        <div class="col">
-            <a href="" class="{{ (request()->is('notifications')) ? 'text-primary' : 'text-dark ' }}">
-                <ion-icon class="h4 m-0" name="notifications-outline"></ion-icon>
-                <span class="d-block text-muted" style="font-size: .750rem;">Notification</span>
-            </a>
-        </div>
     </div>
-
-
-
-
-
 </div>

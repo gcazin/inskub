@@ -1,7 +1,7 @@
 @extends('layouts.base', ['full_width' => false])
 
 @section('title')
-    Découvrir
+    Activité du compte
 @endsection
 
 @section('content')

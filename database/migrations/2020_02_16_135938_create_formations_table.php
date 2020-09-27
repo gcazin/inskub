@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateFormationsTable extends Migration
 {
@@ -19,6 +19,8 @@ class CreateFormationsTable extends Migration
             $table->longText('description');
             $table->string('location');
             $table->double('entry_price')->nullable();
+            $table->string('level')->nullable();
+            //TODO: Se baser sur les formations de l'IFPASS
 
             $table->unsignedBigInteger('user_id');
             $table->timestamps();

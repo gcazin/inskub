@@ -47,7 +47,6 @@ class ChatController extends Controller {
                 ->setPaginationParams(['sorting' => 'desc'])
                 ->setParticipant($this->auth->user())
                 ->isPrivate()
-                ->perPage(10)
                 ->get();
 
             $user = User::class;
@@ -66,7 +65,7 @@ class ChatController extends Controller {
      *
      * @return RedirectResponse
      */
-    public function createDirectConversation($id): RedirectResponse
+    public function createDirectConversation($id, $type = null): RedirectResponse
     {
         $conversation = $this->chat->conversations()->between(User::find($this->auth->id()), User::find($id));
 
@@ -78,7 +77,13 @@ class ChatController extends Controller {
             return redirect()->route('chat.index', $conversation->id);
         }
 
-        $conversation = $this->chat->createConversation([User::find($this->auth->id()), User::find($id)])->makeDirect();
+        $conversation = $this->chat->createConversation([User::find($this->auth->id()), User::find($id)]);
+
+        if($type !== null) {
+            $conversation->type_id = 1;
+        }
+
+        $conversation->makeDirect();
 
         return redirect()->route('chat.index', $conversation->id);
     }
@@ -112,14 +117,13 @@ class ChatController extends Controller {
             return view('chat.show');
         }
 
-        $messages = $this->chat
+        $conversation = $this->chat
             ->conversation($this->chat->conversations()->getById($id))
-            ->setParticipant($user)
-            ->getMessages();
+            ->setParticipant($user);
 
-//        if($id !== null) {
-//            $participants = $conversation->getById($id)->getParticipants();
-//        }
+        $messages = $conversation->getMessages();
+
+        $conversation->readAll();
 
         $participants = $this->chat->conversations()->setPaginationParams(['sorting' => 'desc'])
             ->setParticipant($user)
@@ -127,6 +131,7 @@ class ChatController extends Controller {
             ->page(1)
             ->get()
             ->toArray()['data'][0]['conversation']['participants'];
+
 
         return view('chat.show', compact('messages', 'participants'));
     }

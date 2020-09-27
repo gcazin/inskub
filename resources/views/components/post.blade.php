@@ -1,7 +1,18 @@
 <?php
+
+use Illuminate\Support\Facades\File;
+
 $user = \App\User::select(['first_name', 'last_name', 'avatar'])->findOrFail($post->user_id);
+
+$extension = File::extension($post->media)
 ?>
-<div class="card rounded-lg mt-3">
+<div
+    class="post card rounded-lg mt-3
+@if($extension === 'jpeg' || $extension === 'jpg' || $extension === 'png' || $extension ===  'gif')
+        images
+@else
+        documents
+@endif">
 
     <div class="card-header bg-white border-0 pb-0">
         <div class="row no-gutters">
@@ -42,7 +53,15 @@ $user = \App\User::select(['first_name', 'last_name', 'avatar'])->findOrFail($po
     <div class="card-body py-0">
         <p id="content">{!! preg_replace('~(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![\.,:])~i', '<a href="$0" target="_blank" title="$0">$0</a>', $post->content) !!}</p>
         @if($post->media !== null)
-            <img class="w-100 rounded my-2" src="{{ asset('storage/' . $post->media) }}" alt="">
+            @if($extension === 'jpeg' || $extension === 'jpg' || $extension === 'png' || $extension ===  'gif')
+                <img class="w-100 rounded my-2 images" src="{{ asset('storage/' . $post->media) }}" alt="{{ $post->id }}" data-lightbox="image-{{ $post->id }}">
+            @else
+                <div class="mb-3 rounded-lg border border-primary px-3 py-2">
+                    <a href="{{ \Illuminate\Support\Facades\Storage::url($post->media) }}">
+                        <ion-icon class="align-text-bottom h5 mb-0" name="document-outline"></ion-icon> {{ \Illuminate\Support\Facades\File::basename($post->media) }}
+                    </a>
+                </div>
+            @endif
         @endif
     </div>
 
@@ -63,7 +82,7 @@ $user = \App\User::select(['first_name', 'last_name', 'avatar'])->findOrFail($po
                     <ion-icon class="align-text-bottom" name="chatbox-outline"></ion-icon>
                     Commenter
                 </a>
-                <button class="share-button btn btn-light border-0" data-toggle="modal" data-target="#share-modal">
+                <button class="share-button btn btn-light border-0" data-link="{{ $link ?? route('post.show', $post->id)}}" data-toggle="modal" data-target="#share-modal" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
                     <ion-icon class="align-text-bottom" name="share-social-outline"></ion-icon>
                     Partager
                 </button>
@@ -75,15 +94,12 @@ $user = \App\User::select(['first_name', 'last_name', 'avatar'])->findOrFail($po
                 @csrf
                 <div class="container px-0">
                     <div class="row no-gutters">
-                        <div class="col-1 text-center">
+                        <div class="col-lg-1 col-2 text-center">
                             <img class="rounded-circle" height="35" width="35"
                                  src="{{ auth()->user()->getAvatar(auth()->id()) }}" alt="">
                         </div>
-                        <div class="col-9">
+                        <div class="col-lg-11 col-10 px-2 align-self-center">
                             <input name="message" class="form-control" type="text" placeholder="Votre message">
-                        </div>
-                        <div class="col-2 text-center">
-                            <button class="btn text-primary" type="submit">Publier</button>
                         </div>
                     </div>
                 </div>
@@ -91,3 +107,7 @@ $user = \App\User::select(['first_name', 'last_name', 'avatar'])->findOrFail($po
         </div>
     </div>
 </div>
+
+@section('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+@endsection

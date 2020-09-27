@@ -73,17 +73,18 @@ class ProjectController extends Controller
     public function store(StoreProject $request)
     {
         $project = new Project();
-        $project->title = $request->title;
-        $project->description = $request->description;
-        $project->deadline = Carbon::createFromFormat('d/m/Y', $request->deadline)->format('Y-m-d');
-        $project->colour = $request->colour ?? '#4299e1';
-        $project->private = $request->private;
+        $project->title = $request->get('title');
+        $project->description = $request->get('description');
+        $project->deadline = Carbon::createFromFormat('d/m/Y', $request->get('deadline'))->format('Y-m-d');
+        $project->colour = $request->get('colour') ?? '#4299e1';
+        $project->private = $request->get('private');
+        $project->type = $request->get('type');
         $project->user_id = auth()->id();
         $project->created_at = now();
         $project->save();
 
-        if($request->filled('participants')) {
-            foreach ($request->participants as $participants) {
+        if($request->filled('participants') || !empty($request->get('participants'))) {
+            foreach ($request->get('participants') as $participants) {
                 $participant = new ProjectUser();
                 $participant->user_id = $participants;
                 $participant->project_id = $project->id;
@@ -92,7 +93,7 @@ class ProjectController extends Controller
             }
         }
 
-        $participants = collect($request->participants)->map(function($participant) {
+        $participants = collect($request->participants)->map(static function($participant) {
             return User::find($participant);
         });
 
