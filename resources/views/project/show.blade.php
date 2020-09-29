@@ -7,6 +7,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/locales-all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/bootstrap/main.min.js"></script>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    @if($project->finish === 1)
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.6/css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.6/themes/krajee-svg/theme.css" media="all" rel="stylesheet" type="text/css" />
+    @endif
     <style>
         .fc .fc-row .fc-content-skeleton td.alert.alert-info {
             background: 0 0 !important;
@@ -235,6 +243,15 @@
             content: "";
             background-color: rgba(0,0,0,0.1)
         }
+
+        .spin {
+            -webkit-animation:spin 4s linear infinite;
+            -moz-animation:spin 4s linear infinite;
+            animation:spin 4s linear infinite;
+        }
+        @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+        @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+        @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
     </style>
 @endsection
 
@@ -258,8 +275,8 @@
         </x-section>
 
         <!-- Stepper de l'expertise -->
-        <x-section class="mb-3">
-            @if($project->type === 1)
+        @if($project->type === 1)
+            <x-section class="mb-3">
                 <div class="steps">
                     <!-- Horizontal Steppers -->
                     <div class="row">
@@ -271,23 +288,23 @@
                                 <!-- First Step -->
                                 <li class="completed">
                                     <a href="#!">
-                                        <span class="circle">1</span>
+                                        <span class="circle"><ion-icon class="align-text-top h5" name="checkmark-outline"></ion-icon></span>
                                         <span class="label">Demande d'expertise</span>
                                     </a>
                                 </li>
 
                                 <!-- Second Step -->
-                                <li class="active">
+                                <li class="{{ $project->finish === 1 ? 'completed' : 'active' }}">
                                     <a href="#!">
-                                        <span class="circle">2</span>
+                                        <span class="circle">{!! $project->finish === 1 ? '<ion-icon class="align-text-top h5" name="checkmark-outline"></ion-icon>' : '<ion-icon class="spin align-text-top h5" name="sync-outline"></ion-icon>' !!}</span>
                                         <span class="label">Expertise en cours</span>
                                     </a>
                                 </li>
 
                                 <!-- Third Step -->
-                                <li class="warning">
+                                <li class="{{ $project->finish === 1 ? 'completed' : 'warning' }}">
                                     <a href="#!">
-                                        <span class="circle">3</span>
+                                        <span class="circle"><ion-icon class="align-text-top h5" name="checkmark-outline"></ion-icon></span>
                                         <span class="label">Expertise terminée</span>
                                     </a>
                                 </li>
@@ -298,13 +315,37 @@
                         </div>
                     </div>
                 </div>
-            @endif
-        </x-section>
+            </x-section>
+        @endif
 
-        <x-submit-post :action="route('project.postStore', $project->id)"></x-submit-post>
+        @if($project->type === 1 && $project->finish === 1 && $project->user_id !== auth()->id())
+            <x-section>
+                <div class="">
+                    <div class="text-center">
+                        <h4>Donner un avis sur l'expert</h4>
+                    </div>
+                    @if(\App\Rating::where('expert_id', '=', $project->user_id)->where('rated_by', '=', auth()->id())->count() === 0)
+                        <x-form :action="route('expert.ratingExpert', $project->user_id)">
+                            <input id="rating" name="rating" class="kv-ltr-theme-svg-star rating-loading" value="1" dir="ltr" data-size="md">
+                            <x-input label="Description (optionnel)" name="description" placeholder="Expertise..."></x-input>
+                            <x-submit>Valider</x-submit>
+                        </x-form>
+                    @else
+                        <div class="mt-3">
+                            <x-alert type="success">Vous avez déjà donné une note à cette expert</x-alert>
+                        </div>
+                    @endif
+                </div>
+            </x-section>
+        @elseif($project->type === 1 && $project->finish === 1 && $project->user_id === auth()->id())
+            <div class="mt-3">
+                <x-alert type="success">Expertise terminée</x-alert>
+            </div>
+        @else
+            <x-submit-post :action="route('project.postStore', $project->id)"></x-submit-post>
 
-        <x-post-list :model="$posts"></x-post-list>
-
+            <x-post-list :model="$posts"></x-post-list>
+        @endif
     </x-container>
 
     <x-right-sidebar>
@@ -319,7 +360,7 @@
 
             <h6 class="title__section text-uppercase text-secondary mb-3">Participants</h6>
             @foreach($project->users as $participant)
-                <div class="row menu-item">
+                <div class="row menu-item position-relative">
                     <div class="col-2 px-0">
                         <img class="rounded-circle" style="height: 2rem" src="{{ \App\User::getAvatar($participant->id) }}" alt="">
                     </div>
@@ -332,6 +373,13 @@
                     <a class="position-absolute h-100 w-100" href="{{ route('chat.createConversation', $participant->id) }}"></a>
                 </div>
             @endforeach
+
+            @if($project->type === 1 && $project->finish === 0)
+                <h6 class="title__section text-uppercase text-secondary mb-3">Actions</h6>
+                <x-form :action="route('expert.finishExpertise', $project->id)">
+                    <button type="submit" class="btn btn-danger btn-block">Finir l'expertise</button>
+                </x-form>
+            @endif
         </div>
     </x-right-sidebar>
 
@@ -372,6 +420,21 @@
 @endsection
 
 @section('script')
+    @if($project->finish === 1)
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.6/js/star-rating.min.js" type="text/javascript"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.6/js/locales/fr.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.6/themes/krajee-svg/theme.js"></script>
+        <script>
+            $(document).ready(function(){
+                $('.kv-ltr-theme-svg-star').rating({
+                    hoverOnClear: false,
+                    theme: 'krajee-svg',
+                    language: 'fr'
+                });
+            });
+        </script>
+    @endif
+
     <!-- Preview d'une image -->
     <script>
         function displayPreview(input) {

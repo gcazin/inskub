@@ -40,8 +40,12 @@
                         {{ $notification->data['message'] }}
                     </div>
                     <div class="col-4 text-right">
-                        <a href="" class="btn btn-primary">Accepter</a>
-                        <a href="" class="btn btn-outline-danger">Refuser</a>
+                        @if(\App\RequestExpertise::where('sender_id', '=', $notification->data['sender_id'])->where('expert_id', '=', auth()->id())->get('accepted') === 0)
+                            <a href="{{ route('expert.acceptExpertise', $notification->id) }}" class="btn btn-primary">Accepter</a>
+                            <a href="" class="btn btn-outline-danger">Refuser</a>
+                        @else
+                            <span class="badge badge-success">Expertise acceptée</span>
+                        @endif
                     </div>
                 </div>
             @empty

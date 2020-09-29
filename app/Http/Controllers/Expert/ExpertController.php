@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Project\ProjectController;
 use App\Http\Requests\StoreProject;
 use App\Notifications\RequestingExpertise;
+use App\Project;
+use App\Rating;
 use App\RequestExpertise;
 use App\User;
 use App\UserSkillPivot;
@@ -37,7 +39,7 @@ class ExpertController extends Controller
 
         $user->notify(new RequestingExpertise($expertise));
 
-        return redirect()->route('notification.index');
+        return redirect()->route('index')->with('requestExpertise', 'Votre demande d\'expertise à bien été envoyé');
     }
 
     public function acceptExpertise($id)
@@ -116,5 +118,34 @@ class ExpertController extends Controller
         }
 
         return view('expert.index', compact('result'));
+    }
+
+    public function finishExpertise($id)
+    {
+        $project = Project::find($id);
+        $project->finish = 1;
+        $project->update();
+
+        return redirect()->route('project.index');
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param                          $id
+     */
+    public function ratingExpert(Request $request, $id): \Illuminate\Http\RedirectResponse
+    {
+        $expert = User::find($id);
+
+        $rating = new Rating();
+
+        $rating->rating = $request->rating;
+        $rating->description =  $request->description ?? null;
+        $rating->expert_id = $expert->id;
+        $rating->rated_by = auth()->id();
+
+        $rating->save();
+
+        return redirect()->back();
     }
 }

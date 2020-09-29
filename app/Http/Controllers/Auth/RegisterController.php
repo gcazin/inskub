@@ -44,6 +44,7 @@ class RegisterController extends Controller
      * Get a validator for an incoming registration request.
      *
      * @param  array  $data
+     *
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data): \Illuminate\Contracts\Validation\Validator
@@ -54,10 +55,10 @@ class RegisterController extends Controller
             'first_name' => ['required', 'string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'department' => ['integer'],
+            'department' => [''],
             'tel' => [''],
             'adresse' => [''],
-            'company' => ['integer'],
+            'company' => [''],
         ]);
     }
 
@@ -65,10 +66,18 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return User|void
+     *
+     * @return void
      */
     protected function create(array $data)
     {
+        /**
+         * TODO: Mettre une interdiction sur le role d'admin lors de l'inscription
+         */
+        /*if((int) $data['role_id'] === 1) {
+            return redirect();
+        }*/
+
         $user = new User();
         $user->role_id = $data['role_id'];
         $user->first_name = $data['first_name'];

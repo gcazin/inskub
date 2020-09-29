@@ -12,9 +12,13 @@ class TodoSeeder extends Seeder
      */
     public function run()
     {
-        factory(Todo::class, 40)->create()->each(function ($todo) {
-            $todo->assigned()->save(factory(\App\User::class)->make());
-            $todo->project()->save(factory(\App\User::class)->make());
+        $project = factory(\App\Project::class)->create();
+
+
+        factory(Todo::class, 40)->create()->each(function ($todo) use($project) {
+            $todo->assigned()->save(factory(\App\User::class)->create([
+                'project_id' => $project->id
+            ]));
         });
     }
 }

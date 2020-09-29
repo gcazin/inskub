@@ -26,9 +26,11 @@
             <x-post :post="$post"></x-post>
         @endif
     @empty
-        <x-alert type="info" icon="information-circle-outline">
-            Personne n'a encore publier dans votre espace projet
-        </x-alert>
+        <div class="mt-3">
+            <x-alert type="info" icon="information-circle-outline">
+                Personne n'a encore publier dans votre espace projet
+            </x-alert>
+        </div>
     @endforelse
 </div>
 

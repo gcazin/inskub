@@ -30,6 +30,8 @@ Route::namespace('Expert')->name('expert.')->group(function() {
         Route::post('/search', 'ExpertController@searchExperts');
         Route::post('/{id}/request-expertise', 'ExpertController@requestExpertise')->name('request');
         Route::get('/{id}/accept-expertise', 'ExpertController@acceptExpertise')->name('acceptExpertise');
+        Route::post('/{id}/finish-expertise', 'ExpertController@finishExpertise')->name('finishExpertise');
+        Route::post('/{id}/rating-expert', 'ExpertController@ratingExpert')->name('ratingExpert');
     });
 });
 

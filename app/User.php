@@ -108,4 +108,9 @@ class User extends \Illuminate\Foundation\Auth\User
         return $this->hasMany(UserSkillPivot::class, 'id');
     }
 
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class, 'expert_id');
+    }
+
 }

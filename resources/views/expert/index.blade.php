@@ -1,5 +1,10 @@
 @extends('layouts.base', ['full_width' => false])
 
+@section('head')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.6/css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.6/themes/krajee-svg/theme.css" media="all" rel="stylesheet" type="text/css" />
+@endsection
+
 @section('title')
     Résultat de la recherche des experts
 @endsection
@@ -18,7 +23,11 @@
                 <div class="d-flex flex-column col-5 border-left border-primary" style="border-left-width: 2px !important;">
                     <div>
                         <p class="text-primary">Avis</p>
-                        <p class="text-muted font-italic">Cet expert n'a pas encore d'avis</p>
+                        @if($expert->ratings->count() >= 3)
+                            <p><input id="rating" name="input-3" value="{{ $expert->ratings->avg('rating') }}" class="kv-ltr-theme-svg-star rating-loading" data-size="sm"></p>
+                        @else
+                            <p class="text-muted font-italic">Cet expert n'a pas encore assez d'avis</p>
+                        @endif
                     </div>
                     <div class="mt-auto">
                         <x-form :action="route('expert.request', $expert->id)">
@@ -32,4 +41,21 @@
         @endforelse
     </x-container>
     <x-right-sidebar-message></x-right-sidebar-message>
+@endsection
+
+@section('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.6/js/star-rating.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.6/js/locales/fr.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.6/themes/krajee-svg/theme.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.kv-ltr-theme-svg-star').rating({
+                displayOnly: true,
+                step: 0.5,
+                hoverOnClear: false,
+                theme: 'krajee-svg',
+                language: 'fr'
+            });
+        });
+    </script>
 @endsection
