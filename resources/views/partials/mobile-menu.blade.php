@@ -19,7 +19,7 @@
             </a>
         </div>
         <div class="col">
-            <a href="{{ route('expert.index') }}" class="{{ (request()->is('expert*')) ? 'text-primary' : 'text-dark ' }}">
+            <a href="{{ route('expert.search') }}" class="{{ (request()->is('expert*')) ? 'text-primary' : 'text-dark ' }}">
                 <ion-icon class="h4 align-top mr-1" name="people-outline"></ion-icon>
                 <span class="d-block text-muted" style="font-size: .750rem;">Expert</span>
             </a>
