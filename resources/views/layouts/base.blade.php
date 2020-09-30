@@ -29,17 +29,40 @@
             @auth
         </div>
     @endauth
+
 </div>
 
 @auth
     @include('partials.mobile-menu')
 @endauth
-<script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
-<script src="{{ asset('js/index.js') }}"></script>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js"></script>
-@livewireScripts
+<script type="module" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.16/js/bootstrap-select.min.js"></script>
+<!-- Script -->
+<script>
+    let shareButton = document.querySelectorAll('.share-button');
+
+    let i;
+
+    document.querySelectorAll('.share-button').forEach(item => {
+        item.addEventListener('click', e => {
+            e.target.innerText = "Lien copié"
+
+            setTimeout(function() {
+                e.target.innerHTML = "<ion-icon class=\"align-text-bottom\" name=\"share-social-outline\"></ion-icon> Partager"
+            }, 2500);
+        })
+    })
+
+    function changeText(e) {
+        e.target.innerText = "Lien copié"
+    }
+</script>
 <script>
     $(document).ready(function() {
         let search = $('#search-input')
@@ -57,6 +80,6 @@
     })
 
 </script>
+@livewireScripts
 @yield('script')
-</body>
 </html>

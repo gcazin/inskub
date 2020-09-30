@@ -11,7 +11,7 @@
 
 @section('content')
     <x-container>
-        <h2 class="text-black-50 mb-4">Rechercher parmis les experts</h2>
+        <x-header title="Rechercher parmis les experts"></x-header>
 
         <x-section>
             <x-form :action="route('expert.search')">

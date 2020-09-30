@@ -48,7 +48,7 @@
                     <span class="text-muted">Prendre contact</span>
                 </div>
                 <div class="col-lg-6">
-                    <a class="btn btn-primary" href="#">Postuler</a>
+                    <a target="_blank" class="btn btn-primary" href="mailto:{{ \App\User::find($formation->user_id)->email }}">Postuler</a>
                 </div>
             </div>
 

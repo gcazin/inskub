@@ -24,6 +24,7 @@ $factory->define(User::class, function (Faker $faker) {
         'first_name' => $faker->firstName,
         'email' => $faker->email,
         'password' => Hash::make('secret'),
-        'avatar' => 'https://randomuser.me/api/portraits/'.array_rand(array_flip(['men', 'women']), 1).'/'.random_int(1,99).'.jpg'
+        'avatar' => 'https://randomuser.me/api/portraits/'.array_rand(array_flip(['men', 'women']), 1).'/'.random_int(1,99).'.jpg',
+        'created_at' => $faker->date()
     ];
 });

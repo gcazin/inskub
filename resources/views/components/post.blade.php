@@ -43,8 +43,24 @@ $extension = File::extension($post->media)
                             <x-form :action="route('post.destroy', $post->id)" method="DELETE">
                                 <button type="submit" class="dropdown-item text-danger">Supprimer</button>
                             </x-form>
+                        @else
+                            <button type="button" class="dropdown-item" data-toggle="modal" data-target=".post-report">Signaler</button>
                         @endif
                     </div>
+
+                    <x-modal title="Signaler un post" name="post-report">
+                        <x-form :action="route('post.report', $post->id)">
+                            <div class="form-group">
+                                <label for="reason_id#{{ $post->id }}">Motif du signalement</label>
+                                <select class="form-control" name="reason_id" id="reason_id#{{ $post->id }}">
+                                    @foreach(\App\Reason::all() as $reason)
+                                        <option value="{{ $reason->id }}">{{ $reason->title }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <x-submit>Signaler le post</x-submit>
+                        </x-form>
+                    </x-modal>
                 </div>
             </div>
         </div>
@@ -107,7 +123,3 @@ $extension = File::extension($post->media)
         </div>
     </div>
 </div>
-
-@section('script')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
-@endsection

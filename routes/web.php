@@ -44,6 +44,7 @@ Route::namespace('Post')->name('post.')->group(function() {
         Route::put('/edit/{id}', 'PostController@update')->name('update');
         Route::delete('/delete/{id}', 'PostController@destroy')->name('destroy');
         Route::post('/{id}', 'ReplyPostController@store')->name('reply');
+        Route::post('/{id}/report-post', 'PostController@report')->name('report');
     });
 });
 
@@ -173,4 +174,5 @@ Route::namespace('Follow')->group(function() {
 // Administration
 Route::namespace('Admin')->group(function() {
     Route::get('/admin', 'AdminController@index')->name('admin.index');
+    Route::get('/admin/reports', 'AdminController@reports')->name('admin.reports');
 });

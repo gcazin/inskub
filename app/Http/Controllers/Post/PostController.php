@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePost;
+use App\Notifications\ReportingPost;
 use App\Post;
+use App\ReportPost;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -106,5 +109,20 @@ class PostController extends Controller
         $post->delete();
 
         return redirect()->back();
+    }
+
+    public function report(Request $request, $id)
+    {
+        $report = new ReportPost();
+        $report->reason_id = $request->reason_id;
+        $report->informant_id = auth()->id();
+        $report->post_id = $id;
+        $report->save();
+
+        $user = \App\User::where('role_id', '=', 1)->first();
+
+        $user->notify(new ReportingPost($report));
+
+        return redirect()->back()->with('thanks_report', 'Merci pour votre signalement, nous allons traiter votre demande');
     }
 }

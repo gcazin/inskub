@@ -1,10 +1,14 @@
-@extends('layouts.base', ['full' => true])
+@extends('layouts.base')
 
 @section('title')
-Accueil
+    Accueil
 @endsection
 
 @section('content')
+    @if(session()->has('thanks_report'))
+        <x-toast title="Signalement envoyé" type="success" name="thanks_report">Merci de votre signalement</x-toast>
+    @endif
+
     <x-container>
         <x-submit-post :action="route('index')"></x-submit-post>
         <x-post-list :model="$posts"></x-post-list>
@@ -14,22 +18,6 @@ Accueil
 @endsection
 
 @section('script')
-    <script>
-        let shareButton = document.querySelector('.share');
-
-        shareButton.addEventListener('click', () => {
-            try {
-                navigator.share({
-                    title: 'WebShare API Demo',
-                    url: 'https://codepen.io/ayoisaiah/pen/YbNazJ'
-                }).then(() => {
-                    console.log('Thanks for sharing!');
-                })
-            } catch (e) {
-                alert(e)
-            }
-        });
-    </script>
     <script>
         function displayPreview(input) {
             if (input.files && input.files[0]) {
@@ -47,5 +35,10 @@ Accueil
         $("#img-input").change(function(){
             displayPreview(this);
         });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.toast').toast('show')
+        })
     </script>
 @endsection

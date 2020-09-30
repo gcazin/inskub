@@ -11,7 +11,7 @@
 
 @section('content')
     <x-container>
-        <h2 class="text-black-50 mb-4">Liste des experts</h2>
+        <x-header title="Liste des experts"></x-header>
         @forelse($result as $expert)
             <div class="d-flex px-3 py-4 bg-white shadow-sm mb-3 rounded">
                 <div class="col-2"><img src="{{ \App\User::getAvatar($expert->id) }}" style="height: 80px" class="rounded-circle" alt=""></div>

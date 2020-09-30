@@ -39,7 +39,7 @@
             @if(auth()->user()->role_id === 1)
                 <div class="d-flex flex-column mt-3">
                     <h6 class="title__section text-uppercase text-secondary px-3 mb-3">Projet</h6>
-                    <a class="menu-item" href="">
+                    <a class="menu-item" href="{{ route('admin.index') }}">
                         <ion-icon class="h4 align-top mr-1" name="options-outline"></ion-icon> Administration
                     </a>
                 </div>
