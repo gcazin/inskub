@@ -4,7 +4,7 @@
 
     @if ($errors->any())
         <x-alert type="danger mb-3">
-            <p class="d-inline">Des erreurs se sont produites:</p>
+            <x-slot name="title">Des erreurs se sont produites:</x-slot>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>

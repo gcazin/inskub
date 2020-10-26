@@ -1,4 +1,4 @@
-@extends('layouts.base', ['full_width' => false])
+@extends('layouts.base')
 
 @section('title')
     Découvrir
@@ -6,12 +6,24 @@
 
 @section('content')
 
+    <x-header>
+        <x-slot name="title">Découvrir</x-slot>
+        <x-slot name="subtitle">Espace permettant à quiconque de pouvoir créer et partager ses projets</x-slot>
+        <x-slot name="content">
+            <div class="row">
+                <div class="col-10">
+                    <input id="search-users" type="search" placeholder="Rechercher parmis les utilisateurs..." class="form-control" name="search">
+                </div>
+                <div class="col text-center">
+                    <button type="button" class="btn btn-link">Recherche avancée</button>
+                </div>
+            </div>
+        </x-slot>
+    </x-header>
+    <!-- Offres d'emploi, proposer une formation etc. -->
     <x-container>
-        <x-header title="Découvrir"></x-header>
-        <!-- Offres d'emploi, proposer une formation etc. -->
-        <div class="card">
-            <div class="card-body">
-            @if(auth()->user()->role_id === 1) <!-- Admin -->
+        <div class="card-body">
+            {{--@if(auth()->user()->role_id === 1) <!-- Admin -->
                 <a class="block {{ (request()->is('admin')) ? 'active' : '' }}" href="{{ route('admin.index') }}">
                     Administration
                 </a>
@@ -28,45 +40,56 @@
                 <a class="btn btn-primary btn-block" href="{{ route('formation.create') }}">
                     <ion-icon class="align-top h4 mb-0" name="add-outline"></ion-icon> Proposer une formation
                 </a>
-                @endif
-            </div>
+                @endif--}}
         </div>
 
         <!-- Parties utilisateurs -->
-        @foreach($roles as $role)
-            <div class="my-3">
-                <div class="row">
-                    <div class="col">
-                        <h1 class="text-xl">{{ $role->display_name }}</h1>
-                    </div>
-                    <div class="col text-right">
-                        <a href="{{ route('discover.all', $role->id) }}" class="btn btn-outline-primary">Voir tout</a>
-                    </div>
-                </div>
-                <div class="d-flex overflow-auto pb-4">
-                    @foreach($role->users->shuffle()->take(10) as $member)
-                        <div class="col-lg-3 col-6 card border shadow-sm text-center mr-2">
-                            <div class="flex justify-center py-4">
-                                <a href="{{ route('user.profile', $member->id) }}">
-                                    <img style="height: 80px" class="rounded-circle border border-light" src="{{ $member->getAvatar($member->id) }}" alt="">
-                                </a>
-                            </div>
-                            <a href="{{ route('user.profile', $member->id) }}" class="pb-4 text-blue-800 hover:underline focus:underline">{{ $member->first_name }} {{ $member->last_name }}</a>
-                            <p class="pb-4 text-gray-600">
-                                {{ $member->followers()->count() }} abonnés
-                            </p>
-                            @if($member->id !== auth()->id())
-                                <p class="pb-4">
-                                    <livewire:follow-user :member="$member->id">
-                                </p>
-                            @endif
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        @endforeach
+        <div id="users-list" class="row mb-4">
+            @foreach($users->items() as $user)
+                <x-user-card :user="$user"></x-user-card>
+            @endforeach
+        </div>
+
+        <x-load-more-button></x-load-more-button>
 
     </x-container>
+@endsection
 
-    <x-right-sidebar-message></x-right-sidebar-message>
+@section('script')
+    <script type="text/javascript">
+        let input = $('#search-users')
+
+        $(input).keyup(function() {
+            searchUsers()
+        })
+
+        function searchUsers(){
+            $.ajax({
+                type : 'GET',
+                url: "{{ config('app.url') }}/discover/search?q=" + input.val(),
+                success : function(data) {
+                    if (data.html.length === 0) {
+                        $('#users-list').html(data.html);
+                        $('#load-more').text("Aucun résultat").attr('disabled', true)
+                    } else {
+                        if(data.initial) {
+                            $('#load-more').html("Voir plus").attr('disabled', false)
+                            $('#users-list').html(data.html);
+                        } else {
+                            console.log(data.html.length)
+                            let plural = data.html.length <= 1 ? '' : 's'
+
+                            $('#load-more').text(data.html.length + " résultat" + plural).attr('disabled', true)
+                            $('#users-list').html(data.html);
+                        }
+                    }
+                },
+            })
+        }
+    </script>
+    <script type="module">
+        import { loadMoreData } from '{{ asset('js/ajax.js') }}'
+
+        loadMoreData("{{ config('app.url') }}/discover", "users-list")
+    </script>
 @endsection

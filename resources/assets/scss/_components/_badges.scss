@@ -1,0 +1,10 @@
+@mixin badge-variant($bg) {
+    color: $bg;
+    background-color: rgba($bg, 0.1);
+}
+
+@each $color, $value in $theme-colors {
+    .badge-#{$color} {
+        @include badge-variant($value);
+    }
+}

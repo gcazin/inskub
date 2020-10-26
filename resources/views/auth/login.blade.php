@@ -1,16 +1,11 @@
 @extends('layouts.base', ['full' => true])
 
 @section('content')
-    <div class="row position-relative" style="height: 100vh">
-        <div class="position-relative px-0 d-none d-lg-block col-lg-6" style="background: rgba(129, 183, 255, 0.16)">
-            <div class="container w-75 h-100 d-flex flex-column align-items-center justify-content-center py-5">
-                <img class="w-75" src="{{ asset('storage/images/authentication.svg') }}" alt="">
-            </div>
-        </div>
-        <div class="col-lg-6 py-4 d-flex align-items-center justify-content-center" id="container-login-form">
-            <div class="container rounded-lg" id="login-form" style="width: 85%">
+    <div id="particles-js"></div>
+    <div class="row position-absolute w-100" style="left: 50%; top: 50%; transform: translate(-50%, -50%)">
+        <div class="col-lg-6 col-12 mx-auto py-4 shadow-sm rounded-lg" id="container-login-form">
+            <div class="container" id="login-form">
                 <h1 class="font-weight-light mb-1 mb-lg-4 mt-3 mt-lg-0 d-none d-lg-block">Connexion</h1>
-                <h3 class="font-weight-light mb-1 mb-lg-4 mt-3 mt-lg-0 d-lg-none">Connexion</h3>
                 <form action="{{ route('login') }}" method="post">
                     @csrf
 

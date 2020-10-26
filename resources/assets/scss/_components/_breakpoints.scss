@@ -1,0 +1,14 @@
+@include media-breakpoint-up(lg) {
+    .container-mobile {
+        width: 50%;
+    }
+}
+
+@include media-breakpoint-up(lg) {
+    #login-form {
+        box-shadow: none;
+    }
+    #container-login-form {
+        background: $white !important;
+    }
+}

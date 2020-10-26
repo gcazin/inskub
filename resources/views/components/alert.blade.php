@@ -1,24 +1,31 @@
-<div class="alert alert-{{ $type }} rounded-lg mb-0">
-    <ion-icon
-        class="align-text-top h5 mb-0 mr-1"
-        name=
-        @switch($type)
-        @case('primary')
+<div class="alert alert-{{ $type }} d-flex align-items-center rounded-lg px-3 py-3">
+    <div class="icon-container mx-3">
+        <ion-icon
+            class="align-text-top h4 mb-0"
+            name=
+            @switch($type)
+            @case('primary')
 
-        @break;
-@case('info')
-            'information-circle-outline'
             @break;
-            @case('warning')
-            'alert-circle-outline'
-            @break
+        @case('info')
+        'information-circle-outline'
+        @break;
+        @case('warning')
+        'alert-circle-outline'
+        @break
         @case('danger')
-            'close-circle-outline'
-            @break
+        'close-circle-outline'
+        @break
         @case('success')
-            'checkmark-circle-outline'
-@break
+        'checkmark-circle-outline'
+        @break
 
         @endswitch></ion-icon>
-    {{ $slot }}
+    </div>
+    <div class="col">
+        <p class="h6 mb-0">{{ $title }}</p>
+        @if(isset($description))
+            <p class="mb-0 mt-2 text-muted">{{ $description ?? null }}</p>
+        @endif
+    </div>
 </div>

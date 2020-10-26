@@ -20,9 +20,27 @@
                 <ion-icon class="h4 align-top mr-1" name="list-outline"></ion-icon> Projet
             </a>
             @if(auth()->user()->role_id === 2 || auth()->user()->role_id === 6)
-                <a class="menu-item {{ request()->is('expert*') ? 'active' : null }}" href="{{ route('expert.search') }}">
-                    <ion-icon class="h4 align-top mr-1" name="people-outline"></ion-icon> Expert
+            <a class="menu-item {{ request()->is('expert*') ? 'active' : null }}" href="{{ route('expert.search') }}" id="button-sinistre">
+                <ion-icon class="h4 align-top mr-1" name="people-outline"></ion-icon> Expert
+            </a>
+            @endif
+            @if(auth()->user()->role_id === 3)
+                <a class="menu-item {{ request()->is('expert*') ? 'active' : null }}" href="#" id="button-sinistre">
+                    <ion-icon class="h4 align-top mr-1" name="people-outline"></ion-icon> Sinistre
                 </a>
+                <div id="dropdown-sinistre">
+                    <div class="d-flex flex-column">
+                        <a class="menu-item pl-5 {{ request()->is('expert*') ? 'active' : null }}" href="">
+                            <ion-icon class="h4 align-top mr-1" name="help-circle-outline"></ion-icon> Demande d'expertise
+                        </a>
+                        <a class="menu-item pl-5 {{ request()->is('expert*') ? 'active' : null }}" href="">
+                            <ion-icon class="h4 align-top mr-1" name="folder-open-outline"></ion-icon> Dossier en cours
+                        </a>
+                        <a class="menu-item pl-5 {{ request()->is('expert*') ? 'active' : null }}" href="">
+                            <ion-icon class="h4 align-top mr-1" name="checkmark-circle-outline"></ion-icon> Dossier clos
+                        </a>
+                    </div>
+                </div>
             @endif
             <a class="menu-item" href="{{ route('discover') }}">
                 <ion-icon class="h4 align-top mr-1" name="apps-outline"></ion-icon> Découvrir

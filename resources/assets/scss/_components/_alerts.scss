@@ -1,0 +1,21 @@
+@mixin alert-variant($background, $border, $color) {
+    background: $white;
+    border: 1px solid $border;
+    color: lighten($color, 10%);
+    border-left: 7px solid $border;
+    margin-bottom: $spacer;
+
+    hr {
+        border-top-color: darken($border, 5%);
+    }
+
+    .alert-link {
+        color: darken($color, 10%);
+    }
+}
+
+@each $color, $value in $theme-colors {
+    .alert-#{$color} {
+        @include alert-variant(theme-color-level($color, $alert-bg-level), theme-color-level($color, $alert-border-level), theme-color-level($color, $alert-color-level));
+    }
+}

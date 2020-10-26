@@ -260,19 +260,175 @@
 @endsection
 
 @section('content')
+    <x-header>
+        <x-slot name="title">Projet {{ $project->title }}</x-slot>
+        <x-slot name="subtitle">{{ $project->description }}</x-slot>
+        <x-slot name="content">
+            <x-submit-post :action="route('project.show', $project->id)"></x-submit-post>
+        </x-slot>
+    </x-header>
+
     <x-container>
 
-        <x-section class="mb-3">
-            <div class="row mb-3">
-                <div class="col">
-                    <h4 class="">Projet <span class="text-primary">{{ $project->title }}</span></h4>
-                </div>
-                <div class="col text-right">
-                    A rendre {{ \Carbon\Carbon::parse($project->deadline)->diffForHumans() }}
-                </div>
+        <div class="row">
+
+            <div class="col">
+                <x-section>
+                    <div class="accordion">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col">
+                                <span class="text-uppercase text-secondary">Calendrier</span>
+                            </div>
+                            <div class="col text-right" style="font-size: 0.875rem">
+                                <button class="btn btn-link collapsed px-0" data-toggle="collapse" data-target="#showCalendar" aria-expanded="true" aria-controls="collapseOne">
+                                    Afficher
+                                </button>
+                            </div>
+                        </div>
+                        <div class="show-calendar">
+                            <div id="showCalendar" class="collapse" data-parent=".accordion">
+                                <div id="calendar" class="mt-3" style="height: 200px"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if($project->type === 1 && $project->finish === 0)
+                        <h6 class="title__section text-uppercase text-secondary mb-3">Actions</h6>
+                        <x-form :action="route('expert.finishExpertise', $project->id)">
+                            <button type="submit" class="btn btn-danger btn-block">Finir l'expertise</button>
+                        </x-form>
+                    @endif
+                </x-section>
             </div>
-            <p class="text-muted h5">{{ $project->description }}</p>
-        </x-section>
+
+            <div class="col">
+                <x-section>
+                    <div class="row no-gutters align-items-center">
+                        <div class="col">
+                            <span class="text-uppercase text-secondary">Tâches</span>
+                        </div>
+                        <div class="col text-right" style="font-size: 0.875rem">
+                            <button class="btn btn-link collapsed px-0" data-toggle="collapse" data-target="#showTodos" aria-expanded="true" aria-controls="collapseThree">
+                                Afficher
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="show-todos">
+                        <div id="showTodos" class="collapse" data-parent=".show-todos">
+                            @forelse(\App\Todo::where('project_id', $project->id)->get() as $todo)
+                                <div class="container-fluid mt-3 mx-0 px-0">
+                                    <div class="row">
+                                        <div class="col-2 h5 pb-3 border-right text-center">
+                                            {{ \Carbon\Carbon::parse($todo->deadline)->day }}
+                                            <p class="text-muted">{{ \Carbon\Carbon::parse($todo->deadline)->monthName }}</p>
+                                        </div>
+                                        <div class="col-10 pb-3 pl-4 position-relative">
+                                            <div class=" h5 bg-white border p-3 rounded">
+                                                <p class="h5">{{ $todo->title }}</p>
+                                                <p class="text-muted">{{ $todo->description }}</p>
+                                                <small class="text-muted">
+                                                    <ion-icon class="align-text-bottom" name="person-outline"></ion-icon>
+                                                    Assigné à
+                                                    <img
+                                                        src="{{ \App\User::getAvatar($todo->assigned_to) }}"
+                                                        class="rounded-circle ml-1" style="height: 20px;width: 20px"
+                                                        alt="">
+                                                    {{ App\User::find($todo->assigned_to)->first_name }} {{ \App\User::find($todo->assigned_to)->last_name }}
+                                                </small>
+                                            </div>
+                                            <div class="position-absolute bg-transparent rounded-circle" style="height: 15px; width: 15px; left: -7px; top: 5px; border: 5px solid #4299e1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="mt-3">
+                                    <x-alert type="warning">
+                                        <x-slot name="title">
+                                            Aucune tâche n'a encore été ajouté
+                                        </x-slot>
+                                    </x-alert>
+                                    <x-button type="primary" size="block">
+                                        <x-slot name="props">
+                                            data-toggle="modal" data-target=".new-todo"
+                                        </x-slot>
+                                        Ajouter votre première tâche
+                                    </x-button>
+                                </div>
+                            @endforelse
+                            <div class="text-right">
+                                <x-button type="primary" name="new-todo">
+                                    <x-slot name="props">
+                                        data-toggle="modal" data-target=".new-todo"
+                                    </x-slot>
+                                    Ajouter une tâche
+                                </x-button>
+                            </div>
+                        </div>
+                    </div>
+                </x-section>
+            </div>
+
+            @if($project->participants->count() > 0)
+                <div class="col">
+                    <x-section>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col">
+                                <span class="text-uppercase text-secondary">Participants</span>
+                            </div>
+                            <div class="col text-right" style="font-size: 0.875rem">
+                                <button class="btn btn-link collapsed px-0" data-toggle="collapse" data-target="#showParticipants" aria-expanded="true" aria-controls="collapseTwo">
+                                    Afficher
+                                </button>
+                            </div>
+                        </div>
+                        <div class="show-participants">
+                            <div id="showParticipants" class="collapse" data-parent=".show-participants">
+                                @foreach($project->participants as $participant)
+                                    <div class="row no-gutters align-items-center position-relative mt-3">
+                                        <div class="col-1">
+                                            <img class="rounded-lg" style="height: 2rem" src="{{ auth()->user()->getAvatar($participant->id) }}" alt="">
+                                        </div>
+                                        <div class="col-10">
+                                            <span class="mr-auto text-muted">{{ $participant->user->first_name }} {{ $participant->user->last_name }}</span>
+                                        </div>
+                                        <div class="col-1 text-right">
+                                            <ion-icon name="radio-button-on-outline" class="text-success"></ion-icon>
+                                        </div>
+                                        <a class="position-absolute h-100 w-100" href="{{ route('chat.createConversation', $participant->id) }}"></a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </x-section>
+                </div>
+            @endif
+        </div>
+
+        <x-modal title="Création d'une nouvelle tâche" name="new-todo">
+            <x-form :action="route('project.todo.create', $project->id)">
+                <x-input label="Titre" name="title" placeholder="Mon super titre"></x-input>
+                <x-textarea label="Description" name="description"></x-textarea>
+
+                <div class="form-group">
+                    @foreach($project->participants as $participant)
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="assigned_to" class="custom-control-input" id="customCheck1" value="{{ $participant->user_id }}">
+                            <label class="custom-control-label" for="customCheck1">{{ \App\User::find($participant->user_id)->first_name }} {{ \App\User::find($participant->user_id)->last_name }}</label>
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="form-group">
+                    <label for="deadline">Date de fin</label>
+                    <input type="text" class="form-control" id="deadline" name="deadline" data-toggle="datepicker" autocomplete="off">
+                </div>
+                <input type="hidden" name="project_id" value="{{ $project->id }}">
+
+                <hr>
+                <x-submit>Créer une nouvelle tâche</x-submit>
+            </x-form>
+        </x-modal>
 
         <!-- Stepper de l'expertise -->
         @if($project->type === 1)
@@ -318,72 +474,61 @@
             </x-section>
         @endif
 
-        @if($project->type === 1 && $project->finish === 1 && $project->user_id !== auth()->id())
-            <x-section>
-                <div class="">
-                    <div class="text-center">
-                        <h4>Donner un avis sur l'expert</h4>
-                    </div>
-                    @if(\App\Rating::where('expert_id', '=', $project->user_id)->where('rated_by', '=', auth()->id())->count() === 0)
-                        <x-form :action="route('expert.ratingExpert', $project->user_id)">
-                            <input id="rating" name="rating" class="kv-ltr-theme-svg-star rating-loading" value="1" dir="ltr" data-size="md">
-                            <x-input label="Description (optionnel)" name="description" placeholder="Expertise..."></x-input>
-                            <x-submit>Valider</x-submit>
-                        </x-form>
-                    @else
-                        <div class="mt-3">
-                            <x-alert type="success">Vous avez déjà donné une note à cette expert</x-alert>
+        @if($project->type === 1 && $project->finish === 1)
+            @if($project->user_id !== auth()->id())
+                <x-section>
+                    <div class="">
+                        <div class="text-center">
+                            <h4>Donner un avis sur l'expert</h4>
                         </div>
-                    @endif
+                        @if(\App\Rating::where('expert_id', '=', $project->user_id)->where('rated_by', '=', auth()->id())->count() === 0)
+                            <x-form :action="route('expert.ratingExpert', $project->user_id)">
+                                <input id="rating" name="rating" class="kv-ltr-theme-svg-star rating-loading" value="1" dir="ltr" data-size="md">
+                                <x-input label="Description (optionnel)" name="description" placeholder="Expertise..."></x-input>
+                                <x-submit>Valider</x-submit>
+                            </x-form>
+                        @else
+                            <div class="mt-3">
+                                <x-alert type="success">
+                                    <x-slot name="title">Vous avez déjà donné une note à cette expert</x-slot>
+                                </x-alert>
+                            </div>
+                        @endif
+                    </div>
+                </x-section>
+            @else
+                <div class="mt-3">
+                    <x-alert type="success">
+                        <x-slot name="title">Expertise terminée</x-slot>
+                    </x-alert>
                 </div>
-            </x-section>
-        @elseif($project->type === 1 && $project->finish === 1 && $project->user_id === auth()->id())
-            <div class="mt-3">
-                <x-alert type="success">Expertise terminée</x-alert>
-            </div>
+            @endif
         @else
-            <x-submit-post :action="route('project.postStore', $project->id)"></x-submit-post>
+            @if($posts->count() > 0)
+                <div class="row mb-4">
+                    <div class="col align-self-center">
+                        <span class="text-muted" id="count"></span>
+                    </div>
+                    <div class="col text-right">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Filtrer par
+                            </button>
+                            <div class="dropdown-menu filters" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" style="cursor: pointer" onclick="filterSelection('all')">Voir tout</a>
+                                <a class="dropdown-item" style="cursor: pointer" onclick="filterSelection('images')">Images</a>
+                                <a class="dropdown-item" style="cursor: pointer" onclick="filterSelection('documents')">Documents</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             <x-post-list :model="$posts"></x-post-list>
         @endif
     </x-container>
 
-    <x-right-sidebar>
-        <div class="d-flex flex-column overflow-hidden">
-            <div class="row no-gutters mb-3">
-                <div class="col">
-                    <p class="text-uppercase text-secondary">Calendrier</p>
-                </div>
-                <div class="col text-right" style="font-size: 0.875rem">{{ $project->daysLeft($project) }}</div>
-            </div>
-            <div id="calendar" class="mb-3" style="height: 200px"></div>
-
-            <h6 class="title__section text-uppercase text-secondary mb-3">Participants</h6>
-            @foreach($project->users as $participant)
-                <div class="row menu-item position-relative">
-                    <div class="col-2 px-0">
-                        <img class="rounded-circle" style="height: 2rem" src="{{ \App\User::getAvatar($participant->id) }}" alt="">
-                    </div>
-                    <div class="col-8">
-                        <span class="mr-auto font-weight-bold">{{ $participant->user->first_name }} {{ $participant->user->last_name }}</span>
-                    </div>
-                    <div class="col-1">
-                        <span class="d-inline-block bg-success rounded-circle" style="height: 5px; width: 5px"></span>
-                    </div>
-                    <a class="position-absolute h-100 w-100" href="{{ route('chat.createConversation', $participant->id) }}"></a>
-                </div>
-            @endforeach
-
-            @if($project->type === 1 && $project->finish === 0)
-                <h6 class="title__section text-uppercase text-secondary mb-3">Actions</h6>
-                <x-form :action="route('expert.finishExpertise', $project->id)">
-                    <button type="submit" class="btn btn-danger btn-block">Finir l'expertise</button>
-                </x-form>
-            @endif
-        </div>
-    </x-right-sidebar>
-
-    <!-- Modal de création d'une tâche -->
+    {{--<!-- Modal de création d'une tâche -->
     <div class="modal fade new-todo" tabindex="-1" role="dialog" aria-labelledby="new-todo" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -416,7 +561,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>--}}
 @endsection
 
 @section('script')
@@ -489,6 +634,15 @@
 
     </script>
     <script>
+        $(function() {
+            $('[data-toggle="datepicker"]').datepicker({
+                autoHide: true,
+                zIndex: 2048,
+                language: 'fr-FR',
+            });
+        });
+    </script>
+    <script>
         filterSelection("all")
 
         function filterSelection(c) {
@@ -552,5 +706,44 @@
                 this.className += " active";
             });
         }
+    </script>
+
+    <script>
+        $(document).ready(function($){
+            $('#btn-add').click(function () {
+                console.log('salut')
+            });
+
+            $("#btn-add").click(function (e) {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                e.preventDefault();
+                let formData = {
+                    content: $('#form-content').val(),
+                    visibility_id: $('#visibility_id').val(),
+                    project_id: $('#project_id').val(),
+                };
+
+                console.log(formData.content)
+                let state = $('#btn-add').val();
+                let type = "POST";
+                let ajaxurl = '/index';
+                $.ajax({
+                    type: type,
+                    url: ajaxurl,
+                    data: formData,
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#post-list').prepend(data).fadeIn('slow')
+                    },
+                    error: function (data) {
+                        console.log('Erreur : ' + data.response);
+                    }
+                });
+            });
+        });
     </script>
 @endsection

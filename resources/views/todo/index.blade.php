@@ -44,59 +44,9 @@
                     </button>
                 </div>
             </div>
-            @forelse(\App\Todo::where('project_id', $project->id)->get() as $todo)
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-2 h5 pb-3 border-right text-center">
-                            {{ \Carbon\Carbon::parse($todo->deadline)->day }}
-                            <p class="text-muted">{{ \Carbon\Carbon::parse($todo->deadline)->monthName }}</p>
-                        </div>
-                        <div class="col-10 pb-3 pl-4 position-relative">
-                            <div class=" h5 bg-white border p-3 rounded">
-                                <p class="h5">{{ $todo->title }}</p>
-                                <p class="text-muted">{{ $todo->description }}</p>
-                                <small class="text-muted">
-                                    <ion-icon class="align-text-bottom" name="person-outline"></ion-icon>
-                                    Assigné à
-                                    <img
-                                        src="{{ \App\User::getAvatar($todo->assigned_to) }}"
-                                        class="rounded-circle ml-1" style="height: 20px;width: 20px"
-                                        alt="">
-                                    {{ App\User::find($todo->assigned_to)->first_name }} {{ \App\User::find($todo->assigned_to)->last_name }}
-                                </small>
-                            </div>
-                            <div class="position-absolute bg-transparent rounded-circle" style="height: 15px; width: 15px; left: -7px; top: 5px; border: 5px solid #4299e1"></div>
-                        </div>
-                    </div>
-                </div>
-            @empty
-                <x-alert type="warning">Aucune tâche n'a encore été ajouté</x-alert>
-            @endforelse
         </x-section>
 
-        <x-modal title="Création d'une nouvelle tâche" name="new-todo">
-            <x-form :action="route('project.todo.create', $project->id)">
-                <x-input label="Titre" name="title" placeholder="Mon super titre"></x-input>
-                <x-textarea label="Description" name="description"></x-textarea>
 
-                <div class="form-group">
-                    @foreach($project->users as $participant)
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" name="assigned_to" class="custom-control-input" id="customCheck1" value="{{ $participant->user_id }}">
-                            <label class="custom-control-label" for="customCheck1">{{ \App\User::find($participant->user_id)->first_name }} {{ \App\User::find($participant->user_id)->last_name }}</label>
-                        </div>
-                    @endforeach
-                </div>
-
-                <div class="form-group">
-                    <label for="deadline">Date de fin</label>
-                    <input type="text" class="form-control" id="deadline" name="deadline" data-toggle="datepicker" autocomplete="off">
-                </div>
-                <input type="hidden" name="project_id" value="{{ $project->id }}">
-
-                <x-submit>Créer une nouvelle tâche</x-submit>
-            </x-form>
-        </x-modal>
 
     </x-container>
 

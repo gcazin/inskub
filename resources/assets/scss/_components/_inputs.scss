@@ -1,0 +1,49 @@
+.form-control.custom {
+    border-color: $gray-300 !important;
+    border: 0;
+    border-bottom: 2px solid $gray-200;
+    border-radius: 0;
+}
+
+.form-control.custom:focus {
+    box-shadow: none;
+    border-bottom-color: $primary !important;
+}
+
+.input-group-text {
+    background: lighten($primary, 37%);
+    color: $primary;
+}
+
+.input-group > .form-control.custom:not(:first-child), .input-group > .custom-select:not(:first-child) {
+    border-left: 0 !important;
+    border-radius: 0;
+}
+
+.checkbox.custom {
+    display: none;
+}
+
+.checkbox.custom + .card-body {
+    border: 1px solid transparent;
+    transition: 0.2s;
+}
+
+.checkbox.custom:checked + .card-body {
+    border: 1px solid rgba(129, 183, 255, 0.70);
+    background: rgba(129, 183, 255, 0.10);
+    color: $blue;
+}
+
+.custom-file-label::after {
+    display: none;
+}
+
+.dropdown-none .dropdown-toggle::before,
+.dropdown-none .dropdown-toggle::after {
+    display: none;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background: var(--light) !important;
+}

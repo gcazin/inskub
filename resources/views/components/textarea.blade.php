@@ -4,6 +4,11 @@
             {{ $label }}
         </label>
     @endif
+
+    @if($help ?? null)
+        <small class="form-text text-muted">{{ $help }}</small>
+    @endif
+
     @error($name)
     <p class="text-danger" role="alert">{{ $message }}</p>
     @enderror
@@ -11,9 +16,9 @@
         autocomplete="off"
         name="{{ $name }}"
         id="{{ $name }}"
-        class="form-control"
+        class="form-control {{ $class ?? null }}"
         placeholder="{{ $placeholder ?? '' }}"
         rows="{{ $rows ?? '2' }}"
         {{ ($required ?? false) ? 'required' : '' }}
-    >{{ old($name, $value ?? '') }}</textarea>
+    >{{ $slot ?? null }}</textarea>
 </div>

@@ -1,3 +1,3 @@
-<div class="container py-3 bg-white rounded shadow-sm {{ $class ?? null }}">
+<div class="bg-white p-4 mb-4 shadow-sm rounded-lg {{ $class ?? null }}">
     {{ $slot }}
 </div>
