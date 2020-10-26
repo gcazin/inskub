@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
@@ -28,7 +30,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -49,8 +51,9 @@ class RegisterController extends Controller
      */
     protected function validator(array $data): \Illuminate\Contracts\Validation\Validator
     {
+
         return Validator::make($data, [
-            'role_id' => ['required', 'string'],
+            'role_id' => ['required', Rule::notIn([1,2])],
             'last_name' => ['required', 'string'],
             'first_name' => ['required', 'string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -71,12 +74,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        /**
-         * TODO: Mettre une interdiction sur le role d'admin lors de l'inscription
-         */
-        /*if((int) $data['role_id'] === 1) {
-            return redirect();
-        }*/
+        //$role_id = (int) $data['role_id'] === 1 ? 2 : (int) $data['role_id'];
 
         $user = new User();
         $user->role_id = $data['role_id'];
@@ -89,6 +87,9 @@ class RegisterController extends Controller
         $user->adresse = $data['adresse'] ?? null;
         $user->company = $data['company'] ?? null;
         $user->save();
+
+        //Todo: Assigner un role à l'utilisateur
+        //$user->assignRole(\Spatie\Permission\Models\Role::findById($data['role_id'])->get());
 
         return $user;
     }

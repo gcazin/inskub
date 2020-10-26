@@ -10,13 +10,16 @@ use Musonza\Chat\Traits\Messageable;
 use Overtrue\LaravelFollow\Traits\CanBeFollowed;
 use Overtrue\LaravelFollow\Traits\CanFollow;
 use Overtrue\LaravelFollow\Traits\CanLike;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @method static find($id)
  */
 class User extends \Illuminate\Foundation\Auth\User
 {
-    use Notifiable, Messageable, CanFollow, CanBeFollowed, CanLike, HasApiTokens, Billable;
+    use Notifiable, Messageable, CanFollow, CanBeFollowed, CanLike, HasApiTokens, Billable, HasRoles;
+
+    protected $guarded = 'api';
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +27,7 @@ class User extends \Illuminate\Foundation\Auth\User
      * @var array
      */
     protected $fillable = [
-        'role_id', 'last_name', 'first_name', 'email', 'password', 'avatar', 'departement'
+        'role_id', 'last_name', 'first_name', 'email', 'password', 'avatar', 'department', 'company', 'tel', 'adresse'
     ];
 
     /**
@@ -35,6 +38,8 @@ class User extends \Illuminate\Foundation\Auth\User
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected $guard_name = 'api';
 
     /**
      * The attributes that should be cast to native types.
@@ -111,6 +116,11 @@ class User extends \Illuminate\Foundation\Auth\User
     public function ratings()
     {
         return $this->hasMany(Rating::class, 'expert_id');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 
 }

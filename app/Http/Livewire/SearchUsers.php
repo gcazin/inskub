@@ -19,9 +19,9 @@ class SearchUsers extends Component
     public function render()
     {
         if(!empty($this->search)) {
-            return view('livewire.search-users', [
-                'users' => User::where('first_name', 'LIKE','%'.$this->search.'%')->get(),
-            ]);
+            return view('discover', [
+                'users' => User::where('first_name', 'LIKE','%'.$this->search.'%')->paginate(8),
+            ])->render();
         }
         return view('livewire.search-users', ['users' => []]);
     }

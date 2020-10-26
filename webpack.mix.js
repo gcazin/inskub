@@ -1,5 +1,4 @@
 const mix = require('laravel-mix');
-const tailwindcss = require ('tailwindcss');
 
 /*
  |--------------------------------------------------------------------------
@@ -12,9 +11,13 @@ const tailwindcss = require ('tailwindcss');
  |
  */
 
-mix.sass('resources/scss/bootstrap.scss', 'public/css')
+mix.sass('resources/assets/scss/bootstrap.scss', 'public/css')
     .options({
         processCssUrls: false,
     });
 
-mix.js('resources/bootstrap/js/src/index.js', 'public/js')
+mix.js('resources/assets/js/app.js', 'public/js')
+
+mix.scripts([
+    'public/js/ajax.js'
+], 'public/js/ajax.js')

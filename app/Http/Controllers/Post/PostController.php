@@ -7,11 +7,13 @@ use App\Http\Requests\StorePost;
 use App\Notifications\ReportingPost;
 use App\Post;
 use App\ReportPost;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
+
     /**
      * @var Post $post
      */
@@ -19,7 +21,35 @@ class PostController extends Controller
 
     public function __construct(Post $post)
     {
+        $this->middleware('auth');
         $this->post = $post;
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     */
+    public function index()
+    {
+        $posts = User::find(auth()->id())->posts;
+
+        $posts_followings = User::find(auth()->id())->followings->map(static function($user) {
+            return Post::where('user_id', $user->id)->where('visibility_id', '<>', 3)->where('project_id', '=', null)->get();
+        });
+
+        $posts = $posts->merge($posts_followings->collapse())->sortByDesc('created_at')->paginate(4);
+
+        if(\request()->ajax()) {
+            $view = [];
+
+            foreach($posts as $post) {
+                $view[] = view('components.post', compact('post'))->render();
+            }
+
+            return response()->json(['html' => $view]);
+        }
+
+        return view('index', compact('posts'));
     }
 
     public function show(int $id)
@@ -52,7 +82,11 @@ class PostController extends Controller
         $post->created_at = now();
         $post->save();
 
-        return redirect(route('index'));
+        $animate = true;
+
+        $html = view('components.post', compact('post', 'animate'))->render();
+
+        return response()->json($html);
     }
 
     /**

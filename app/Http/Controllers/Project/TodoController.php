@@ -10,6 +10,11 @@ use Carbon\Carbon;
 
 class TodoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index($id)
     {
         $project = Project::find($id);
@@ -23,11 +28,11 @@ class TodoController extends Controller
         $todo->description = $request->description;
         $todo->deadline = Carbon::createFromFormat('d/m/Y', $request->deadline)->format('Y-m-d');
         $todo->user_id = auth()->id();
-        $todo->assigned_to = $request->assigned_to;
+        $todo->assigned_to = $request->get('assigned_to') ?: auth()->id();
         $todo->project_id = $request->project_id;
         $todo->created_at = now();
         $todo->save();
 
-        return redirect()->route('project.todo.index', $request->project_id);
+        return redirect()->back();
     }
 }

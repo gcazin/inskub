@@ -21,7 +21,17 @@ class ExpertController extends Controller
 {
     public function index()
     {
-        $experts = User::where('role_id', '=', 2)->paginate(20);
+        $experts = User::where('id', '<>', auth()->id())->orderBy('created_at')->paginate(8);
+
+        if(\request()->ajax()) {
+            $view = [];
+
+            foreach($experts as $user) {
+                $view[] = view('components.user-card', compact('user'))->render();
+            }
+
+            return response()->json(['html' => $view]);
+        }
 
         return view('expert.index', compact('experts'));
     }
@@ -83,41 +93,47 @@ class ExpertController extends Controller
 
     }
 
-    public function search()
+    public function search(Request $request)
     {
-        return view('expert.search');
-    }
+        $experts = User::where('role_id', 4)->get();
 
-    public function searchExperts(Request $request)
-    {
-        $this->validate($request, [
-            'skills' => 'required',
-        ]);
+        if($request->ajax()) {
+            $this->validate($request, [
+                'skills' => 'required',
+            ]);
 
-        $experts = [];
-        $skills = [];
+            $users = [];
+            $skills = [];
+            $view = [];
 
-        foreach($request->skills as $skill) {
-            $skills[] = UserSkillPivot::all()->where('skill_id', '=', $skill);
-        }
-
-        foreach(Arr::collapse($skills) as $expert) {
-            $experts[] = User::find($expert->user_id);
-        }
-
-        $result = collect($experts)->unique('id');
-
-        if($request->has('departments')) {
-            foreach($request->departments as $department) {
-                $result = $result->where('department', '=', $department);
+            foreach($request->skills as $skill) {
+                $skills[] = UserSkillPivot::all()->where('skill_id', '=', $skill);
             }
+
+            foreach(Arr::collapse($skills) as $expert) {
+                $users[] = User::find($expert->user_id);
+            }
+
+            $experts = collect($users)->unique('id');
+
+            if($request->has('departments')) {
+                foreach($request->departments as $department) {
+                    $experts = $experts->where('department', '=', $department);
+                }
+            }
+
+            if($request->has('compagnies')) {
+                $experts = $experts->where('company', '=', $request->company);
+            }
+
+            foreach($experts as $expert) {
+                $view[] = view('components.user-card', compact('expert'))->render();
+            }
+
+            return response()->json(['html' => $view]);
         }
 
-        if($request->has('company')) {
-            $result = $result->where('company', '=', $request->company);
-        }
-
-        return view('expert.index', compact('result'));
+        return view('expert.index', compact('experts'));
     }
 
     public function finishExpertise($id)
