@@ -13,7 +13,7 @@ class ProjectSeeder extends Seeder
     public function run()
     {
         factory(Project::class, 5)->create()->each(function ($project) {
-            $project->users()->save(factory(\App\ProjectUser::class)->make());
+            $project->participants()->save(factory(\App\ProjectUser::class)->create());
         });
     }
 }

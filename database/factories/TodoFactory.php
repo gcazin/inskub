@@ -2,7 +2,9 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Project;
 use App\Todo;
+use App\User;
 use Faker\Generator as Faker;
 
 $factory->define(Todo::class, function (Faker $faker) {
@@ -10,7 +12,8 @@ $factory->define(Todo::class, function (Faker $faker) {
         'title' => $faker->sentence,
         'description' => $faker->optional()->realText(),
         'deadline' => $faker->dateTimeBetween('2020-04-27'),
-        'assigned_to' => random_int(1,10),
-        'user_id' => random_int(1,10)
+        'project_id' => Project::all()->random()->id,
+        'user_id' => User::all()->random()->id,
+        'assigned_to' => User::all()->random()->id
     ];
 });

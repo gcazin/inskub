@@ -19,8 +19,12 @@ class CreateProjectsTable extends Migration
             $table->longText('description')->nullable();
             $table->date('deadline');
             $table->boolean('finish')->default(0);
-            $table->string('colour');
+            $table->string('colour')->nullable();
+
+            //Privée ou Non
             $table->integer('private')->default(0);
+
+            //Projet ou expertise
             $table->integer('type')->default(0);
 
             $table->unsignedBigInteger('user_id');

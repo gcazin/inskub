@@ -10,7 +10,7 @@ $factory->define(Post::class, function (Faker $faker) {
         'content' => $faker->sentence(random_int(6,20)),
         'user_id' => random_int(1, 15),
         'visibility_id' => random_int(1,3),
-        'media' => array_rand(array_flip(['1','2','3', '4']), 1) === 1 ? 'https://i.picsum.photos/id/'.random_int(1, 200).'/200/200.jpg' : null,
+        'media' => array_rand(array_flip(['1','2','3', '4']), 1) === 1 ? 'Rq71880fVzhIVHXm2WqlB0eHCTPhF7DYyZg0KLrT.jpeg' : null,
         'created_at' => $faker->dateTimeBetween('2020-04-01')
     ];
 });
