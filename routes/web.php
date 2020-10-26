@@ -13,10 +13,14 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', 'HomeController@index')->name('index');
-Route::post('/', 'Post\PostController@store')->name('post.create');
-Route::get('/discover', 'HomeController@discover')->name('discover');
-Route::get('/discover/{role_id}', 'HomeController@discoverAll')->name('discover.all');
+Route::get('/', 'HomeController@welcome')->name('welcome');
+Route::get('/index', 'Post\PostController@index')->name('index');
+Route::post('/index', 'Post\PostController@store')->name('post.create');
+
+Route::namespace('Discover')->name('discover.')->group(function() {
+    Route::get('/discover', 'DiscoverController@discover')->name('index');
+    Route::get('/discover/search', 'DiscoverController@search')->name('search');
+});
 
 Route::namespace('Notification')->name('notification.')->group(function() {
     Route::get('/notifications', 'NotificationController@index')->name('index');
@@ -24,10 +28,9 @@ Route::namespace('Notification')->name('notification.')->group(function() {
 });
 
 Route::namespace('Expert')->name('expert.')->group(function() {
+    Route::get('/experts', 'ExpertController@index')->name('index');
+    Route::post('/experts', 'ExpertController@search');
     Route::prefix('expert')->group(function() {
-        Route::get('/', 'ExpertController@index')->name('index');
-        Route::get('/search', 'ExpertController@search')->name('search');
-        Route::post('/search', 'ExpertController@searchExperts');
         Route::post('/{id}/request-expertise', 'ExpertController@requestExpertise')->name('request');
         Route::get('/{id}/accept-expertise', 'ExpertController@acceptExpertise')->name('acceptExpertise');
         Route::post('/{id}/finish-expertise', 'ExpertController@finishExpertise')->name('finishExpertise');
@@ -114,7 +117,7 @@ Route::namespace('User')->name('user.')->group(function() {
  * CRUD des projets
  */
 Route::get('/projects', 'Project\ProjectController@index')->name('project.index');
-Route::post('/projects', 'Project\ProjectController@store');
+Route::post('/projects', 'Project\ProjectController@store')->name('project.store');
 Route::namespace('Project')->prefix('project')->name('project.')->group(function() {
     Route::get('/{id}', 'ProjectController@show')->name('show');
     Route::get('/edit/{id}', 'ProjectController@edit')->name('edit');
@@ -136,6 +139,15 @@ Route::namespace('Project')->prefix('project')->name('project.')->group(function
     Route::name('post.')->group(function() {
         Route::get('/{id}/post/{post_id}', 'PostController@show')->name('show');
     });
+});
+
+/**
+ * CRUD des jobs
+ */
+Route::get('/faqs', 'Faq\FaqController@index')->name('faq.index');
+Route::namespace('Faq')->prefix('faq')->name('faq.')->group(function() {
+    Route::get('/', 'FaqController@index')->name('index');
+    Route::post('/', 'FaqController@store');
 });
 
 /**
@@ -172,7 +184,27 @@ Route::namespace('Follow')->group(function() {
 });
 
 // Administration
-Route::namespace('Admin')->group(function() {
-    Route::get('/admin', 'AdminController@index')->name('admin.index');
-    Route::get('/admin/reports', 'AdminController@reports')->name('admin.reports');
+Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function() {
+    Route::get('/', 'AdminController@index')->name('index');
+    Route::get('/reports', 'AdminController@reports')->name('reports');
+
+    Route::prefix('user')->name('user.')->group(function() {
+        Route::get('/', 'UserController@index')->name('index');
+        Route::post('/', 'UserController@store')->name('store');
+    });
+
+    Route::prefix('faq')->name('faq.')->group(function() {
+        Route::get('/', 'FaqController@index')->name('index');
+        Route::post('/', 'FaqController@store')->name('store');
+    });
+});
+
+
+/**
+ * Test des mails
+ */
+Route::get('mailable', function () {
+    $user = \App\User::find(1);
+
+    return new \App\Mail\CreatingStudent($user, 'salut', 1);
 });
