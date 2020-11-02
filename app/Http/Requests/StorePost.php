@@ -34,6 +34,7 @@ class StorePost extends FormRequest
         return [
             'content' => ['max:255'],
             'visibility_id' => ['required'],
+            'media' => []
         ];
     }
 }

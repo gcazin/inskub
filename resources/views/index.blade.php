@@ -1,84 +1,52 @@
-@extends('layouts.base')
-
-@section('title')
-    Accueil
-@endsection
-
-@section('content')
+<x-page>
     @if(session()->has('thanks_report'))
-        <x-toast title="Signalement envoyé" type="success" name="thanks_report">Merci de votre signalement</x-toast>
+        <x-element.toast title="Signalement envoyé" type="success" name="thanks_report">Merci de votre signalement</x-element.toast>
     @endif
+
+    <x-slot name="title">Fil d'actualité</x-slot>
 
     <x-header>
         <x-slot name="title">Fil d'actualité</x-slot>
 
         <x-slot name="content">
-            <x-submit-post :action="route('index')"></x-submit-post>
+            <x-post.submit :action="route('index')"></x-post.submit>
         </x-slot>
     </x-header>
 
     <x-container>
-        <x-post-list :model="$posts"></x-post-list>
+        <x-post.list :model="$posts"></x-post.list>
     </x-container>
 
-    <x-loading></x-loading>
-@endsection
+    <x-element.loading></x-element.loading>
 
-@section('script')
-    <script type="module">
-        import {loadMoreDataInfinite} from ''
+    <x-slot name="script">
+        <script type="module">
+            import { loadMoreDataInfinite } from '{{ asset('js/ajax.js') }}'
 
-        loadMoreDataInfinite('/index', 'post-list')
-    </script>
-    <script>
-        function displayPreview(input) {
-            if (input.files && input.files[0]) {
-                let reader = new FileReader();
+            loadMoreDataInfinite('/index', 'post-list')
+        </script>
+        <script type="module">
+            import { submitPost } from '{{ asset('js/ajax.js') }}'
 
-                reader.onload = function (e) {
-                    $('#img-preview').removeClass('d-none')
-                    $('#img-preview').attr('src', e.target.result);
+            submitPost('/index')
+        </script>
+        <script>
+            function displayPreview(input) {
+                if (input.files && input.files[0]) {
+                    let reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#img-preview').removeClass('d-none')
+                        $('#img-preview').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
                 }
-
-                reader.readAsDataURL(input.files[0]);
             }
-        }
 
-        $("#img-input").change(function(){
-            displayPreview(this);
-        });
-    </script>
-    <script>
-        $(document).ready(function($){
-            $("#btn-add").click(function (e) {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                e.preventDefault();
-                let formData = {
-                    content: $('#form-content').val(),
-                    visibility_id: $('#visibility_id').val(),
-                };
-
-                console.log(formData.content)
-                let state = $('#btn-add').val();
-                let type = "POST";
-                let ajaxurl = '/index';
-                $.ajax({
-                    type: type,
-                    url: ajaxurl,
-                    data: formData,
-                    dataType: 'json',
-                    success: function (data) {
-                        $('#post-list').prepend(data).fadeIn('slow')
-                    },
-                    error: function (data) {
-                        console.log('Erreur : ' + data.response);
-                    }
-                });
+            $("#media").change(function(){
+                displayPreview(this);
             });
-        });
-    </script>
-@endsection
+        </script>
+    </x-slot>
+</x-page>

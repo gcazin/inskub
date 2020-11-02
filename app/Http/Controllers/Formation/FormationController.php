@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Formation;
 
-use App\Formation;
 use App\Http\Controllers\Controller;
+use App\Models\Formation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

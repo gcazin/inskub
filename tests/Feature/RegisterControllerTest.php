@@ -2,8 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class RegisterControllerTest extends TestCase
@@ -39,19 +40,24 @@ class RegisterControllerTest extends TestCase
      */
     public function test_can_create_account(): void
     {
+        $role = Role::make(['name' => 'intermediate']);
+
         $user = factory(User::class)->make();
+        $user->assignRole($role);
 
         $response = $this->post(route('register'), [
-            'role_id' => $user->role_id,
+            'role_name' => $user->role_name,
             'last_name' => $user->last_name,
             'first_name' => $user->first_name,
             'email' => $user->email,
             'password' => $user->password,
             'password_confirmation' => $user->password,
+            'company_id' => 1,
+            'department' => 1,
         ]);
 
         $response
-            ->assertRedirect(route('index'))
+            ->assertRedirect('/')
             ->assertStatus(302);
     }
 

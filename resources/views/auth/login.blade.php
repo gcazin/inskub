@@ -1,25 +1,9 @@
-@extends('layouts.base', ['full' => true])
-
-@section('content')
-    <div id="particles-js"></div>
-    <div class="row position-absolute w-100" style="left: 50%; top: 50%; transform: translate(-50%, -50%)">
-        <div class="col-lg-6 col-12 mx-auto py-4 shadow-sm rounded-lg" id="container-login-form">
+<x-page>
+    <x-container>
+        <x-section class="col-lg-6 mx-auto py-4 shadow-sm rounded-lg" id="container-login-form">
             <div class="container" id="login-form">
                 <h1 class="font-weight-light mb-1 mb-lg-4 mt-3 mt-lg-0 d-none d-lg-block">Connexion</h1>
-                <form action="{{ route('login') }}" method="post">
-                    @csrf
-
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            Des erreurs se sont produites lors de la saisie de vos informations
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                @endif
-
+                <x-form.item :action="route('login')">
                 <!-- Mail -->
                     <div class="form-group">
                         <div class="input-group">
@@ -54,21 +38,23 @@
                     <div class="text-right">
                         <button type="submit" class="btn btn-primary">Se connecter</button>
                     </div>
-                </form>
+                </x-form.item>
                 <hr>
                 <p>Pas encore de compte? <a href="{{ route('register') }}">Inscrivez-vous</a></p>
             </div>
-        </div>
-    </div>
-@endsection
+        </x-section>
+    </x-container>
 
-@section('script')
-    <script src="{{ asset('js/particles.min.js') }}"></script>
+    <x-slot name="script">
+        @section('script')
+            <script src="{{ asset('js/particles.min.js') }}"></script>
 
-    <script>
-        /* particlesJS.load(@dom-id, @path-json, @callback (optional)); */
-        particlesJS.load('particles-js', '{{ asset('js/particlesjs-config.json') }}', function() {
-            console.log('callback - particles.js config loaded');
-        });
-    </script>
-@endsection
+            <script>
+                /* particlesJS.load(@dom-id, @path-json, @callback (optional)); */
+                particlesJS.load('particles-js', '{{ asset('js/particlesjs-config.json') }}', function() {
+                    console.log('callback - particles.js config loaded');
+                });
+            </script>
+        @endsection
+    </x-slot>
+</x-page>

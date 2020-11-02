@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\UserSkillPivot;
+use App\Models\UserSkillPivot;
 use Illuminate\Http\Request;
 
 class UserSkillController extends Controller

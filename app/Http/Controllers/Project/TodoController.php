@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTodo;
-use App\Project;
-use App\Todo;
+use App\Models\Project;
+use App\Models\Todo;
 use Carbon\Carbon;
 
 class TodoController extends Controller

@@ -3,7 +3,7 @@
 
 Votre compte à été crée sur la plateforme Inskub.<br>
 
-Vous avez été ajouté à la salle de classe *{{ \App\Project::find($project)->title }}*.
+Vous avez été ajouté à la salle de classe *{{ \App\Models\Project::find($project)->title }}*.
 
 @component('mail::panel')
 Nom d'utilisateur : **{{ $email }}**<br>

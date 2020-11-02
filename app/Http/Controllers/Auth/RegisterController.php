@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -51,17 +51,14 @@ class RegisterController extends Controller
      */
     protected function validator(array $data): \Illuminate\Contracts\Validation\Validator
     {
-
         return Validator::make($data, [
-            'role_id' => ['required', Rule::notIn([1,2])],
+            'role_name' => ['required', Rule::notIn(['super-admin', 'admin'])],
             'last_name' => ['required', 'string'],
             'first_name' => ['required', 'string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'department' => [''],
-            'tel' => [''],
-            'adresse' => [''],
-            'company' => [''],
+            'department_id' => [Rule::requiredIf($data['role_name'] === "intermediate")],
+            'company_id' => [Rule::requiredIf($data['role_name'] === "intermediate")],
         ]);
     }
 
@@ -74,22 +71,16 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        //$role_id = (int) $data['role_id'] === 1 ? 2 : (int) $data['role_id'];
-
         $user = new User();
-        $user->role_id = $data['role_id'];
         $user->first_name = $data['first_name'];
         $user->last_name = $data['last_name'];
         $user->email = $data['email'];
         $user->password = Hash::make($data['password']);
-        $user->department = $data['department'] ?? null;
-        $user->tel = $data['tel'] ?? null;
-        $user->adresse = $data['adresse'] ?? null;
-        $user->company = $data['company'] ?? null;
+        $user->department_id = $data['department_id'] ?? null;
+        $user->company_id = $data['company_id'] ?? null;
         $user->save();
 
-        //Todo: Assigner un role à l'utilisateur
-        //$user->assignRole(\Spatie\Permission\Models\Role::findById($data['role_id'])->get());
+        $user->assignRole($data['role_name']);
 
         return $user;
     }

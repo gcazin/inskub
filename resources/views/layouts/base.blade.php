@@ -102,15 +102,8 @@
     })
 </script>
 <script src="{{ asset('js/particles.min.js') }}"></script>
-
 <script>
-    /* particlesJS.load(@dom-id, @path-json, @callback (optional)); */
     particlesJS.load('particles-js', '{{ asset('js/particlesjs-config.json') }}');
-</script>
-<script>
-    $(document).ready(function() {
-        $('.toast').toast('show')
-    })
 </script>
 <script type="text/javascript">
     $.ajaxSetup({

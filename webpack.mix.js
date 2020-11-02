@@ -19,5 +19,5 @@ mix.sass('resources/assets/scss/bootstrap.scss', 'public/css')
 mix.js('resources/assets/js/app.js', 'public/js')
 
 mix.scripts([
-    'public/js/ajax.js'
+    'resources/assets/js/ajax.js'
 ], 'public/js/ajax.js')

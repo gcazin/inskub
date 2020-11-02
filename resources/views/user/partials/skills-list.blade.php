@@ -1,4 +1,4 @@
-@forelse(\App\UserSkillPivot::all()->where('user_id', request()->route('id')) as $experience)
+@forelse(\App\Models\UserSkillPivot::all()->where('user_id', request()->route('id')) as $experience)
     <div class="job-post border rounded p-3 mb-3">
         <div class="row">
             <div class="col">
@@ -13,9 +13,9 @@
         </div>
     </div>
 @empty
-    <div class="pt-2 pb-1">
-        <div class="alert alert-info">
+    <x-element.alert type="info">
+        <x-slot name="title">
             Aucune compétence à afficher.
-        </div>
-    </div>
+        </x-slot>
+    </x-element.alert>
 @endforelse

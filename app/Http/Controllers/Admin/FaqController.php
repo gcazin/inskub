@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Faq;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FaqRequest;
+use App\Models\Faq;
 use Illuminate\Support\Facades\DB;
 
 class FaqController extends Controller

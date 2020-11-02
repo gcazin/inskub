@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\UserExperience;
+use App\Models\UserExperience;
 use Illuminate\Http\Request;
 
 class UserExperienceController extends Controller

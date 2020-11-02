@@ -1,4 +1,4 @@
-@forelse(\App\UserFormation::all()->where('user_id', request()->route('id'))->sortByDesc('finish_date') as $formation)
+@forelse(\App\Models\UserFormation::all()->where('user_id', request()->route('id'))->sortByDesc('finish_date') as $formation)
     <div class="job-post border rounded p-3 mb-3">
         <div class="row">
             <div class="col">
@@ -15,7 +15,9 @@
         </div>
     </div>
 @empty
-    <x-alert type="info">
-        Aucune formation à afficher.
-    </x-alert>
+    <x-element.alert type="info">
+        <x-slot name="title">
+            Aucune formation à afficher.
+        </x-slot>
+    </x-element.alert>
 @endforelse

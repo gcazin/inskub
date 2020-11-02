@@ -1,4 +1,4 @@
-@forelse(\App\Job::all()->where('user_id', request()->route('id'))->sortByDesc('created_by') as $job)
+@forelse(\App\Models\Job::all()->where('user_id', request()->route('id'))->sortByDesc('created_by') as $job)
     <div class="job-post p-3 border rounded mb-3">
         <div class="row">
             <div class="col">
@@ -10,13 +10,15 @@
             </div>
             <div class="col h5 text-right">
                 <span class="badge badge-primary">
-                    {{ \App\Job_type::find($job->type_id)->title }}
+                    {{ \App\Models\Job_type::find($job->type_id)->title }}
                 </span>
             </div>
         </div>
     </div>
 @empty
-    <x-alert type="info">
-        Vous n'avez encore ajouté aucune offre d'emploi
-    </x-alert>
+    <x-element.alert type="info">
+        <x-slot name="title">
+            Vous n'avez encore ajouté aucune offre d'emploi
+        </x-slot>
+    </x-element.alert>
 @endforelse

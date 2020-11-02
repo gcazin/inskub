@@ -2,9 +2,9 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Project;
-use App\Todo;
-use App\User;
+use App\Models\Project;
+use App\Models\Todo;
+use App\Models\User;
 use Faker\Generator as Faker;
 
 $factory->define(Todo::class, function (Faker $faker) {

@@ -3,19 +3,18 @@
 namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePost;
 use App\Http\Requests\StoreProject;
 use App\Mail\CreatingStudent;
-use App\Post;
-use App\Project;
-use App\ProjectUser;
-use App\User;
+use App\Models\Project;
+use App\Models\ProjectUser;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Musonza\Chat\Facades\ChatFacade;
+use Musonza\Chat\Models\Conversation;
 
 class ProjectController extends Controller
 {
@@ -47,11 +46,13 @@ class ProjectController extends Controller
 
         $posts = $project->posts->sortByDesc('created_at');
 
+        $conversation = Conversation::where('project_id', $project->id)->get()[0]->id;
+
         /*$user->newSubscription('plans', 'main')->create();
 
         dd(User::find(10)->subscribed('plans', 'main'));*/
 
-        return view('project.show', compact('project', 'posts'));
+        return view('project.show', compact('project', 'posts', 'conversation'));
     }
 
     public function edit($id)
@@ -84,9 +85,9 @@ class ProjectController extends Controller
         $project = Project::create($request->validated());
 
         if($request->filled('participants')) {
-
-            if(auth()->user()->role_id === 4) {
+            if(auth()->user()->getRoleNames()->contains('school')) {
                 $participants = json_decode($request->participants);
+                $users = [];
 
                 foreach($participants as $email) {
                     if(User::whereEmail($email->value)->exists()) {
@@ -97,7 +98,6 @@ class ProjectController extends Controller
                     $password = Hash::make($plain_password);
 
                     $user = User::create([
-                        'role_id' => 6,
                         'first_name' => $name,
                         'last_name' => $name,
                         'email' => trim($email->value),
@@ -108,11 +108,19 @@ class ProjectController extends Controller
                         'company' => null,
                         'created_at' => now(),
                     ]);
+                    $user->assignRole('student');
+
+                    $users[] = User::find($user->id);
 
                     $project->addParticipant($user->id);
 
                     Mail::to($user->email)->send(new CreatingStudent($user, $plain_password, $project->id));
                 }
+
+                $chat = ChatFacade::createConversation($users);
+                $chat->data = ['title' => $project->title];
+                $chat->project_id = $project->id;
+                $chat->update();
             }
 
             else {
@@ -124,29 +132,13 @@ class ProjectController extends Controller
                     return User::find($participant);
                 });
 
-                $participants = [User::find(auth()->id()), ...$participants];
-
-                ChatFacade::createConversation($participants);
+                $chat = ChatFacade::createConversation([User::find(auth()->id()), ...$participants]);
+                $chat->project_id = $project->id;
+                $chat->update();
             }
         }
 
         return redirect()->route('project.index')->with('project-created', 'Projet crée avec succès');
-    }
-
-    public function storePost(StorePost $request)
-    {
-        $post = new Post();
-        $post->content = $request->get('content');
-        $post->user_id = auth()->id();
-        $post->visibility_id = $request->get('visibility_id');
-        $post->project_id = \request()->id;
-        if($request->has('media')) {
-            $post->media = $request->file('media')->storeAs('posts', Str::random(40).'.'.$request->file('media')->extension(), ['disk' => 'public']);
-        }
-        $post->created_at = now();
-        $post->save();
-
-        return redirect()->route('project.show', $post->project_id);
     }
 
     public function destroy($id)

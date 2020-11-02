@@ -1,7 +1,11 @@
 <div wire:poll>
     <div class="overflow-y-auto" id="conversation">
         <div class="w-50 m-auto pt-3">
-            <x-alert type="warning">Les messages envoyés dans cette discussion sont chiffrés de bout en bout. Appuyez pour plus d'informations.</x-alert>
+            <x-element.alert type="warning">
+                <x-slot name="title">
+                    Les messages envoyés dans cette discussion sont chiffrés de bout en bout. Appuyez pour plus d'informations.
+                </x-slot>
+            </x-element.alert>
         </div>
         @forelse($messages as $message)
             <div

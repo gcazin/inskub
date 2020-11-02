@@ -1,10 +1,10 @@
 @if ($paginator->hasPages())
     <nav>
-        <ul class="pagination">
+        <ul class="pagination justify-content-center">
             {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
                 <li class="page-item disabled" aria-disabled="true">
-                    <span class="page-link">@lang('pagination.previous')</span>
+                    <button disabled class="btn btn-light">@lang('pagination.previous')</button>
                 </li>
             @else
                 <li class="page-item">
@@ -16,7 +16,7 @@
             {{-- Next Page Link --}}
             @if ($paginator->hasMorePages())
                 <li class="page-item">
-                    <a class="btn btn-light" href="{{ $paginator->nextPageUrl() }}"
+                    <a class="btn btn-primary" href="{{ $paginator->nextPageUrl() }}"
                        rel="next">@lang('pagination.next')</a>
                 </li>
             @else

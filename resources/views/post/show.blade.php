@@ -1,8 +1,10 @@
-@extends('layouts.base', ['header' => false])
+<x-page>
+    <x-container>
+        <x-post.item :post="$post"></x-post.item>
 
-@section('content')
-    <x-single-post :post="$post"></x-single-post>
+        <x-post.replies :post="$post"></x-post.replies>
 
-    <x-right-sidebar-message></x-right-sidebar-message>
+        <x-post.add-reply :post="$post"></x-post.add-reply>
+    </x-container>
+</x-page>
 
-@endsection

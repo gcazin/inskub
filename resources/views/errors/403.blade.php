@@ -1,13 +1,11 @@
-@extends('layouts.base')
-
-@section('content')
+<x-page>
     <x-container>
-
         <x-section>
-            <x-alert type="danger">Vous n'êtes pas autorisé à effectuer cette action.</x-alert>
+            <x-element.alert type="danger">
+                <x-slot name="title">
+                    Vous n'êtes pas autorisé à effectuer cette action.
+                </x-slot>
+            </x-element.alert>
         </x-section>
-
     </x-container>
-
-    <x-right-sidebar-message></x-right-sidebar-message>
-@endsection
+</x-page>

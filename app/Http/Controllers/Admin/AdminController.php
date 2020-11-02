@@ -3,17 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Notifications\ReportingPost;
-use App\User;
 
 class AdminController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('admin');
-    }
-
     /**
      * Page d'administration
      *

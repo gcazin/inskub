@@ -8,7 +8,7 @@ class NotificationController extends Controller
 {
     public function index()
     {
-        return view('notifications');
+        return view('notification.index');
     }
 
     public function markAllAsRead()

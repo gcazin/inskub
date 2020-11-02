@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Discover;
 
 use App\Http\Controllers\Controller;
-use App\Role;
-use App\User;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DiscoverController extends Controller
@@ -17,7 +17,7 @@ class DiscoverController extends Controller
             $view = [];
 
             foreach($users as $user) {
-                $view[] = view('components.user-card', compact('user'))->render();
+                $view[] = view('components.user.item', compact('user'))->render();
             }
 
             return response()->json(['html' => $view]);
@@ -48,7 +48,7 @@ class DiscoverController extends Controller
             }
 
             foreach($users as $user) {
-                $view[] = view('components.user-card', compact('user'))->render();
+                $view[] = view('components.user.item', compact('user'))->render();
             }
 
             return response()->json(['html' => $view, 'initial' => $initial]);

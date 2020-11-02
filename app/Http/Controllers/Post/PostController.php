@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePost;
+use App\Models\Post;
+use App\Models\ReportPost;
+use App\Models\User;
 use App\Notifications\ReportingPost;
-use App\Post;
-use App\ReportPost;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -72,11 +72,10 @@ class PostController extends Controller
         $post->content = $request->get('content');
         $post->user_id = auth()->id();
         $post->visibility_id = $request->get('visibility_id');
-        if($request->has('project_id')) {
-            $post->project_id = $request->get('project_id');
-        }
+        $post->project_id = $request->get('project_id') ?? null;
+
         if($request->has('media')) {
-            $post->media = $request->file('media')->storeAs('posts', Str::random(40).'.'.$request->file('media')->extension(), ['disk' => 'public']);
+            $post->media = $request->file('media')->storeAs('posts',Str::random(40).'.'.$request->file('media')->extension(), ['disk' => 'public']);
         }
 
         $post->created_at = now();
@@ -84,7 +83,7 @@ class PostController extends Controller
 
         $animate = true;
 
-        $html = view('components.post', compact('post', 'animate'))->render();
+        $html = view('components.post.item', compact('post', 'animate'))->render();
 
         return response()->json($html);
     }
@@ -114,13 +113,9 @@ class PostController extends Controller
         $post = $this->post->find($id);
         $post->content = $request->get('content');
         $post->user_id = auth()->id();
-        $post->visibility_id = $request->get('visibility_id');
-        if($request->has('project_id')) {
-            $post->project_id = $request->get('project_id');
-        }
-        if($request->has('media')) {
-            $post->media = $request->file('media')->storeAs('posts', Str::random(40).'.'.$request->file('media')->extension(), ['disk' => 'public']);
-        }
+        $post->visibility_id = $request->get('visibility_id') ?? null;
+        $post->project_id = $request->get('project_id') ?? null;
+        $post->media = $request->file('media')->storeAs('posts', Str::random(40).'.'.$request->file('media')->extension(), ['disk' => 'public']);
 
         $post->updated_at = now();
         $post->update();

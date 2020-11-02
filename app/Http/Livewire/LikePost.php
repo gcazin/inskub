@@ -2,8 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Post;
-use App\User;
+use App\Models\Post;
 use Livewire\Component;
 
 class LikePost extends Component

@@ -19,11 +19,11 @@
                     <input id="search-users" type="search" placeholder="Rechercher parmis les utilisateurs..." class="form-control" name="search">
                 </div>
                 @auth
-                    @if(auth()->user()->role_id === 1)
+                    @role('Super-admin')
                         <div class="col">
-                            <x-link-button size="block" :url="route('admin.faq.index')">Créer une FAQ</x-link-button>
+                            <x-element.link-button size="block" :url="route('admin.faq.index')">Créer une FAQ</x-element.link-button>
                         </div>
-                    @endif
+                    @endrole
                 @endauth
             </div>
         </x-slot>
@@ -32,7 +32,7 @@
     <x-container>
         <x-section>
             <div id="accordion">
-                @foreach($faqs as $faq)
+                @forelse($faqs as $faq)
                     <div class="card">
                         <div class="card-header" id="headingOne">
                             <h5 class="mb-0">
@@ -48,7 +48,11 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
+                    @empty
+                    <x-element.alert type="info">
+                        <x-slot name="title">Aucune question à afficher.</x-slot>
+                    </x-element.alert>
+                @endforelse
             </div>
         </x-section>
     </x-container>

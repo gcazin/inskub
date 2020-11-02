@@ -21,7 +21,6 @@
 
     @auth
         <div class="row no-gutters">
-            @include('components.left-sidebar')
             @endauth
 
             @yield('content')

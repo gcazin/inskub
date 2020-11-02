@@ -2,8 +2,9 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\UserExperience;
-use App\UserFormation;
+use App\Models\User;
+use App\Models\UserExperience;
+use App\Models\UserFormation;
 use Faker\Generator as Faker;
 
 $factory->define(UserFormation::class, function (Faker $faker) {
@@ -15,7 +16,7 @@ $factory->define(UserFormation::class, function (Faker $faker) {
         'finish_date' => $faker->year,
         'description' => $faker->sentence,
         'media' => null,
-        'user_id' => random_int(1,15),
+        'user_id' => User::all()->random()->id
     ];
 });
 
@@ -29,6 +30,6 @@ $factory->define(UserExperience::class, function (Faker $faker) {
         'sector' => $faker->word,
         'description' => $faker->sentence,
         'media' => null,
-        'user_id' => random_int(1, 15),
+        'user_id' => User::all()->random()->id
     ];
 });

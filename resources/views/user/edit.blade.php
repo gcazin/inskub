@@ -1,55 +1,64 @@
-@extends('layouts.base')
+<x-page>
+    <x-header>
+        <x-slot name="title">Informations du compte</x-slot>
+        <x-slot name="content">
+            <div class=" overflow-x-auto">
+                <nav class="nav nav-pills nav-fill">
+                    <a class="nav-item nav-link" href="{{ route('user.edit') }}">Modifier le profil</a>
+                    <a class="nav-item nav-link" href="{{ route('user.options') }}">Options</a>
+                </nav>
+            </div>
+        </x-slot>
+    </x-header>
 
-@section('title')
-    Modifier les informations du compte
-@endsection
+    <x-container>
+        <x-section>
+            <p class="h4">Modifier des éléments de votre profil</p>
+            <hr>
+            <!-- Message d'alerte -->
+            <div class="row">
+                @if ($message = session()->get('success'))
+                    <x-element.alert type="success">
+                        {{ $message }}
+                    </x-element.alert>
+                @endif
 
-@section('content')
-    <x-account-content title="Modifier des éléments de votre profil">
+                @if ($errors->any())
+                    <x-element.alert type="danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </x-element.alert>
+                @endif
+            </div>
 
-        <!-- Message d'alerte -->
-        <div class="row">
-            @if ($message = session()->get('success'))
-                <x-alert type="success">
-                    {{ $message }}
-                </x-alert>
-            @endif
-
-            @if ($errors->any())
-                <x-alert type="danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </x-alert>
-            @endif
-        </div>
-
-        <!-- Formulaire -->
-        <x-form :action="route('user.edit', auth()->id())" method="PUT" enctype>
-            <div class="row mb-4">
-                <div class="col-4 text-center">
-                    <img class="rounded-circle" src="{{ \App\User::getAvatar($user->id) }}" alt="Avatar">
-                </div>
-                <div class="col">
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="avatar" id="customFile">
-                        <label class="custom-file-label" for="customFile">Choisir un nouveau avatar</label>
+            <!-- Formulaire -->
+            <x-form.item :action="route('user.edit', auth()->id())" method="PUT" enctype>
+                <div class="row mb-4">
+                    <div class="col-4 text-center">
+                        <img class="rounded-circle" src="{{ auth()->user()->getAvatar($user->id) }}" alt="Avatar">
+                    </div>
+                    <div class="col">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" name="avatar" id="customFile">
+                            <label class="custom-file-label" for="customFile">Choisir un nouveau avatar</label>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <x-input label="Nom de famille" name="last_name" :value="$user->last_name"></x-input>
-            <x-input label="Prénom" name="first_name" :value="$user->first_name"></x-input>
-            <x-input type="email" label="Adresse e-mail" name="email" :value="$user->email"></x-input>
-            <x-input type="password" label="Nouveau mot de passe" name="password"></x-input>
-            <x-input type="password" label="Confirmation du nouveau mot de passe" name="password_confirmation"></x-input>
+                <x-form.input label="Nom de famille" name="last_name" :value="$user->last_name"></x-form.input>
+                <x-form.input label="Prénom" name="first_name" :value="$user->first_name"></x-form.input>
+                <x-form.input type="email" label="Adresse e-mail" name="email" :value="$user->email"></x-form.input>
+                <x-form.input type="password" label="Nouveau mot de passe" name="password"></x-form.input>
+                <x-form.input type="password" label="Confirmation du nouveau mot de passe" name="password_confirmation"></x-form.input>
 
-            <hr>
-            <div class="text-right">
-                <x-submit class="success">Sauvegarder</x-submit>
-            </div>
-        </x-form>
+                <hr>
+                <div class="text-right">
+                    <x-form.submit class="success">Sauvegarder</x-form.submit>
+                </div>
+            </x-form.item>
+        </x-section>
+    </x-container>
 
-    </x-account-content>
-@endsection
+</x-page>

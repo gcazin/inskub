@@ -13,35 +13,63 @@
             </div>
 
             <div class="col d-flex justify-content-center">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item {{ request()->is('index*') ? 'active' : null }}">
-                        <a class="nav-link px-4 py-3" style="font-size: 1.2rem" href="{{ route('index') }}">Accueil</a>
-                    </li>
-                    <li class="nav-item {{ request()->is('discover*') ? 'active' : null }}">
-                        <a class="nav-link px-4 py-3" style="font-size: 1.2rem" href="{{ route('discover.index') }}">Découvrir</a>
-                    </li>
-                    <li class="nav-item {{ request()->is('expert*') ? 'active' : null }}">
-                        <a class="nav-link px-4 py-3" style="font-size: 1.2rem" href="{{ route('expert.index') }}">Expert</a>
-                    </li>
-                    <li class="nav-item {{ request()->is('project*') ? 'active' : null }}">
-                        <a class="nav-link px-4 py-3" style="font-size: 1.2rem" href="{{ route('project.index') }}">Projet</a>
-                    </li>
-                    <li class="nav-item {{ request()->is('chat*') ? 'active' : null }}">
-                        <a class="nav-link px-4 py-3" style="font-size: 1.2rem" href="{{ route('chat.index') }}">Messagerie</a>
-                    </li>
-                    @auth
-                        @if(auth()->user()->role_id === 1)
-                            <li class="nav-item {{ request()->is('admin*') ? 'active' : null }}">
-                                <a class="nav-link px-4 py-3" style="font-size: 1.2rem" href="{{ route('admin.index') }}">Administration</a>
-                            </li>
-                        @endif
-                    @endauth
-                </ul>
+                @auth
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item {{ request()->is('index*') ? 'active' : null }}">
+                            <a class="nav-link px-4 py-3" style="font-size: 1.2rem" href="{{ route('index') }}">Accueil</a>
+                        </li>
+                        <li class="nav-item {{ request()->is('discover*') ? 'active' : null }}">
+                            <a class="nav-link px-4 py-3" style="font-size: 1.2rem" href="{{ route('discover.index') }}">Découvrir</a>
+                        </li>
+                        <li class="nav-item dropdown {{ request()->is('expert*') ? 'active' : null }}">
+                            <a class="nav-link px-4 py-3 d-flex align-items-center" style="font-size: 1.2rem" href="#" id="expertDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @if(\App\Models\RequestExpertise::where('expert_id', auth()->id())->where('status', '=', 0)->get()->count() > 0)
+                                    <div class="spinner-grow text-primary spinner-grow-sm mr-2" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                @endif
+                                Sinistre
+                            </a>
+                            <div class="dropdown-menu shadow-sm rounded-lg border-0 mt-3" aria-labelledby="expertDropdown">
+                                @hasrole('intermediate')
+                                <a class="dropdown-item d-flex align-items-center py-2" href="{{ route('expert.missions') }}">
+                                    <ion-icon name="search-outline" class="h5 mb-0 align-text-bottom mr-3 icon-container-primary"></ion-icon>
+                                    Missions d'expertise
+                                </a>
+                                @else
+                                    <a class="dropdown-item d-flex align-items-center py-2" href="{{ route('expert.index') }}">
+                                        <ion-icon name="folder-open-outline" class="h5 mb-0 align-text-bottom mr-3 icon-container-primary"></ion-icon>
+                                        Ouvrir un sinistre
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center py-2" href="{{ route('sinister.index') }}">
+                                        <ion-icon name="eye-outline" class="h5 mb-0 align-text-bottom mr-3 icon-container-primary"></ion-icon>
+                                        Suivre un sinistre
+                                    </a>
+                                    <!--<a class="dropdown-item d-flex align-items-center py-2" href="#">
+                                        <ion-icon name="search-outline" class="h5 mb-0 align-text-bottom mr-3 icon-container-primary"></ion-icon>
+                                        Retrouver un sinistre
+                                    </a>-->
+                                    @endhasrole
+                            </div>
+                        </li>
+                        <li class="nav-item {{ request()->is('project*') ? 'active' : null }}">
+                            <a class="nav-link px-4 py-3" style="font-size: 1.2rem" href="{{ route('project.index') }}">Projet</a>
+                        </li>
+                        <li class="nav-item {{ request()->is('chat*') ? 'active' : null }}">
+                            <a class="nav-link px-4 py-3" style="font-size: 1.2rem" href="{{ route('chat.show') }}">Messagerie</a>
+                        </li>
+                        @role('super-admin|admin')
+                        <li class="nav-item {{ request()->is('admin*') ? 'active' : null }}">
+                            <a class="nav-link px-4 py-3" style="font-size: 1.2rem" href="{{ route('admin.index') }}">Administration</a>
+                        </li>
+                        @endrole
+                    </ul>
+                @endauth
             </div>
 
             <div class="col d-flex justify-content-end">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
+                    <li>
                         @guest
                             <a class="btn btn-outline-primary" href="{{ route('login') }}">
                                 Se connecter
@@ -60,7 +88,7 @@
                                     data-toggle="dropdown"
                                     aria-haspopup="true"
                                     aria-expanded="false">
-                                    <img class="rounded-circle" style="height: 45px;" src="{{ \App\User::getAvatar(auth()->id()) }}" alt="">
+                                    <img class="rounded-circle" style="height: 45px;" src="{{ \App\Models\User::getAvatar(auth()->id()) }}" alt="">
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right mt-3 border-0 rounded-lg shadow-sm" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="{{ route('user.profile', auth()->id()) }}">Mon profil</a>
@@ -102,7 +130,7 @@
                     aria-haspopup="true"
                     aria-expanded="false">
                     @auth
-                        <img class="img-fluid rounded-circle" style="height: 30px;" src="{{ \App\User::getAvatar(auth()->id()) }}" alt="">
+                        <img class="img-fluid rounded-circle" style="height: 30px;" src="{{ \App\Models\User::getAvatar(auth()->id()) }}" alt="">
                     @endauth
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">

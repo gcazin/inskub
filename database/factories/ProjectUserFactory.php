@@ -2,13 +2,15 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Model;
-use App\ProjectUser;
+use App\Models\Model;
+use App\Models\Project;
+use App\Models\ProjectUser;
+use App\Models\User;
 use Faker\Generator as Faker;
 
 $factory->define(ProjectUser::class, function (Faker $faker) {
     return [
-        'user_id' => random_int(1,10),
-        'project_id' => random_int(1,5)
+        'user_id' => User::all()->random()->id,
+        'project_id' => Project::all()->random()->id
     ];
 });

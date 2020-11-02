@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreNote;
-use App\Note;
+use App\Models\Note;
 
 class NoteController extends Controller
 {

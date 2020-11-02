@@ -2,15 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\Project;
 use App\Policies\ProjectPolicy;
-use App\Project;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
-
-    public const ROLE_INTERMEDIATE = 2;
 
     /**
      * The policy mappings for the application.
@@ -29,6 +28,12 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        Gate::before(function ($user) {
+           if ($user->hasRole('Super-Admin')) {
+               return true;
+           }
+        });
 
         Passport::routes();
     }

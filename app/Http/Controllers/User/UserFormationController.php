@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\UserFormation;
+use App\Models\UserFormation;
 use Illuminate\Http\Request;
 
 class UserFormationController extends Controller

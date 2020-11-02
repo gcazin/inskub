@@ -2,7 +2,8 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Formation;
+use App\Models\Formation;
+use App\Models\User;
 use Faker\Generator as Faker;
 
 $factory->define(Formation::class, function (Faker $faker) {
@@ -11,6 +12,6 @@ $factory->define(Formation::class, function (Faker $faker) {
         'description' => $faker->realText(),
         'location' => $faker->city,
         'entry_price' => random_int(1100,2000),
-        'user_id' => 4,
+        'user_id' => User::all()->random()->id
     ];
 });

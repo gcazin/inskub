@@ -25,7 +25,7 @@
             </a>
         </div>
         <div class="col">
-            <a href="{{ route('chat.index') }}" class="{{ (request()->is('chat')) ? 'text-primary' : 'text-dark ' }}">
+            <a href="{{ route('chat.show') }}" class="{{ (request()->is('chat')) ? 'text-primary' : 'text-dark ' }}">
                 <ion-icon class="h4 m-0" name="chatbubbles-outline"></ion-icon>
                 <span class="d-block text-muted" style="font-size: .750rem;">Messagerie</span>
             </a>

@@ -1,14 +1,7 @@
-@extends('layouts.base')
-
-@section('head')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.20.0/dist/tagify.min.css">
-@endsection
-
-@section('title')
-    Projets
-@endsection
-
-@section('content')
+<x-page>
+    <x-slot name="head">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.20.0/dist/tagify.min.css">
+    </x-slot>
 
     <x-header>
         <x-slot name="title">Projet</x-slot>
@@ -43,8 +36,8 @@
                     </button>
                 </div>
 
-                <x-modal title="Création d'un nouveau projet" name="new-project">
-                    <x-form :action="route('project.index')">
+                <x-element.modal title="Création d'un nouveau projet" name="new-project">
+                    <x-form.item :action="route('project.index')">
 
                         <!-- Type de projet -->
                         <div class="form-group">
@@ -66,8 +59,8 @@
                         </div>
 
                         <!-- Titre -->
-                        <x-input label="Titre du projet" name="title" placeholder="Mon super projet" required></x-input>
-                        <x-textarea label="Description" name="description" rows="3"></x-textarea>
+                        <x-form.input label="Titre du projet" name="title" placeholder="Mon super projet" required></x-form.input>
+                        <x-form.textarea label="Description" name="description" rows="3"></x-form.textarea>
 
                         <!-- Deadline -->
                         <div class="form-group">
@@ -78,11 +71,11 @@
                         <!-- Participants -->
                         <div class="form-group" id="participants-container">
                             <label for="participants">Participant</label>
-                            @if(auth()->user()->role_id === 4)
-                                <x-textarea
+                            @if(auth()->user()->getRoleNames()->contains('school'))
+                                <x-form.textarea
                                     name="participants"
                                     help="Vous pouvez ajouter l'adresse email des élèves en appuyant sur la touche entrée"
-                                    rows="5"></x-textarea>
+                                    rows="5"></x-form.textarea>
                             @else
                                 @if(count(auth()->user()->followings) > 0)
                                     @foreach(auth()->user()->followings as $following)
@@ -92,19 +85,19 @@
                                         </div>
                                     @endforeach
                                 @else
-                                    <x-alert type="warning">
+                                    <x-element.alert type="warning">
                                         <x-slot name="title">
                                             Vous ne suivez personne pour l'instant
                                         </x-slot>
-                                    </x-alert>
+                                    </x-element.alert>
                                 @endif
                             @endif
                         </div>
 
                         <hr>
-                        <x-submit>Créer le projet</x-submit>
-                    </x-form>
-                </x-modal>
+                        <x-form.submit>Créer le projet</x-form.submit>
+                    </x-form.item>
+                </x-element.modal>
             </div>
         </x-slot>
     </x-header>
@@ -145,62 +138,59 @@
             <div class="row">
                 <div class="col flex-wrap" id="project-list">
                     @forelse($projects->sortBy('finish') as $project)
-                        <x-project-item :project="$project"></x-project-item>
+                        <x-project.item :project="$project"></x-project.item>
                     @empty
-                        <div class="mx-3 mb-3">
-                            <x-alert type="info">
-                                <x-slot name="title">
-                                    Créer votre premier projet dès maintenant!
-                                </x-slot>
-                            </x-alert>
-                        </div>
+                        <x-element.alert type="info">
+                            <x-slot name="title">
+                                Créer votre premier projet dès maintenant!
+                            </x-slot>
+                        </x-element.alert>
                     @endforelse
                 </div>
             </div>
         </div>
     </x-container>
 
-
-@endsection
-
-@section('script')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/i18n/datepicker.fr-FR.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('[data-toggle="datepicker"]').datepicker({
-                autoHide: true,
-                zIndex: 2048,
-                language: 'fr-FR',
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function(){
-            $("#search-project").on("keyup", function() {
-                let value = $(this).val().toLowerCase();
-                $("#project-list .menu-item").filter(function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    <x-slot name="script">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/i18n/datepicker.fr-FR.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('[data-toggle="datepicker"]').datepicker({
+                    autoHide: true,
+                    zIndex: 2048,
+                    language: 'fr-FR',
                 });
             });
+        </script>
+        <script>
+            $(document).ready(function(){
+                $("#search-project").on("keyup", function() {
+                    let value = $(this).val().toLowerCase();
+                    $("#project-list .menu-item").filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
 
-            let participants = $('#participants-container')
-            participants.hide()
+                let participants = $('#participants-container')
+                participants.hide()
 
-            $('input[name="private"]').click(function() {
-                if ($('#private').is(':checked')) {
-                    console.log('salut')
-                    $(participants).hide()
-                }
-                if($('#pro').is(':checked')) {
-                    $(participants).show()
-                }
+                $('input[name="private"]').click(function() {
+                    if ($('#private').is(':checked')) {
+                        console.log('salut')
+                        $(participants).hide()
+                    }
+                    if($('#pro').is(':checked')) {
+                        $(participants).show()
+                    }
+                });
             });
-        });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.20.0/dist/tagify.min.js"></script>
-    <script>
-        let input = document.querySelector('textarea[name="participants"]')
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.20.0/dist/tagify.min.js"></script>
+        <script>
+            let input = document.querySelector('textarea[name="participants"]')
 
-        let tagify = new Tagify(input)
-    </script>
-@endsection
+            let tagify = new Tagify(input)
+        </script>
+    </x-slot>
+
+</x-page>

@@ -1,6 +1,6 @@
 @each $color, $value in $theme-colors {
     .icon-container-#{$color} {
-        background: $primary-200;
+        background: var(--#{$color + '-' + 100});
         padding: $spacer * .5;
         border-radius: $border-radius-lg;
     }

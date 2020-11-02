@@ -1,76 +1,70 @@
-@extends('layouts.base', ['full_width' => true])
+<x-page>
+    <x-slot name="head">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    </x-slot>
 
-@section('head')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-@endsection
-
-@section('title')
-    Profil de {{ ucfirst($user->first_name) }} {{ ucfirst($user->last_name) }}
-@endsection
-
-@section('content')
-    <x-container>
-
-        <div class="mb-3 rounded">
-            <div class="profile__banner">
-                <img src="https://i.imgur.com/XNgxmzi.png" style="height: 100px; object-fit: cover" class="w-100 rounded-top" alt="">
-            </div>
-            <div class="d-flex justify-content-center bg-white" style="margin-top: -4rem">
-                <img alt="avatar" src="{{ $user::getAvatar($user->id) }}" class="rounded-circle border">
-            </div>
-            <div class="container rounded-bottom">
-                <div class="row shadow-sm bg-white py-1">
-                    <div class="col">
-
-                        <div class="row">
-                            <div class="col">
-                                <p class="h4">{{ ucfirst($user->first_name) }} {{ ucfirst($user->last_name) }}</p>
-                            </div>
-                            <div class="col text-right">
-                                @if(auth()->id() === (int) $user->id)
-                                    <a class="h4" href="{{ route('user.edit') }}">
-                                        <ion-icon class="align-bottom" name="settings-outline"></ion-icon>
-                                    </a>
-                                @else
-                                    <livewire:follow-user :member="$user->id">
-                                    <a class="h4 ml-1" href="{{ route('chat.createConversation', $user->id) }}">
-                                        <ion-icon class="align-text-bottom" name="chatbubble-outline"></ion-icon>
-                                    </a>
-                                @endif
-                            </div>
+    <x-header>
+        <x-slot name="title">
+            <img alt="avatar" src="{{ $user::getAvatar($user->id) }}" class="rounded-circle shadow-sm mr-3">
+            Profil de {{ ucfirst($user->first_name) }} {{ ucfirst($user->last_name) }}
+        </x-slot>
+        <x-slot name="content">
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <p class="h4">{{ ucfirst($user->first_name) }} {{ ucfirst($user->last_name) }}</p>
                         </div>
 
-                        <p class="mb-3">
-                            <a href="{{ route('user.follower', $user->id) }}">
-                                {{ auth()->user()->followers->count() }} abonnés
-                            </a> -
-                            <a href="{{ route('user.following', $user->id) }}">
-                                {{ auth()->user()->followings->count() }} abonnements
-                            </a>
-                        </p>
-
+                        <div class="col text-right">
+                            @if(auth()->id() === (int) $user->id)
+                                <a class="h4" href="{{ route('user.edit') }}">
+                                    <ion-icon class="align-bottom" name="settings-outline"></ion-icon>
+                                </a>
+                            @else
+                                <livewire:follow-user :member="$user->id">
+                                    <a class="btn btn-outline-primary ml-1" href="{{ route('chat.createConversation', $user->id) }}">
+                                        <ion-icon class="align-text-bottom h5 mb-0" name="chatbubble-outline"></ion-icon>
+                                    </a>
+                            @endif
+                        </div>
                     </div>
+
+                    <div class="mt-3">
+                        <a href="{{ route('user.follower', $user->id) }}">
+                            {{ auth()->user()->followers->count() }} abonnés
+                        </a> -
+                        <a href="{{ route('user.following', $user->id) }}">
+                            {{ auth()->user()->followings->count() }} abonnements
+                        </a>
+                    </div>
+
                 </div>
             </div>
-        </div>
+        </x-slot>
+    </x-header>
 
-        <x-about-user
+    <x-container>
+
+        <x-user.about
             title="A propos"
             target="userAbout">
             @isset($user->about)
                 {{ $user->about }}
             @else
-                <x-alert type="info">
-                    Aucune description renseignée
-                </x-alert>
+                <x-element.alert type="info">
+                    <x-slot name="title">
+                        Aucune description renseignée
+                    </x-slot>
+                </x-element.alert>
             @endisset
-        </x-about-user>
+        </x-user.about>
 
-        <x-about-user
+        <x-user.about
             title="Dernières publications">
 
-            @forelse(\App\Post::where('user_id', $user->id)->take(5)->get() as $post)
+            @forelse(\App\Models\Post::where('user_id', $user->id)->take(5)->get() as $post)
                 <div class="job-post border rounded p-3 mb-3">
                     <div class="row">
                         <div class="col">
@@ -91,183 +85,178 @@
                     </div>
                 @endif
             @empty
-                <x-alert type="info">
-                    Aucune publication à afficher
-                </x-alert>
+                <x-element.alert type="info">
+                    <x-slot name="title">
+                        Aucune publication à afficher
+                    </x-slot>
+                </x-element.alert>
             @endforelse
 
-        </x-about-user>
+        </x-user.about>
 
         @if((int) auth()->id() === (int) request()->id)
-            <x-modal title="Ajouter une expérience" name="userAbout">
-                <x-form :action="route('user.profile', auth()->id())">
-                    <x-textarea label="Description" name="about"></x-textarea>
+            <x-element.modal title="Ajouter une expérience" name="userAbout">
+                <x-form.item :action="route('user.profile', auth()->id())">
+                    <x-form.textarea label="Description" name="about"></x-form.textarea>
 
-                    <x-submit>Valider</x-submit>
-                </x-form>
-            </x-modal>
-        @endif
+                    <x-form.submit>Valider</x-form.submit>
+                </x-form.item>
+            </x-element.modal>
+    @endif
 
     <!-- Etudiants et salariés -->
-        @if($user->role_id === 2 || $user->role_id === 5)
+    @if($user->role_id === 2 || $user->role_id === 5)
         <!-- Expériences -->
-            <x-about-user
+            <x-user.about
                 title="Expériences"
                 target="create-experience">
                 @include('user.partials.experiences-list')
-            </x-about-user>
+            </x-user.about>
 
-            <x-modal title="Ajouter une expérience" name="create-experience">
-                <x-form :action="route('user.experience.create')" method="post">
+            <x-element.modal title="Ajouter une expérience" name="create-experience">
+                <x-form.item :action="route('user.experience.create')" method="post">
 
-                    <x-input label="Titre" name="title" placeholder="Intitulé du poste"></x-input>
-                    <x-input label="Entreprise" name="enterprise" placeholder="Entreprise concernée..."></x-input>
-                    <x-input label="Localisation" name="location" placeholder="Paris..."></x-input>
-                    <x-input label="Secteur" name="sector" placeholder="Assurance..."></x-input>
+                    <x-form.input label="Titre" name="title" placeholder="Intitulé du poste"></x-form.input>
+                    <x-form.input label="Entreprise" name="enterprise" placeholder="Entreprise concernée..."></x-form.input>
+                    <x-form.input label="Localisation" name="location" placeholder="Paris..."></x-form.input>
+                    <x-form.input label="Secteur" name="sector" placeholder="Assurance..."></x-form.input>
 
                     <div class="row">
                         <div class="col">
-                            <x-input label="Date de début" name="start_date" :placeholder="now()->year-1"></x-input>
+                            <x-form.input label="Date de début" name="start_date" :placeholder="now()->year-1"></x-form.input>
                         </div>
 
                         <div class="col">
-                            <x-input label="Date de fin" name="finish_date" :placeholder="now()->year"></x-input>
+                            <x-form.input label="Date de fin" name="finish_date" :placeholder="now()->year"></x-form.input>
                         </div>
                     </div>
 
-                    <x-input label="Description" name="description" placeholder="Informations en plus..."></x-input>
+                    <x-form.input label="Description" name="description" placeholder="Informations en plus..."></x-form.input>
 
-                    <x-submit>Valider</x-submit>
-                </x-form>
-            </x-modal>
+                    <x-form.submit>Valider</x-form.submit>
+                </x-form.item>
+            </x-element.modal>
 
             <!-- Formations -->
-            <x-about-user
+            <x-user.about
                 title="Formations"
                 target="create-formation">
                 @include('user.partials.formations-list')
-            </x-about-user>
+            </x-user.about>
 
-            <x-modal title="Ajouter une formation" name="create-formation">
-                <x-form :action="route('user.formation.create')" method="post">
+            <x-element.modal title="Ajouter une formation" name="create-formation">
+                <x-form.item :action="route('user.formation.create')" method="post">
 
-                    <x-input label="Ecole" name="school" placeholder="Université de..." required></x-input>
-                    <x-input label="Diplôme" name="degree" placeholder="Licence..."></x-input>
-                    <x-input label="Domaine d'étude" name="study_area" placeholder="Assurance en..."></x-input>
+                    <x-form.input label="Ecole" name="school" placeholder="Université de..." required></x-form.input>
+                    <x-form.input label="Diplôme" name="degree" placeholder="Licence..."></x-form.input>
+                    <x-form.input label="Domaine d'étude" name="study_area" placeholder="Assurance en..."></x-form.input>
                     <div class="row">
                         <div class="col">
-                            <x-input label="Date de début" name="start_date" :placeholder="now()->year-1"></x-input>
+                            <x-form.input label="Date de début" name="start_date" :placeholder="now()->year-1"></x-form.input>
                         </div>
 
                         <div class="col">
-                            <x-input label="Date de fin" name="finish_date" :placeholder="now()->year"></x-input>
+                            <x-form.input label="Date de fin" name="finish_date" :placeholder="now()->year"></x-form.input>
                         </div>
                     </div>
-                    <x-textarea label="Description" name="description" placeholder="..."></x-textarea>
-                    <x-submit>Valider</x-submit>
-                </x-form>
-            </x-modal>
-        @endif
+                    <x-form.textarea label="Description" name="description" placeholder="..."></x-form.textarea>
+                    <x-form.submit>Valider</x-form.submit>
+                </x-form.item>
+            </x-element.modal>
+    @endif
 
     <!-- Entreprise -->
-        @if($user->role_id === 3)
+        @role('company')
         <!-- Emplois -->
-            <x-about-user
-                title="Emplois proposés"
-                target="create-job">
-                @include('user.partials.jobs-list')
-            </x-about-user>
+        <x-user.about
+            title="Emplois proposés"
+            target="create-job">
+            @include('user.partials.jobs-list')
+        </x-user.about>
 
-            <x-modal title="Publier une offre d'emploi" name="create-job">
-                <!-- Form -->
-                <x-form :action="route('user.experience.create')" method="post">
+        <x-element.modal title="Publier une offre d'emploi" name="create-job">
+            <!-- Form -->
+            <x-form.item :action="route('user.experience.create')" method="post">
 
-                    <x-input label="Titre" name="title" placeholder="Intitulé du poste"></x-input>
-                    <x-input label="Entreprise" name="enterprise" placeholder="Entreprise concernée..."></x-input>
-                    <x-input label="Localisation" name="location" placeholder="Paris..."></x-input>
-                    <x-input label="Secteur" name="sector" placeholder="Assurance..."></x-input>
-                    <x-input label="Secteur" name="sector" placeholder="Assurance..."></x-input>
+                <x-form.input label="Titre" name="title" placeholder="Intitulé du poste"></x-form.input>
+                <x-form.input label="Entreprise" name="enterprise" placeholder="Entreprise concernée..."></x-form.input>
+                <x-form.input label="Localisation" name="location" placeholder="Paris..."></x-form.input>
+                <x-form.input label="Secteur" name="sector" placeholder="Assurance..."></x-form.input>
+                <x-form.input label="Secteur" name="sector" placeholder="Assurance..."></x-form.input>
 
-                    <div class="row">
-                        <div class="col">
-                            <x-input label="Date de début" name="start_date" :placeholder="now()->year-1"></x-input>
-                        </div>
-
-                        <div class="col">
-                            <x-input label="Date de fin" name="finish_date" :placeholder="now()->year"></x-input>
-                        </div>
+                <div class="row">
+                    <div class="col">
+                        <x-form.input label="Date de début" name="start_date" :placeholder="now()->year-1"></x-form.input>
                     </div>
 
-                    <x-input label="Description" name="description" placeholder="Informations en plus..."></x-input>
+                    <div class="col">
+                        <x-form.input label="Date de fin" name="finish_date" :placeholder="now()->year"></x-form.input>
+                    </div>
+                </div>
 
-                    <x-submit>Valider</x-submit>
-                </x-form>
-            </x-modal>
-        @endif
+                <x-form.input label="Description" name="description" placeholder="Informations en plus..."></x-form.input>
 
-    <!-- Ecole -->
-        @if($user->role_id === 4)
+                <x-form.submit>Valider</x-form.submit>
+            </x-form.item>
+        </x-element.modal>
+        @endrole
+
+        <!-- Ecole -->
+        @role('school')
         <!-- Formations -->
-            <x-about-user
-                title="Formations proposées"
-                target="create-formation">
-                @include('user.partials.formations-list')
-            </x-about-user>
+        <x-user.about
+            title="Formations proposées"
+            target="create-formation">
+            @include('user.partials.formations-list')
+        </x-user.about>
 
-            <x-modal title="Ajouter une formation" name="create-formation">
-                <x-form :action="route('user.formation.create')">
-
-                    <x-input label="Ecole" name="school" placeholder="Université de ..."></x-input>
-                    <x-input label="Diplôme" name="degree" placeholder="Licence ..."></x-input>
-                    <x-input label="Domaine d'étude" name="study_area" placeholder="Assurance en ..."></x-input>
-
-                    <div class="row">
-
-                        <div class="col">
-                            <x-input type="number" label="Date de début" name="start_date" :placeholder="now()->year-1"></x-input>
-                        </div>
-                        <div class="col">
-                            <x-input type="number" label="Date de fin" name="finish_date" :placeholder="now()->year"></x-input>
-                        </div>
-
+        <x-element.modal title="Ajouter une formation" name="create-formation">
+            <x-form.item :action="route('user.formation.create')">
+                <x-form.input label="Ecole" name="school" placeholder="Université de ..."></x-form.input>
+                <x-form.input label="Diplôme" name="degree" placeholder="Licence ..."></x-form.input>
+                <x-form.input label="Domaine d'étude" name="study_area" placeholder="Assurance en ..."></x-form.input>
+                <div class="row">
+                    <div class="col">
+                        <x-form.input name="finish_date" type="number" label="Date de début"></x-form.input>
                     </div>
+                    <div class="col">
+                        <x-form.input type="number" label="Date de fin" name="finish_date" :placeholder="now()->year"></x-form.input>
+                    </div>
+                </div>
+                <x-form.textarea label="Description" name="description" placeholder="Informations en plus..."></x-form.textarea>
 
-                    <x-textarea label="Description" name="description" placeholder="Informations en plus..."></x-textarea>
+                <x-form.submit>Valider</x-form.submit>
+            </x-form.item>
+        </x-element.modal>
+        @endrole
 
-                    <x-submit>Valider</x-submit>
-                </x-form>
-            </x-modal>
-        @endif
-
-        <x-about-user
+        <x-user.about
             title="Compétences"
             target="create-skill">
             @include('user.partials.skills-list')
-        </x-about-user>
+        </x-user.about>
 
-        <x-modal title="Ajouter une compétence" name="create-skill">
-            <x-form :action="route('user.skill.create')" method="post">
+        <x-element.modal title="Ajouter une compétence" name="create-skill">
+            <x-form.item :action="route('user.skill.create')" method="post">
                 <div class="form-group">
                     <label>Domaine de compétence</label>
                     <select class="skills form-control" id="skills" name="skills[]" multiple style="width: 100%">
-                        @foreach(\App\UserSkill::all() as $skill)
+                        @foreach(\App\Models\UserSkill::all() as $skill)
                             <option value="{{ $skill->id }}">{{ ucfirst($skill->title) }}</option>
                         @endforeach
                     </select>
                 </div>
-                <x-submit>Valider</x-submit>
-            </x-form>
-        </x-modal>
+                <x-form.submit>Valider</x-form.submit>
+            </x-form.item>
+        </x-element.modal>
     </x-container>
 
-    <x-right-sidebar-message></x-right-sidebar-message>
-@endsection
-
-@section('script')
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.skills').select2();
-        });
-    </script>
-@endsection
+    <x-slot name="script">
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('.skills').select2();
+            });
+        </script>
+    </x-slot>
+</x-page>

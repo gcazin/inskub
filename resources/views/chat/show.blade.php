@@ -11,9 +11,11 @@
             </div>
         @else
             <div class="m-3">
-                <x-alert type="info">
-                    Aucune conversation selectionné
-                </x-alert>
+                <x-element.alert type="info">
+                    <x-slot name="title">
+                        Aucune conversation selectionné
+                    </x-slot>
+                </x-element.alert>
             </div>
         @endif
     </div>

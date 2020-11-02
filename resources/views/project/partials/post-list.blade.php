@@ -115,9 +115,9 @@
                 </div>
             </div>
         @empty
-            <x-alert type="info" icon="information-circle-outline">
+            <x-element.alert type="info" icon="information-circle-outline">
                 Personne n'a encore publier dans votre espace projet
-            </x-alert>
+            </x-element.alert>
         @endforelse
     </div>
 </div>
