@@ -1,6 +1,21 @@
 <x-page>
     <x-header>
         <x-slot name="title">Administration</x-slot>
+        <x-slot name="content">
+            <div class="container mx-auto text-center">
+                <div class="row">
+                    <div class="col">
+                        <a class="h5" href="{{ route('admin.user.index') }}">Utilisateurs</a>
+                    </div>
+                    <div class="col">
+                        <a class="h5" href="{{ route('admin.user.index') }}">FAQ</a>
+                    </div>
+                    <div class="col">
+                        <a class="h5" href="{{ route('admin.user.index') }}">FAQ</a>
+                    </div>
+                </div>
+            </div>
+        </x-slot>
     </x-header>
 
     <x-container>

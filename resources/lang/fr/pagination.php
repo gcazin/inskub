@@ -12,6 +12,6 @@ return [
     |
     */
 
-    'previous' => '<ion-icon class="align-text-top" name="arrow-back-outline"></ion-icon> Précédent',
-    'next'     => 'Suivant <ion-icon class="align-text-top" name="arrow-forward-outline"></ion-icon>',
+    'previous' => 'Précédent',
+    'next'     => 'Suivant',
 ];
