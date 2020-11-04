@@ -23,7 +23,7 @@ class User extends \Illuminate\Foundation\Auth\User
      * @var array
      */
     protected $fillable = [
-        'id', 'last_name', 'first_name', 'email', 'avatar', 'department_id', 'company_id',
+        'id', 'last_name', 'first_name', 'password', 'email', 'avatar', 'department_id', 'company_id',
     ];
 
     /**
