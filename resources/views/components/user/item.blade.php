@@ -1,4 +1,4 @@
-<div class="col-3 mb-3 text-center">
+<div class="col-lg-3 col-12 mb-3 text-center">
     <div class="bg-white shadow-sm rounded-lg p-4">
 
         <!-- Profile picture -->

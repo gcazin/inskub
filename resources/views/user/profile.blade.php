@@ -6,12 +6,10 @@
 
     <x-header>
         <x-slot name="title">
-            <img alt="avatar" src="{{ $user::getAvatar($user->id) }}" class="rounded-circle shadow-sm mr-3">
+            <img alt="avatar" src="{{ $user::getAvatar($user->id) }}" height="100" class="rounded-circle shadow-sm mr-3">
             Profil de {{ ucfirst($user->first_name) }} {{ ucfirst($user->last_name) }}
         </x-slot>
         <x-slot name="content">
-            <div class="row">
-                <div class="col">
                     <div class="row">
                         <div class="col">
                             <p class="h4">{{ ucfirst($user->first_name) }} {{ ucfirst($user->last_name) }}</p>
@@ -20,12 +18,12 @@
                         <div class="col text-right">
                             @if(auth()->id() === (int) $user->id)
                                 <a class="h4" href="{{ route('user.edit') }}">
-                                    <ion-icon class="align-bottom" name="settings-outline"></ion-icon>
+                                    <ion-icon class="icon-container-primary align-bottom" name="settings-outline"></ion-icon>
                                 </a>
                             @else
                                 <livewire:follow-user :member="$user->id">
-                                    <a class="btn btn-outline-primary ml-1" href="{{ route('chat.createConversation', $user->id) }}">
-                                        <ion-icon class="align-text-bottom h5 mb-0" name="chatbubble-outline"></ion-icon>
+                                    <a class="ml-1" href="{{ route('chat.createConversation', $user->id) }}">
+                                        <ion-icon class="icon-container align-text-bottom h5 mb-0" name="chatbubble-outline"></ion-icon>
                                     </a>
                             @endif
                         </div>
@@ -40,8 +38,6 @@
                         </a>
                     </div>
 
-                </div>
-            </div>
         </x-slot>
     </x-header>
 

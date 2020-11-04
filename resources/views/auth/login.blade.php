@@ -1,8 +1,17 @@
 <x-page>
+    <x-header>
+        <x-slot name="title">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    Connexion
+                </div>
+            </div>
+        </x-slot>
+    </x-header>
+
     <x-container>
-        <x-section class="col-lg-6 mx-auto py-4 shadow-sm rounded-lg" id="container-login-form">
+        <x-section class="col-lg-8 mx-auto py-4 shadow-sm rounded-lg" id="container-login-form">
             <div class="container" id="login-form">
-                <h1 class="font-weight-light mb-1 mb-lg-4 mt-3 mt-lg-0 d-none d-lg-block">Connexion</h1>
                 <x-form.item :action="route('login')">
                 <!-- Mail -->
                     <div class="form-group">

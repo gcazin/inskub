@@ -62,28 +62,30 @@ class UserSeeder extends Seeder
         factory(User::class, 2)->create([
             'first_name' => 'Admin',
             'last_name' => 'admin',
-        ])->each(function($user) use($admin) {
+        ])->each(function($user) use ($admin) {
             $user->assignRole($admin);
         });
 
-        foreach($roles as $role) {
-            factory(User::class, 3)->create([
-                'last_name' => $role->name,
-                'department_id' => $role->name === 'intermediate' ? Department::all()->random()->id : null,
-                'company_id' => $role->name === 'intermediate' ? Role::all()->random()->id : null
-            ])->each(function($user) use($role) {
-                $user->assignRole($role);
-            });
+        if(env('APP_ENV') === "local") {
+            foreach($roles as $role) {
+                factory(User::class, 3)->create([
+                    'last_name' => $role->name,
+                    'department_id' => $role->name === 'intermediate' ? Department::all()->random()->id : null,
+                    'company_id' => $role->name === 'intermediate' ? Role::all()->random()->id : null
+                ])->each(function($user) use ($role) {
+                    $user->assignRole($role);
+                });
 
-            factory(User::class)->create([
-                'email' => $role->name.'@'.$role->name.'.fr',
-                'password' => Hash::make('secret'),
-                'last_name' => $role->name,
-                'department_id' => $role->name === 'intermediate' ? Department::all()->random()->id : null,
-                'company_id' => $role->name === 'intermediate' ? Role::all()->random()->id : null
-            ])->each(function($user) use($role) {
-                $user->assignRole($role);
-            });
+                factory(User::class)->create([
+                    'email' => trans($role->name).'@'.trans($role->name).'.fr',
+                    'password' => Hash::make('secret1234'),
+                    'last_name' => $role->name,
+                    'department_id' => $role->name === 'intermediate' ? Department::all()->random()->id : null,
+                    'company_id' => $role->name === 'intermediate' ? Role::all()->random()->id : null
+                ])->each(function($user) use ($role) {
+                    $user->assignRole($role);
+                });
+            }
         }
     }
 }

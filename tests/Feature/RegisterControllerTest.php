@@ -5,11 +5,19 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 use Tests\TestCase;
 
 class RegisterControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app->make(PermissionRegistrar::class)->registerPermissions();
+    }
 
     /**
      * On peut accéder au formulaire d'inscription
@@ -62,6 +70,59 @@ class RegisterControllerTest extends TestCase
     }
 
     /**
+     * Un utilisateur peut s'enregister
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function it_should_fill_department_and_company_in_role_intermediate(): void
+    {
+        $user = factory(User::class)->make();
+
+        $response = $this->post(route('register'), [
+            'role_name' => 'intermediate',
+            'last_name' => $user->last_name,
+            'first_name' => $user->first_name,
+            'email' => $user->email,
+            'password' => $user->password,
+            'password_confirmation' => $user->password,
+            'company_id' => 1,
+            'department_id' => 1,
+        ]);
+
+        $response
+            ->assertRedirect('/')
+            ->assertStatus(302);
+    }
+
+    /**
+     * Un utilisateur peut s'enregister
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function it_can_fill_blank_department_and_company_in_other_role_than_intermediate(): void
+    {
+        factory(Role::class)->make(['name' => 'person']);
+        $user = factory(User::class)->make();
+
+        $response = $this->post(route('register'), [
+            'role_name' => 'person',
+            'last_name' => $user->last_name,
+            'first_name' => $user->first_name,
+            'email' => $user->email,
+            'password' => $user->password,
+            'password_confirmation' => $user->password,
+        ]);
+
+        $response
+            ->assertRedirect('/')
+            ->assertStatus(302);
+    }
+
+    /**
      * Les mots de passe doivent être identiques
      *
      * @return void
@@ -71,7 +132,7 @@ class RegisterControllerTest extends TestCase
         $user = factory(User::class)->make();
 
         $response = $this->post(route('register'), [
-            'role_id' => $user->role_id,
+            'role_name' => 'person',
             'last_name' => $user->last_name,
             'first_name' => $user->first_name,
             'email' => $user->email,
@@ -91,12 +152,10 @@ class RegisterControllerTest extends TestCase
      */
     public function test_cant_register_in_super_admin(): void
     {
-        $user = factory(User::class)->make([
-            'role_id' => 1
-        ]);
+        $user = factory(User::class)->make();
 
         $response = $this->post(route('register'), [
-            'role_id' => $user->role_id,
+            'role_name' => 'super-admin',
             'last_name' => $user->last_name,
             'first_name' => $user->first_name,
             'email' => $user->email,
@@ -105,7 +164,7 @@ class RegisterControllerTest extends TestCase
         ]);
 
         $response
-            ->assertSessionHasErrors('role_id')
+            ->assertSessionHasErrors('role_name')
             ->assertStatus(302);
     }
 
@@ -116,12 +175,10 @@ class RegisterControllerTest extends TestCase
      */
     public function test_cant_register_in_admin(): void
     {
-        $user = factory(User::class)->make([
-            'role_id' => 2
-        ]);
+        $user = factory(User::class)->make();
 
         $response = $this->post(route('register'), [
-            'role_id' => $user->role_id,
+            'role_name' => 'admin',
             'last_name' => $user->last_name,
             'first_name' => $user->first_name,
             'email' => $user->email,
@@ -130,7 +187,7 @@ class RegisterControllerTest extends TestCase
         ]);
 
         $response
-            ->assertSessionHasErrors('role_id')
+            ->assertSessionHasErrors('role_name')
             ->assertStatus(302);
     }
 }

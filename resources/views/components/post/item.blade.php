@@ -3,21 +3,21 @@
 use App\Models\User;
 use Illuminate\Support\Facades\File;
 
-$user = User::select(['first_name', 'last_name', 'avatar'])->findOrFail($post->user_id);
+$user = User::find($post->user_id);
 
 $extension = File::extension($post->media)
 ?>
 <x-section :class="e('post rounded-lg bg-white ') . e(isset($animate) === true ?  'animate__animated animate__fadeIn animate__slow' : null)">
     <div class="@if($extension === 'jpeg' || $extension === 'jpg' || $extension === 'png' || $extension ===  'gif') images @else documents @endif">
         <div class="row no-gutters">
-            <div class="col-2 col-md-1">
-                <img class="rounded-circle" style="height: 40px" src="{{ $user->avatar }}" alt="">
+            <div class="col-lg-1 col-2 col-md-1">
+                <img class="rounded-circle" style="height: 40px" src="{{ $user::getAvatar($post->user_id) }}" alt="">
             </div>
-            <div class="col-9 col-md-10 pl-2 pl-md-0">
+            <div class="col col-md-10 pl-2 pl-md-0">
                 <span class="text-dark font-weight-bold">{{ $user->first_name }} {{ $user->last_name }}</span>
                 <p class="text-muted small">{{ \Carbon\Carbon::make($post->created_at)->diffForHumans() }}</p>
             </div>
-            <div class="col-1 col-md-1 text-right">
+            <div class="col-lg-1 col-2 text-right">
                 <div class="dropdown dropdown-none">
                     <button class="btn rounded-circle dropdown-toggle"
                             type="button" id="dropdownMenuButton"
@@ -78,11 +78,11 @@ $extension = File::extension($post->media)
             </div>
             <div class="col-1">
                 <a href="{{ $link ?? route('post.show', $post->id) }}"
-                   class="d-flex justify-content-center align-items-center mx-3 icon-container-warning" role="button">
+                   class="d-flex justify-content-center align-items-center mx-3" role="button">
                     <ion-icon class="align-middle mb-0 mr-1 text-muted" name="chatbox"></ion-icon> {{ $post->replies()->count() }}
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1 d-lg-block d-none">
                 <button class="share-button btn btn-light btn-sm" data-link="{{ $link ?? route('post.show', $post->id)}}" data-toggle="modal" data-target="#share-modal" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
                     <ion-icon class="align-middle mb-0 text-muted" name="share-social"></ion-icon>
                     Partager
@@ -111,25 +111,4 @@ $extension = File::extension($post->media)
     </div>
 </x-section>
 
-<script>
-    function addComment(id) {
-        let div = $("#add-comment-form-" + id);
 
-        let button = $('#add-comment-' + id)
-
-        if ($(div).is(':visible')) {
-            //On retire l'élement si il est visible
-            button.text('Ajouter un commentaire')
-            button.removeClass('btn-outline-danger')
-            div.addClass('d-none animate__fadeIn')
-            div.removeClass('animate__fadeOut')
-        }
-        else {
-            //Sinon on l'affiche
-            button.text('Fermer')
-            button.addClass('btn-outline-danger')
-            div.addClass('animate__fadeIn')
-            div.removeClass('d-none')
-        }
-    }
-</script>

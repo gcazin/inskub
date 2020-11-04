@@ -18,7 +18,7 @@
 </header>
 
 @isset($content)
-    <section class="position-relative py-4 px-lg-4 px-2 mt-n5 mx-lg-10 mx-2 bg-white shadow-sm rounded-lg">
+    <section class="position-relative p-lg-4 p-2 mt-n5 mx-lg-10 mx-2 bg-white shadow-sm rounded-lg">
         {{ $content }}
     </section>
 @endisset

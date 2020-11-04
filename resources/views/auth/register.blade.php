@@ -3,11 +3,19 @@
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     </x-slot>
 
+    <x-header>
+        <x-slot name="title">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    Inscription
+                </div>
+            </div>
+        </x-slot>
+    </x-header>
+
     <x-container>
         <x-section class="col-lg-8 mx-auto" id="container-login-form">
             <div class="container rounded-lg" id="login-form">
-                <h1 class="font-weight-light mb-1 mb-lg-4 mt-3 mt-lg-0 d-none d-lg-block">Inscrivez-vous</h1>
-                <h3 class="font-weight-light mb-1 mb-lg-4 mt-3 mt-lg-0 d-lg-none">Inscrivez-vous</h3>
                 <x-form.item :action="route('register')">
 
                     <!-- Choix du rôle -->

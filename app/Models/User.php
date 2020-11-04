@@ -11,9 +11,6 @@ use Overtrue\LaravelFollow\Traits\CanFollow;
 use Overtrue\LaravelFollow\Traits\CanLike;
 use Spatie\Permission\Traits\HasRoles;
 
-/**
- * @method static find($id)
- */
 class User extends \Illuminate\Foundation\Auth\User
 {
     use Notifiable, Messageable, CanFollow, CanBeFollowed, CanLike, HasApiTokens, Billable, HasRoles;
@@ -26,7 +23,7 @@ class User extends \Illuminate\Foundation\Auth\User
      * @var array
      */
     protected $fillable = [
-        'last_name', 'first_name', 'email', 'password', 'avatar', 'department_id', 'company_id',
+        'id', 'last_name', 'first_name', 'email', 'avatar', 'department_id', 'company_id',
     ];
 
     /**

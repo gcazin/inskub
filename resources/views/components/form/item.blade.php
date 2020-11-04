@@ -2,11 +2,13 @@
     @if ($errors->any())
         <x-element.alert type="danger">
             <x-slot name="title">Des erreurs se sont produites lors de la saisie de vos informations</x-slot>
-            <ul>
-            @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+            <x-slot name="description">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </x-slot>
         </x-element.alert>
     @endif
 

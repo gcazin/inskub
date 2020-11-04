@@ -32,7 +32,9 @@
     @endif
 
     <!-- Publier -->
-        <x-form.submit id="btn-add">Publier</x-form.submit>
+        <div class="col">
+            <x-form.submit id="btn-add">Publier</x-form.submit>
+        </div>
     </div>
 </x-form.item>
 

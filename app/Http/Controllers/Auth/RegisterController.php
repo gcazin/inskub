@@ -58,7 +58,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'department_id' => [Rule::requiredIf($data['role_name'] === "intermediate")],
-            'company_id' => [Rule::requiredIf($data['role_name'] === "intermediate")],
+            'company_id' => [],
         ]);
     }
 

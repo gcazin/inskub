@@ -5,26 +5,26 @@
         <x-slot name="description">
             <div class="row">
                 @role('super-admin') <!-- Admin -->
-                <div class="col-2">
+                <div class="col-lg-2 mb-1 mb-lg-0">
                     <a class="btn-outline-primary" href="{{route('admin.index')}}">Administration</a>
                 </div>
                 @endrole
 
-                <div class="col-2">
+                <div class="col-lg-2 mb-1 mb-lg-0">
                     <a class="btn btn-outline-light" href="{{route('job.index')}}">Trouver un emploi</a>
                 </div>
-                <div class="col-2">
+                <div class="col-lg-2 mb-1 mb-lg-0">
                     <a class="btn btn-outline-light" href="{{route('formation.index')}}">Trouver une formation</a>
                 </div>
 
                 @role('company') <!-- Entreprise -->
-                <div class="col-2">
+                <div class="col-lg-2 mb-1 mb-lg-0">
                     <a class="btn btn-outline-light" href="{{route('job.create')}}">Proposer une offre d'emploi</a>
                 </div>
                 @endrole
 
                 @role('school') <!-- Ecole -->
-                <div class="col-2">
+                <div class="col-lg-2">
                     <a class="btn btn-outline-light" href="{{route('formation.create')}}">
                         Proposer une formation
                     </a>

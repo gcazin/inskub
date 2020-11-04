@@ -39,11 +39,11 @@
 @auth
 @endauth
 
+@include('partials.footer')
+
 @auth
     @include('partials.mobile-menu')
 @endauth
-
-@include('partials.footer')
 </body>
 <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js"></script>

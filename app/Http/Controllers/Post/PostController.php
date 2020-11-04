@@ -115,8 +115,9 @@ class PostController extends Controller
         $post->user_id = auth()->id();
         $post->visibility_id = $request->get('visibility_id') ?? null;
         $post->project_id = $request->get('project_id') ?? null;
-        $post->media = $request->file('media')->storeAs('posts', Str::random(40).'.'.$request->file('media')->extension(), ['disk' => 'public']);
-
+        if($request->has('media')) {
+            $post->media = $request->file('media')->storeAs('posts', Str::random(40).'.'.$request->file('media')->extension(), ['disk' => 'public']);
+        }
         $post->updated_at = now();
         $post->update();
 

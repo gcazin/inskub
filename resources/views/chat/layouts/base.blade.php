@@ -57,7 +57,7 @@
 
                     <div class="btn-group btn-block mb-3" role="group" aria-label="Basic example">
                         <a href="{{ route('chat.show', ['type' => '0']) }}" class="btn btn-btn btn-{{ request()->type === null || (int) request()->type === 0 ? 'primary' : 'outline-primary' }} btn-sm" style="border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important;">Personnel</a>
-                        <a href="{{ route('chat.show', ['type' => '1']) }}" class="btn btn-{{ request()->type !== null && (int) request()->type === 1 ? 'primary' : 'outline-primary' }} btn-sm" style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">Expertise</a>
+                        <a href="{{ route('chat.show', ['type' => '1']) }}" class="btn btn-{{ request()->type !== null && (int) request()->type === 1 ? 'primary' : 'outline-primary' }} btn-sm" style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">Professionnel</a>
                     </div>
                     @forelse($conversations->where('type_id', '=', request()->type) as $conversation)
                         @foreach($conversation->conversation->getParticipants()->where('id', '<>', auth()->id()) as $participant)

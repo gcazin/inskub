@@ -1,6 +1,5 @@
 <x-section>
     <x-form.item :action="route('post.reply', $post->id)" method="post">
-        @csrf
         <div class="row no-gutters">
             <div class="col-1 text-center">
                 <img class="rounded-circle" height="35" width="35"

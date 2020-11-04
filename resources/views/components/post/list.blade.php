@@ -15,3 +15,26 @@
         </div>
     @endforelse
 </div>
+
+<script>
+    function addComment(id) {
+        let div = $("#add-comment-form-" + id);
+
+        let button = $('#add-comment-' + id)
+
+        if ($(div).is(':visible')) {
+            //On retire l'élement si il est visible
+            button.text('Ajouter un commentaire')
+            button.removeClass('btn-outline-danger')
+            div.addClass('d-none animate__fadeIn')
+            div.removeClass('animate__fadeOut')
+        }
+        else {
+            //Sinon on l'affiche
+            button.text('Fermer')
+            button.addClass('btn-outline-danger')
+            div.addClass('animate__fadeIn')
+            div.removeClass('d-none')
+        }
+    }
+</script>

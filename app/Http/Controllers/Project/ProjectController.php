@@ -46,7 +46,10 @@ class ProjectController extends Controller
 
         $posts = $project->posts->sortByDesc('created_at');
 
-        $conversation = Conversation::where('project_id', $project->id)->get()[0]->id;
+        $conversation = null;
+        if (Conversation::where('project_id', $project->id)->exists()) {
+            $conversation = Conversation::where('project_id', $project->id)->get()[0]->id;
+        }
 
         /*$user->newSubscription('plans', 'main')->create();
 

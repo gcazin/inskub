@@ -21,7 +21,22 @@ class CreateUserSkillsTable extends Migration
         });
 
         $skills = [
-            'bâtiment', 'construction', 'réparation automobile', 'agriculture', 'transport aérien', 'transport maritime', 'médecine', 'objets d\'art'
+            'Accidents',
+            'Corps de véhicules terrestres',
+            'Corps de véhicules ferroviaires',
+            'Corps de véhicules aériens',
+            'Corps de véhicules maritimes, lacustres et fluviaux',
+            'Marchandises transportées par voie maritime ',
+            'Marchandises transportées par voie terrestres et fluviales',
+            'Incendie et éléments naturels',
+            'Autres dommages aux biens',
+            'Responsabilité civile véhicules terrestres automoteurs',
+            'Responsabilité civile véhicules aériens',
+            'Responsabilité civile véhicules maritimes, lacustres et fluviaux',
+            'Responsabilité civile générale',
+            'Protection juridique',
+            'Assistance',
+            'Assurances liées à des fonds d\'investissement'
         ];
 
         foreach($skills as $skill) {
