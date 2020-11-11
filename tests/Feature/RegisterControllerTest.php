@@ -34,7 +34,7 @@ class RegisterControllerTest extends TestCase
      */
     public function test_cant_view_register_form_if_user_is_logged(): void
     {
-        $user = factory(User::class)->make();
+        $user = User::factory()->make();
 
         $response = $this->be($user)->get(route('register'));
 
@@ -48,9 +48,9 @@ class RegisterControllerTest extends TestCase
      */
     public function test_can_create_account(): void
     {
-        $role = Role::make(['name' => 'intermediate']);
+        $role = Role::create(['name' => 'intermediate']);
 
-        $user = factory(User::class)->make();
+        $user = User::factory()->create();
         $user->assignRole($role);
 
         $response = $this->post(route('register'), [
@@ -78,7 +78,7 @@ class RegisterControllerTest extends TestCase
      */
     public function it_should_fill_department_and_company_in_role_intermediate(): void
     {
-        $user = factory(User::class)->make();
+        $user = User::factory()->create();
 
         $response = $this->post(route('register'), [
             'role_name' => 'intermediate',
@@ -105,8 +105,8 @@ class RegisterControllerTest extends TestCase
      */
     public function it_can_fill_blank_department_and_company_in_other_role_than_intermediate(): void
     {
-        factory(Role::class)->make(['name' => 'person']);
-        $user = factory(User::class)->make();
+        Role::create(['name' => 'person']);
+        $user = User::factory()->create();
 
         $response = $this->post(route('register'), [
             'role_name' => 'person',
@@ -129,7 +129,7 @@ class RegisterControllerTest extends TestCase
      */
     public function test_password_should_be_identical(): void
     {
-        $user = factory(User::class)->make();
+        $user = User::factory()->make();
 
         $response = $this->post(route('register'), [
             'role_name' => 'person',
@@ -152,7 +152,7 @@ class RegisterControllerTest extends TestCase
      */
     public function test_cant_register_in_super_admin(): void
     {
-        $user = factory(User::class)->make();
+        $user = User::factory()->make();
 
         $response = $this->post(route('register'), [
             'role_name' => 'super-admin',
@@ -175,7 +175,7 @@ class RegisterControllerTest extends TestCase
      */
     public function test_cant_register_in_admin(): void
     {
-        $user = factory(User::class)->make();
+        $user = User::factory()->make();
 
         $response = $this->post(route('register'), [
             'role_name' => 'admin',

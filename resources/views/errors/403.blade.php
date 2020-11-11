@@ -1,11 +1,5 @@
-<x-page>
-    <x-container>
-        <x-section>
-            <x-element.alert type="danger">
-                <x-slot name="title">
-                    Vous n'êtes pas autorisé à effectuer cette action.
-                </x-slot>
-            </x-element.alert>
-        </x-section>
-    </x-container>
-</x-page>
+@extends('errors::layout')
+
+@section('title', __('Forbidden'))
+@section('code', '403')
+@section('message', 'Vous n\'êtes pas autorisé a effectuer cette action.'))

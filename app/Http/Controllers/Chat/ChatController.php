@@ -74,7 +74,7 @@ class ChatController extends Controller {
         }
 
         if($conversation !== null) {
-            return redirect()->route('chat.index', $conversation->id);
+            return redirect()->route('chat.show', $conversation->id);
         }
 
         $conversation = $this->chat->createConversation([User::find($this->auth->id()), User::find($id)]);
@@ -85,7 +85,7 @@ class ChatController extends Controller {
 
         $conversation->makeDirect();
 
-        return redirect()->route('chat.index', $conversation->id);
+        return redirect()->route('chat.show', $conversation->id);
     }
 
     /**
@@ -99,7 +99,7 @@ class ChatController extends Controller {
     {
         $this->chat->createConversation([User::find($this->auth->id()), User::find(2), User::find(3), User::find(4)]);
 
-        return redirect()->route('chat.index');
+        return redirect()->route('chat.show');
     }
 
     /**
@@ -154,7 +154,7 @@ class ChatController extends Controller {
     {
         $this->chat->conversation(Conversation::find($id))->removeParticipants(User::find($this->auth->user()->id));
 
-        return redirect()->route('chat.index');
+        return redirect()->route('chat.show');
     }
 
 }

@@ -29,6 +29,10 @@ use App\Http\Controllers\Post\ReplyPostController;
 use App\Http\Controllers\Project\NoteController;
 use App\Http\Controllers\Project\ProjectController;
 use App\Http\Controllers\Project\TodoController;
+use App\Http\Controllers\School\ClassroomController;
+use App\Http\Controllers\School\ProfessorController;
+use App\Http\Controllers\School\SchoolController;
+use App\Http\Controllers\School\StudentController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserExperienceController;
 use App\Http\Controllers\User\UserFormationController;
@@ -43,9 +47,20 @@ Route::namespace('Discover')->name('discover.')->group(function() {
     Route::get('/discover/search', [DiscoverController::class, 'search'])->name('search');
 });
 
-Route::namespace('Notification')->name('notification.')->group(function() {
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('index');
-    Route::get('/notifications/mark-as-read', [NotificationController::class, 'markAllAsRead'])->name('markAllAsRead');
+// Page d'accueil
+Route::namespace('Post')->group(function() {
+    Route::get('/index', [PostController::class, 'index'])->name('index');
+    Route::post('/index', [PostController::class, 'store'])->name('post.create');
+
+    Route::prefix('post')->name('post.')->group(function() {
+        Route::get('/details/{id}', [PostController::class, 'show'])->name('show');
+        Route::post('/like/{id}', [PostController::class, 'like'])->name('like');
+        Route::get('/edit/{id}', [PostController::class, 'edit'])->name('edit');
+        Route::put('/edit/{id}', [PostController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [PostController::class, 'destroy'])->name('destroy');
+        Route::post('/{id}', [ReplyPostController::class, 'store'])->name('reply');
+        Route::post('/{id}/report-post', [PostController::class, 'report'])->name('report');
+    });
 });
 
 Route::namespace('Expert')->group(function() {
@@ -71,22 +86,6 @@ Route::namespace('Expert')->group(function() {
          * Dashboard du demandeur
          */
         Route::get('/index', [SinisterController::class, 'index'])->name('index');
-    });
-});
-
-// Page d'accueil
-Route::namespace('Post')->group(function() {
-    Route::get('/index', [PostController::class, 'index'])->name('index');
-    Route::post('/index', [PostController::class, 'store'])->name('post.create');
-
-    Route::prefix('post')->name('post.')->group(function() {
-        Route::get('/details/{id}', [PostController::class, 'show'])->name('show');
-        Route::post('/like/{id}', [PostController::class, 'like'])->name('like');
-        Route::get('/edit/{id}', [PostController::class, 'edit'])->name('edit');
-        Route::put('/edit/{id}', [PostController::class, 'update'])->name('update');
-        Route::delete('/delete/{id}', [PostController::class, 'destroy'])->name('destroy');
-        Route::post('/{id}', [ReplyPostController::class, 'store'])->name('reply');
-        Route::post('/{id}/report-post', [PostController::class, 'report'])->name('report');
     });
 });
 
@@ -163,6 +162,8 @@ Route::namespace('Project')->prefix('project')->name('project.')->group(function
     Route::put('/edit/{id}', [ProjectController::class, 'update'])->name('update');
     Route::delete('/delete/{id}', [ProjectController::class, 'destroy'])->name('destroy');
 
+    Route::put('/participants/update/{id}', [ProjectController::class, 'updateParticipants'])->name('participants.update');
+
     Route::name('todo.')->group(function() {
         Route::get('/{id}/todos', [TodoController::class, 'index'])->name('index');
         Route::post('/{id}/todo/create', [TodoController::class, 'store'])->name('create');
@@ -179,6 +180,30 @@ Route::namespace('Project')->prefix('project')->name('project.')->group(function
     });
 });
 
+Route::namespace('School')->prefix('school')->name('school.')->group(function() {
+    Route::get('/', [SchoolController::class, 'index'])->name('index');
+
+    Route::name('professor.')->prefix('professor')->group(function() {
+        Route::get('/', [ProfessorController::class, 'index'])->name('index');
+        Route::post('/', [ProfessorController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [ProfessorController::class, 'update'])->name('update');
+        Route::put('/edit/{id}', [ProfessorController::class, 'update']);
+    });
+
+    Route::name('classroom.')->prefix('classroom')->group(function() {
+        Route::get('/', [ClassroomController::class, 'index'])->name('index');
+        Route::post('/', [ClassroomController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [ClassroomController::class, 'update'])->name('update');
+        Route::put('/edit/{id}', [ClassroomController::class, 'update']);
+    });
+
+    Route::name('student.')->prefix('student')->group(function() {
+        Route::get('/', [StudentController::class, 'index'])->name('index');
+        Route::post('/', [StudentController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [StudentController::class, 'update'])->name('update');
+        Route::put('/edit/{id}', [StudentController::class, 'update']);
+    });
+});
 /**
  * CRUD des jobs
  */
@@ -220,11 +245,16 @@ Route::namespace('Follow')->name('follower.')->group(function() {
     Route::post('/follow/add', [FollowerController::class, 'add'])->name('add');
 });
 
+Route::namespace('Notification')->name('notification.')->group(function() {
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('index');
+    Route::get('/notifications/mark-as-read', [NotificationController::class, 'markAllAsRead'])->name('markAllAsRead');
+});
+
 /**
  * Test des mails
  */
 Route::get('mailable', function () {
     $user = User::find(1);
 
-    return new \App\Mail\CreatingStudent($user, 'salut', 1);
+    return new \App\Mail\StudentCreated($user, 'salut', 1);
 });

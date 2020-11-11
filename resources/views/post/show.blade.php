@@ -8,7 +8,9 @@
     <x-container>
         <x-post.replies :post="$post"></x-post.replies>
 
+        @auth
         <x-post.add-reply :post="$post"></x-post.add-reply>
+        @endauth
     </x-container>
 </x-page>
 

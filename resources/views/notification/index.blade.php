@@ -1,4 +1,4 @@
-<x-page>
+<x-page title="Notifications">
 
     <x-header>
         <x-slot name="title">Notifications</x-slot>

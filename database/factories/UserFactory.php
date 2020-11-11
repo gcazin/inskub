@@ -1,28 +1,34 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Models\User;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+class UserFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = User::class;
 
-$factory->define(User::class, function (Faker $faker) {
-    return [
-        'last_name' => $faker->lastName,
-        'first_name' => $faker->firstName,
-        'email' => $faker->email,
-        'password' => Hash::make('secret'),
-        'created_at' => $faker->date()
-    ];
-});
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'last_name' => $this->faker->lastName,
+            'first_name' => $this->faker->firstName,
+            'email' => $this->faker->email,
+            'password' => Hash::make('secret'),
+            'created_at' => now()
+        ];
+    }
+}
+

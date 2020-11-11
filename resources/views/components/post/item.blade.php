@@ -28,14 +28,16 @@ $extension = File::extension($post->media)
                     </button>
                     <div class="dropdown-menu dropdown-menu-right"
                          aria-labelledby="dropdownMenuButton">
-                        @if($post->user_id === auth()->user()->id)
-                            <a class="dropdown-item" href="{{ route('post.edit', $post->id) }}">Modifier</a>
-                            <x-form.item :action="route('post.destroy', $post->id)" method="DELETE">
-                                <button type="submit" class="dropdown-item text-danger">Supprimer</button>
-                            </x-form.item>
-                        @else
-                            <button type="button" class="dropdown-item" data-toggle="modal" data-target=".post-report">Signaler</button>
-                        @endif
+                        @auth
+                            @if($post->user_id === auth()->user()->id)
+                                <a class="dropdown-item" href="{{ route('post.edit', $post->id) }}">Modifier</a>
+                                <x-form.item :action="route('post.destroy', $post->id)" method="DELETE">
+                                    <button type="submit" class="dropdown-item text-danger">Supprimer</button>
+                                </x-form.item>
+                            @else
+                                <button type="button" class="dropdown-item" data-toggle="modal" data-target=".post-report">Signaler</button>
+                            @endif
+                        @endauth
                     </div>
 
                     <x-element.modal title="Signaler un post" name="post-report">
@@ -93,21 +95,23 @@ $extension = File::extension($post->media)
             </div>
         </div>
 
-        <div class="d-none mt-4 animate__animated animate__fadeIn" id="add-comment-form-{{ $post->id }}">
-            <form action="{{ route('post.reply', $post->id) }}" method="post">
-                @csrf
-                <div class="row no-gutters">
-                    <div class="mr-3">
-                        <img class="rounded-circle" height="35" width="35"
-                             src="{{ auth()->user()->getAvatar(auth()->id()) }}" alt="">
+        @auth
+            <div class="d-none mt-4 animate__animated animate__fadeIn" id="add-comment-form-{{ $post->id }}">
+                <form action="{{ route('post.reply', $post->id) }}" method="post">
+                    @csrf
+                    <div class="row no-gutters">
+                        <div class="mr-3">
+                            <img class="rounded-circle" height="35" width="35"
+                                 src="{{ auth()->user()->getAvatar(auth()->id()) }}" alt="">
+                        </div>
+                        <div class="col mr-3">
+                            <input name="message" class="form-control" type="text" placeholder="Votre message">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Envoyer</button>
                     </div>
-                    <div class="col mr-3">
-                        <input name="message" class="form-control" type="text" placeholder="Votre message">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Envoyer</button>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+        @endauth
     </div>
 </x-section>
 

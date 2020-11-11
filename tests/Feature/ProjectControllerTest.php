@@ -2,17 +2,50 @@
 
 namespace Tests\Feature;
 
-use App\Mail\CreatingStudent;
+use App\Jobs\SendEmailStudentClassroom;
+use App\Models\Classroom;
+use App\Models\Professor;
 use App\Models\Project;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Mail;
+use Musonza\Chat\Facades\ChatFacade;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 use Tests\TestCase;
 
 class ProjectControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
+
+    /**
+     * @var Role
+     */
+    public Role $testIntermediateRole;
+
+    public Role $testProfessorRole;
+
+    public Role $testSchoolRole;
+
+    public Role $testStudentRole;
+
+    public Permission $testPermissionClassroom;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->testIntermediateRole = Role::create(['name' => 'intermediate']);
+        $this->testSchoolRole = Role::create(['name' => 'school']);
+        $this->testStudentRole = Role::create(['name' => 'student']);
+        $this->testProfessorRole = Role::create(['name' => 'other']);
+        $this->testPermissionClassroom = Permission::create(['name' => 'classroom.*']);
+
+        $this->app->make(PermissionRegistrar::class)->registerPermissions();
+    }
 
     /**
      * Un utilisateur peut voir la page projet
@@ -21,7 +54,7 @@ class ProjectControllerTest extends TestCase
      */
     public function test_can_view_projects_index()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->be($user)->get(route('project.index'));
 
@@ -49,13 +82,13 @@ class ProjectControllerTest extends TestCase
      */
     public function test_can_view_project_index()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $project = factory(Project::class)->create([
             'user_id' => $user->id
         ]);
 
         $this
-            ->actingAs($user)
+            ->be($user)
             ->get(route('project.show', $project->id))
             ->assertStatus(200);
     }
@@ -67,15 +100,16 @@ class ProjectControllerTest extends TestCase
      */
     public function test_cant_view_project_index_where_user_is_not_participant()
     {
-        $user = factory(User::class)->create();
-        $participant = factory(User::class)->create();
+        $user = User::factory()->create();
+        $participant = User::factory()->create();
 
         $project = factory(Project::class)->create();
 
         $project->addParticipant($participant->id);
 
+
         $this
-            ->be($user)
+            ->actingAs($user)
             ->get(route('project.show', $project->id))
             ->assertStatus(403);
     }
@@ -87,9 +121,8 @@ class ProjectControllerTest extends TestCase
      */
     public function test_can_create_professionnel_project_without_participants()
     {
-        $user = factory(User::class)->create([
-            'role_id' => 3
-        ]);
+        $user = User::factory()->create();
+        $user->assignRole($this->testIntermediateRole);
 
         $response = $this->actingAs($user)->post(route('project.store'), [
             'title' => $this->faker->title,
@@ -111,11 +144,10 @@ class ProjectControllerTest extends TestCase
      */
     public function test_can_create_professionnel_project_with_participants()
     {
-        $user = factory(User::class)->create([
-            'role_id' => 3
-        ]);
+        $user = User::factory()->create();
+        $user->assignRole($this->testIntermediateRole);
 
-        $participants = factory(User::class, 3)->create()->map->only('id');
+        $participants = User::factory()->count(3)->create()->map->only('id');
 
         $response = $this->actingAs($user)->post(route('project.store'), [
             'title' => $this->faker->title,
@@ -134,52 +166,63 @@ class ProjectControllerTest extends TestCase
     /**
      * Un professeur peut créer une salle de classe avec des participants
      *
-     * TODO: A changer pour laisser cette possibilité à l'administrateur, à repenser
-     *
      * @return void
      */
     public function test_can_create_classroom_project_when_user_is_professor()
     {
         Mail::fake();
-
         Mail::assertNothingSent();
 
-        $user = factory(User::class)->create([
-            'role_id' => 4
-        ]);
+        $user = User::factory()->create();
+        $user->assignRole('school');
 
-        $participants = json_encode([0 => ['value' => 'test@test.fr'], 1 => ['value' => 'test2@test.fr']]);
+        $classroom = Classroom::factory()->create();
+        Student::factory()->count(5)->create();
+        $professor = Professor::factory()->create();
 
-        $response = $this->actingAs($user)->post(route('project.store'), [
-            'title' => $this->faker->title,
+        $participants = $classroom->students->map(function ($participant) {
+            return $participant->id;
+        });
+
+        $this->be($professor->user)->post(route('project.store'), [
+            'title' => 'Projet',
             'description' => $this->faker->realText(50),
             'deadline' => now()->format('d/m/Y'),
             'private' => 1,
-            'user_id' => $user->id,
+            'user_id' => $professor->id,
             'participants' => $participants
         ]);
 
-        foreach(json_decode($participants) as $participant) {
-            Mail::assertSent(CreatingStudent::class, function ($mail) use ($participant) {
-                return $mail->hasTo($participant->value);
-            });
+        Bus::fake();
+        foreach($participants as $participant) {
+            SendEmailStudentClassroom::dispatch(Student::find($participant), Project::find(1), auth()->user());
         }
+        Bus::assertDispatchedTimes(SendEmailStudentClassroom::class, 5);
 
-        $response
-            ->assertRedirect(route('project.index'))
-            ->assertStatus(302);
+        $this
+            ->assertDatabaseHas('projects', [
+                'title' => 'Projet'
+            ])
+            ->assertEquals(5, Project::find(1)->participants->count());
     }
 
-    public function test_can_create_classroom_project_when_user_is_not_a_professor()
+    public function test_cant_create_classroom_project_when_user_is_not_a_professor()
     {
-        $user = factory(User::class)->create([
-            'role_id' => 3
-        ]);
+        $user = User::factory()->create();
+        $user->assignRole($this->testIntermediateRole);
 
-        $participants = json_encode([0 => ['value' => 'test@test.fr'], 1 => ['value' => 'test2@test.fr']]);
+        $school = User::factory()->create();
+        $school->assignRole($this->testSchoolRole);
 
-        $response = $this->actingAs($user)->post(route('project.store'), [
-            'title' => $this->faker->title,
+        $classroom = Classroom::factory()->create();
+        Student::factory()->count(5)->create();
+
+        $participants = $classroom->students->map(function ($participant) {
+            return $participant->id;
+        });
+
+        $this->be($user)->post(route('project.store'), [
+            'title' => 'Projet',
             'description' => $this->faker->realText(50),
             'deadline' => now()->format('d/m/Y'),
             'private' => 1,
@@ -187,8 +230,18 @@ class ProjectControllerTest extends TestCase
             'participants' => $participants
         ]);
 
-        $response
-            ->assertSessionHasErrors('private')
-            ->assertStatus(403);
+        Bus::fake();
+        Bus::assertNotDispatched(SendEmailStudentClassroom::class);
+
+        $conversation = ChatFacade::conversations()->setParticipant(User::find($user->id))->get();
+
+        $this
+            ->assertDatabaseHas('projects', [
+                'title' => 'Projet'
+            ])
+            ->assertDatabaseHas('chat_conversations', [
+                'id' => 1
+            ])
+            ->assertEquals(1, $conversation->count());
     }
 }

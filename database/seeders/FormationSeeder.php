@@ -14,8 +14,6 @@ class FormationSeeder extends Seeder
      */
     public function run()
     {
-        factory(Formation::class, 50)->create()->each(function ($job) {
-            $job->save();
-        });
+        Formation::factory()->count(50)->create();
     }
 }

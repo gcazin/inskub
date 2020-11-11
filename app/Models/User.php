@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Http\Repository\UserRepository;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 use Laravel\Passport\HasApiTokens;
@@ -13,7 +16,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends \Illuminate\Foundation\Auth\User
 {
-    use Notifiable, Messageable, CanFollow, CanBeFollowed, CanLike, HasApiTokens, Billable, HasRoles;
+    use Notifiable, Messageable, CanFollow, CanBeFollowed, CanLike, HasApiTokens, Billable, HasRoles, HasFactory;
 
     protected $guarded = 'api';
 
@@ -45,62 +48,96 @@ class User extends \Illuminate\Foundation\Auth\User
     ];
 
     /**
-     * @param $id
-     * @return mixed|string
-     */
-    public static function getAvatar($id)
-    {
-        $user = self::find($id);
-        if ($user->avatar === "user.jpg" || $user->avatar === null) {
-            return 'https://avatars.dicebear.com/v2/initials/' . strtolower(trim(substr($user->first_name, 0, 1))) . ''.strtolower(trim(substr($user->last_name, 0, 1))).'.svg?options[fontSize]=40';
-        }
-        return self::find($id)->avatar;
-    }
-
-    /**
-     * @param $id Identifiant de l'utilisateur
+     * Un utilisateur peut avoir plusieurs posts
      *
-     * @return int
+     * @return HasMany
      */
-    public static function getNumberFollowers($id): int
-    {
-        $user = self::find($id);
-        return count($user->followers()->get());
-    }
-
-    /**
-     * @param $id Identifiant de l'utilisateur
-     *
-     * @return int
-     */
-    public static function getNumberFollowings($id): int
-    {
-        $user = self::find($id);
-        return count($user->followings()->get());
-    }
-
     public function posts()
     {
         return $this->hasMany(Post::class)->where('project_id', '=', null);
     }
 
+    /**
+     * Un utilisateur peut avoir plusieurs projets
+     *
+     * @return HasMany
+     */
     public function projects()
     {
         return $this->hasMany(Project::class);
     }
 
+    public function participations()
+    {
+        return $this->hasMany(Project::class);
+    }
+
+    /**
+     * Un utilisateur peut avoir plusieurs formations
+     *
+     * @return HasMany
+     */
     public function formations()
     {
         return $this->hasMany(UserFormation::class);
     }
 
+    /**
+     * Un utilisateur peut avoir plusieurs compétences
+     *
+     * @return HasMany
+     */
     public function skills()
     {
         return $this->hasMany(UserSkillPivot::class, 'id');
     }
 
+    /**
+     * Un utilisateur peut avoir plusieurs notations
+     *
+     * @return HasMany
+     */
     public function ratings()
     {
         return $this->hasMany(Rating::class, 'expert_id');
+    }
+
+    /**
+     * Un utilisateur (en rôle school) peut avoir plusieurs professeurs
+     *
+     * @return HasMany
+     */
+    public function professors()
+    {
+        return $this->hasMany(Professor::class);
+    }
+
+    /**
+     * Un utilisateur (en rôle school) peut avoir plusieurs salle de classes
+     *
+     * @return HasMany
+     */
+    public function classrooms()
+    {
+        return $this->hasMany(Classroom::class, 'school_id');
+    }
+
+    /**
+     * Un utilisateur (en rôle school) peut avoir plusieurs étudiants
+     *
+     * @return HasMany
+     */
+    public function students()
+    {
+        return $this->hasMany(Student::class, 'school_id');
+    }
+
+    /**
+     * @param $id
+     * @return mixed|string
+     */
+    public static function getAvatar($id)
+    {
+        return (new UserRepository(new self()))->avatarPath($id);
     }
 }

@@ -1,4 +1,4 @@
-<x-page>
+<x-page title="Inscription">
     <x-slot name="head">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     </x-slot>
@@ -16,7 +16,7 @@
     <x-container>
         <x-section class="col-lg-8 mx-auto" id="container-login-form">
             <div class="container rounded-lg" id="login-form">
-                <x-form.item :action="route('register')">
+                <x-form.item :action="route('register')" id="register-form">
 
                     <!-- Choix du rôle -->
                     <div class="row py-3 row-cols-2 row-cols-lg-3">
@@ -33,124 +33,129 @@
                         @endforeach
                     </div>
 
-                    <!-- Identité -->
-                    <div class="form-group">
-                        <div class="row row-cols-1 row-cols-lg-2">
+                    {{--<x-element.alert type="info" id="alert-school-register">
+                        <x-slot name="title">//</x-slot>
+                    </x-element.alert>--}}
+                    <div class="form-input">
+                        <!-- Identité -->
+                        <div class="form-group">
+                            <div class="row row-cols-1 row-cols-lg-2">
 
-                            <!-- Nom -->
-                            <div class="col">
-                                <div class="input-group mb-3 mb-lg-0">
-                                    <div class="input-group-prepend">
+                                <!-- Nom -->
+                                <div class="col">
+                                    <div class="input-group mb-3 mb-lg-0">
+                                        <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1">
                                             <ion-icon name="person-outline"></ion-icon>
                                         </span>
+                                        </div>
+                                        <input type="text" name="last_name" class="form-control" placeholder="Nom" autofocus value="{{ old('last_name') }}">
                                     </div>
-                                    <input type="text" name="last_name" class="form-control" placeholder="Nom" autofocus value="{{ old('last_name') }}">
                                 </div>
-                            </div>
 
-                            <!-- Prénom -->
-                            <div class="col">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
+                                <!-- Prénom -->
+                                <div class="col">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1">
                                             <ion-icon name="person-outline"></ion-icon>
                                         </span>
+                                        </div>
+                                        <input type="text" name="first_name" class="form-control" placeholder="Prénom"
+                                               aria-label="Adresse e-mail" aria-describedby="basic-addon1" value="{{ old('first_name') }}">
                                     </div>
-                                    <input type="text" name="first_name" class="form-control" placeholder="Prénom"
-                                           aria-label="Adresse e-mail" aria-describedby="basic-addon1" value="{{ old('first_name') }}">
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Mail -->
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
+                        <!-- Mail -->
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">
                                 <ion-icon name="mail-outline"></ion-icon>
                             </span>
+                                </div>
+                                <input type="email" name="email" class="form-control" placeholder="Adresse e-mail"
+                                       aria-label="Adresse e-mail" aria-describedby="basic-addon1" value="{{ old('email') }}">
                             </div>
-                            <input type="email" name="email" class="form-control" placeholder="Adresse e-mail"
-                                   aria-label="Adresse e-mail" aria-describedby="basic-addon1" value="{{ old('email') }}">
                         </div>
-                    </div>
 
-                    <!-- Departement -->
-                    <div class="form-group" id="department-container">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
+                        <!-- Departement -->
+                        <div class="form-group" id="department-container">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">
                                 <ion-icon name="location-outline"></ion-icon>
                             </span>
+                                </div>
+                                <select class="departments form-control d-block" id="department_id" name="department_id">
+                                    @foreach(\App\Models\Department::all()->sortBy('code') as $department)
+                                        <option value="{{ $department->code }}">{{ $department->code .' - '. $department->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
-                            <select class="departments form-control d-block" id="department_id" name="department_id">
-                                @foreach(\App\Models\Department::all()->sortBy('code') as $department)
-                                    <option value="{{ $department->code }}">{{ $department->code .' - '. $department->name }}</option>
-                                @endforeach
-                            </select>
                         </div>
-                    </div>
 
-                    <!-- Compagnie -->
-                    <div class="form-group" id="agreed-container">
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" name="agreed_expert" id="agreed_expert">
-                            <label class="custom-control-label" for="agreed_expert">Je suis agrée(e)</label>
+                        <!-- Compagnie -->
+                        <div class="form-group" id="agreed-container">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" name="agreed_expert" id="agreed_expert">
+                                <label class="custom-control-label" for="agreed_expert">Je suis agrée(e)</label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group" id="company-container">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
+                        <div class="form-group" id="company-container">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">
                                 <ion-icon name="location-outline"></ion-icon>
                             </span>
+                                </div>
+                                <select class="companies form-control d-block" id="company_id" name="company_id">
+                                    @foreach(\App\Models\Company::all()->sortBy('name') as $company)
+                                        <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
-                            <select class="companies form-control d-block" id="company_id" name="company_id">
-                                @foreach(\App\Models\Company::all()->sortBy('name') as $company)
-                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
-                                @endforeach
-                            </select>
                         </div>
-                    </div>
 
-                    <!-- Mot de passe -->
-                    <div class="form-group">
-                        <div class="row row-cols-1 row-cols-lg-2">
-                            <div class="col">
-                                <!-- Mot de passe -->
-                                <div class="input-group mb-3 mb-lg-0">
-                                    <div class="input-group-prepend">
+                        <!-- Mot de passe -->
+                        <div class="form-group">
+                            <div class="row row-cols-1 row-cols-lg-2">
+                                <div class="col">
+                                    <!-- Mot de passe -->
+                                    <div class="input-group mb-3 mb-lg-0">
+                                        <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
                                                 <ion-icon name="lock-closed-outline"></ion-icon>
                                             </span>
+                                        </div>
+                                        <input type="password" name="password" class="form-control"
+                                               placeholder="Mot de passe" aria-label="Mot de passe"
+                                               aria-describedby="basic-addon1">
                                     </div>
-                                    <input type="password" name="password" class="form-control"
-                                           placeholder="Mot de passe" aria-label="Mot de passe"
-                                           aria-describedby="basic-addon1">
                                 </div>
-                            </div>
-                            <div class="col">
-                                <!-- Confirmation du mot de passe -->
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
+                                <div class="col">
+                                    <!-- Confirmation du mot de passe -->
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
                                                 <ion-icon name="lock-closed-outline"></ion-icon>
                                             </span>
+                                        </div>
+                                        <input type="password" name="password_confirmation" class="form-control" placeholder="Confirmation du mot de passe">
                                     </div>
-                                    <input type="password" name="password_confirmation" class="form-control" placeholder="Confirmation du mot de passe">
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck1">
-                        <label class="custom-control-label" for="customCheck1">J'ai lu et j'accepte les conditions
-                            générales d'utilisation.</label>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="customCheck1">
+                            <label class="custom-control-label" for="customCheck1">J'ai lu et j'accepte les conditions
+                                générales d'utilisation.</label>
+                        </div>
                     </div>
 
                     <x-form.submit>S'inscrire</x-form.submit>
@@ -172,6 +177,7 @@
                 $(department).hide()
                 $(agreed_expert).hide()
                 $(company).hide()
+                $('#alert-school-register').removeClass('d-flex').addClass('d-none')
 
                 $('input[name="role_name"]').click(function() {
                     if ($('input[value="intermediate"]').is(':checked')) {
@@ -183,6 +189,12 @@
                         $(department).hide()
                         $(agreed_expert).hide()
                     }
+
+                    /*if ($('input[value="school"]').is(':checked')) {
+                        $('#alert-school-register').addClass('d-flex').removeClass('d-none')
+                    } else {
+                        $('#alert-school-register').removeClass('d-flex').addClass('d-none')
+                    }*/
                 });
 
                 $('input[name="agreed_expert"]').click(function() {

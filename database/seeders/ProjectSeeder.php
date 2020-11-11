@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Project;
-use App\Models\ProjectUser;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class ProjectSeeder extends Seeder
@@ -16,7 +16,7 @@ class ProjectSeeder extends Seeder
     public function run()
     {
         factory(Project::class, 5)->create()->each(function ($project) {
-            $project->participants()->save(factory(ProjectUser::class)->create());
+            $project->participants()->save(User::all()->random());
         });
     }
 }

@@ -19199,6 +19199,10 @@ h3 {
   border-radius: 0.3rem;
 }
 
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f8f7f7;
+}
+
 :root {
   --tagify-dd-color-primary: rgb(53,149,246);
   --tagify-dd-bg-color: white;

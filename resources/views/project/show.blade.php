@@ -298,49 +298,49 @@
             @endunlessrole
         @endif
 
-        <!-- Stepper de l'expertise -->
-            @if($project->type === 1)
-                <x-section class="mb-3">
-                    <div class="steps">
-                        <!-- Horizontal Steppers -->
-                        <div class="row">
-                            <div class="col-md-12">
+    <!-- Stepper de l'expertise -->
+        @if($project->type === 1)
+            <x-section class="mb-3">
+                <div class="steps">
+                    <!-- Horizontal Steppers -->
+                    <div class="row">
+                        <div class="col-md-12">
 
-                                <!-- Stepers Wrapper -->
-                                <ul class="stepper stepper-horizontal">
+                            <!-- Stepers Wrapper -->
+                            <ul class="stepper stepper-horizontal">
 
-                                    <!-- First Step -->
-                                    <li class="completed">
-                                        <a href="#!">
-                                            <span class="circle"><ion-icon class="align-text-top h5" name="checkmark-outline"></ion-icon></span>
-                                            <span class="label">Demande d'expertise</span>
-                                        </a>
-                                    </li>
+                                <!-- First Step -->
+                                <li class="completed">
+                                    <a href="#!">
+                                        <span class="circle"><ion-icon class="align-text-top h5" name="checkmark-outline"></ion-icon></span>
+                                        <span class="label">Demande d'expertise</span>
+                                    </a>
+                                </li>
 
-                                    <!-- Second Step -->
-                                    <li class="{{ $project->finish === 1 ? 'completed' : 'active' }}">
-                                        <a href="#!">
-                                            <span class="circle">{!! $project->finish === 1 ? '<ion-icon class="align-text-top h5" name="checkmark-outline"></ion-icon>' : '<ion-icon class="spin align-text-top h5" name="sync-outline"></ion-icon>' !!}</span>
-                                            <span class="label">Expertise en cours</span>
-                                        </a>
-                                    </li>
+                                <!-- Second Step -->
+                                <li class="{{ $project->finish === 1 ? 'completed' : 'active' }}">
+                                    <a href="#!">
+                                        <span class="circle">{!! $project->finish === 1 ? '<ion-icon class="align-text-top h5" name="checkmark-outline"></ion-icon>' : '<ion-icon class="spin align-text-top h5" name="sync-outline"></ion-icon>' !!}</span>
+                                        <span class="label">Expertise en cours</span>
+                                    </a>
+                                </li>
 
-                                    <!-- Third Step -->
-                                    <li class="{{ $project->finish === 1 ? 'completed' : 'warning' }}">
-                                        <a href="#!">
-                                            <span class="circle"><ion-icon class="align-text-top h5" name="checkmark-outline"></ion-icon></span>
-                                            <span class="label">Expertise terminée</span>
-                                        </a>
-                                    </li>
+                                <!-- Third Step -->
+                                <li class="{{ $project->finish === 1 ? 'completed' : 'warning' }}">
+                                    <a href="#!">
+                                        <span class="circle"><ion-icon class="align-text-top h5" name="checkmark-outline"></ion-icon></span>
+                                        <span class="label">Expertise terminée</span>
+                                    </a>
+                                </li>
 
-                                </ul>
-                                <!-- /.Stepers Wrapper -->
+                            </ul>
+                            <!-- /.Stepers Wrapper -->
 
-                            </div>
                         </div>
                     </div>
-                </x-section>
-            @endif
+                </div>
+            </x-section>
+        @endif
 
         <div class="row">
 
@@ -443,11 +443,11 @@
                             <div id="showParticipants" class="collapse" data-parent=".show-participants">
                                 @foreach($project->participants as $participant)
                                     <div class="row no-gutters align-items-center position-relative mt-3">
-                                        <div class="col-1">
-                                            <img class="rounded-lg" style="height: 2rem" src="{{ auth()->user()->getAvatar($participant->id) }}" alt="">
+                                        <div class="col-2">
+                                            <img class="rounded-lg" style="height: 2rem" src="{{ $participant::getAvatar($participant->id) }}" alt="">
                                         </div>
-                                        <div class="col-10">
-                                            <span class="mr-auto text-muted">{{ $participant->user->first_name }} {{ $participant->user->last_name }}</span>
+                                        <div class="col">
+                                            <span class="mr-auto text-muted">{{ $participant->first_name }} {{ $participant->last_name }}</span>
                                         </div>
                                         <div class="col-1 text-right">
                                             <ion-icon name="radio-button-on-outline" class="text-success"></ion-icon>
@@ -455,6 +455,14 @@
                                         <a class="position-absolute h-100 w-100" href="{{ route('chat.createConversation', $participant->id) }}"></a>
                                     </div>
                                 @endforeach
+
+                                @can('classroom.*')
+                                    <div class="mt-3">
+                                        <x-form.item method="put" :action="route('project.participants.update', $project->id)">
+                                            <button type="submit" class="btn btn-outline-primary btn-sm">Mettre à jour les participants</button>
+                                        </x-form.item>
+                                    </div>
+                                @endcan
                             </div>
                         </div>
                     </x-section>
@@ -505,10 +513,11 @@
                 <x-form.textarea label="Description" name="description"></x-form.textarea>
 
                 <div class="form-group">
+                    <label for="">Assigné à</label>
                     @foreach($project->participants as $participant)
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" name="assigned_to" class="custom-control-input" id="customCheck1" value="{{ $participant->user_id }}">
-                            <label class="custom-control-label" for="customCheck1">{{ \App\Models\User::find($participant->user_id)->first_name }} {{ \App\Models\User::find($participant->user_id)->last_name }}</label>
+                            <input type="checkbox" name="assigned_to" class="custom-control-input" id="customCheck1" value="{{ $participant->id }}">
+                            <label class="custom-control-label" for="customCheck1">{{ $participant->first_name }} {{ $participant->last_name }}</label>
                         </div>
                     @endforeach
                 </div>

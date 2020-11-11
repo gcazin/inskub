@@ -95,8 +95,8 @@ export function loadMoreDataInfinite(url, id) {
                         $("#"+ id).append(data.html);
                     }
                 },
-                error: function(data){
-
+                error: function(data) {
+                    console.log(data)
                 },
             })
         }

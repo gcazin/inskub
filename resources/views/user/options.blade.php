@@ -1,4 +1,4 @@
-<x-page>
+<x-page title="Options">
     <x-header>
         <x-slot name="title">Informations du compte</x-slot>
         <x-slot name="content">

@@ -1,4 +1,4 @@
-<x-page>
+<x-page title="Connexion">
     <x-header>
         <x-slot name="title">
             <div class="row">

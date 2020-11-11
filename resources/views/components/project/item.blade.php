@@ -7,11 +7,10 @@
             {{ $project->title }}
         </div>
         <div class="col col-lg-2">
-            @if($project->find($project->id)->participants()->count() > 0)
-                @foreach($project->find($project->id)->participants()->take(3)->get() as $participant)
-                    <img class="rounded-circle" style="height: 30px" src="{{ auth()->user()->getAvatar($participant->user_id) }}" alt="">
-                @endforeach
-            @endif
+            @forelse($project->find($project->id)->participants()->take(3)->get() as $participant)
+                <img class="rounded-circle" style="height: 30px" src="{{ $participant::getAvatar($participant->id) }}" alt="">
+            @empty
+            @endforelse
         </div>
         <div class="col col-lg-2 h5">
             @if($project->finish !== 0)
@@ -19,7 +18,7 @@
             @else
                 <span
                     class="badge badge-pill badge-{{ $project::daysLeft($project, true) }}">
-                                    {{ Illuminate\Support\Carbon::parse($project->deadline)->formatLocalized('%d %b %Y') }}
+                                    {{ \App\Helpers\carbon()::parse($project->deadline)->formatLocalized('%d %b %Y') }}
                                 </span>
             @endif
         </div>

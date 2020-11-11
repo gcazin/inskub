@@ -63,6 +63,11 @@
                             <a class="nav-link px-4 py-3" style="font-size: 1.2rem" href="{{ route('admin.index') }}">Administration</a>
                         </li>
                         @endrole
+                        @can('professor.*|class.*')
+                            <li class="nav-item {{ request()->is('school*') ? 'active' : null }}">
+                                <a class="nav-link px-4 py-3" style="font-size: 1.2rem" href="{{ route('school.index') }}">Administration</a>
+                            </li>
+                        @endcan
                     </ul>
                 @endauth
             </div>

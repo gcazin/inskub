@@ -1,4 +1,4 @@
-<x-page>
+<x-page title="Accueil">
     <x-slot name="head">
         <style>
             .banner__blob, .banner__blob {

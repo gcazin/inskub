@@ -1,4 +1,4 @@
-<x-page>
+<x-page title="Suivre un sinistre">
     <x-header>
         <x-slot name="title">Suivre un sinistre</x-slot>
         <x-slot name="subtitle">Vous pouvez ici suivre toutes vos demandes en cours de sinistres.</x-slot>

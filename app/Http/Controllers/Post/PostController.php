@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
+use App\Http\Repository\PostRepository;
 use App\Http\Requests\StorePost;
 use App\Models\Post;
 use App\Models\ReportPost;
 use App\Models\User;
 use App\Notifications\ReportingPost;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -19,34 +21,24 @@ class PostController extends Controller
      */
     private Post $post;
 
-    public function __construct(Post $post)
+    /**
+     * @var PostRepository
+     */
+    private PostRepository $postRepository;
+
+    public function __construct(Post $post, PostRepository $postRepository)
     {
         $this->middleware('auth');
         $this->post = $post;
+        $this->postRepository = $postRepository;
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     */
     public function index()
     {
-        $posts = User::find(auth()->id())->posts;
-
-        $posts_followings = User::find(auth()->id())->followings->map(static function($user) {
-            return Post::where('user_id', $user->id)->where('visibility_id', '<>', 3)->where('project_id', '=', null)->get();
-        });
-
-        $posts = $posts->merge($posts_followings->collapse())->sortByDesc('created_at')->paginate(4);
+        $posts = $this->postRepository->getAllPosts();
 
         if(\request()->ajax()) {
-            $view = [];
-
-            foreach($posts as $post) {
-                $view[] = view('components.post', compact('post'))->render();
-            }
-
-            return response()->json(['html' => $view]);
+            return $this->postRepository->renderComponents();
         }
 
         return view('index', compact('posts'));
@@ -55,29 +47,32 @@ class PostController extends Controller
     public function show(int $id)
     {
         $this->middleware('guest');
-        $post = Post::all()->find($id);
+
+        $post = $this->post::all()->find($id);
+
         return view('post.show', compact('post'));
     }
 
     /**
      * Créer une publication
      *
-     * @param \App\Http\Requests\StorePost $request
+     * @param StorePost $request
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return JsonResponse
      */
-    public function store(StorePost $request)
+    public function store(StorePost $request): JsonResponse
     {
-        $post = $this->post;
+        $post = new $this->post;
         $post->content = $request->get('content');
         $post->user_id = auth()->id();
         $post->visibility_id = $request->get('visibility_id');
         $post->project_id = $request->get('project_id') ?? null;
-
         if($request->has('media')) {
-            $post->media = $request->file('media')->storeAs('posts',Str::random(40).'.'.$request->file('media')->extension(), ['disk' => 'public']);
+            $post->media = $request->file('media')
+                ->storeAs('posts',Str::random(40).'.'.$request->file('media')->extension(),
+                    ['disk' => 'public']
+                );
         }
-
         $post->created_at = now();
         $post->save();
 
@@ -88,13 +83,6 @@ class PostController extends Controller
         return response()->json($html);
     }
 
-    /**
-     * Page pour modifier une publication
-     *
-     * @param $id
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function edit($id)
     {
         $post = $this->post->find($id);
@@ -102,12 +90,6 @@ class PostController extends Controller
         return view('post.edit', compact('post'));
     }
 
-    /**
-     * Mettre à jour une publication
-     *
-     * @param int                          $id
-     * @param \App\Http\Requests\StorePost $request
-     */
     public function update($id, StorePost $request)
     {
         $post = $this->post->find($id);
@@ -116,7 +98,10 @@ class PostController extends Controller
         $post->visibility_id = $request->get('visibility_id') ?? null;
         $post->project_id = $request->get('project_id') ?? null;
         if($request->has('media')) {
-            $post->media = $request->file('media')->storeAs('posts', Str::random(40).'.'.$request->file('media')->extension(), ['disk' => 'public']);
+            $post->media = $request->file('media')
+                ->storeAs('posts', Str::random(40).'.'.$request->file('media')->extension(),
+                    ['disk' => 'public']
+                );
         }
         $post->updated_at = now();
         $post->update();
@@ -126,10 +111,11 @@ class PostController extends Controller
 
     public function like($id)
     {
-        $post = Post::find($id);
+        $post = $this->post->find($id);
+
         auth()->user()->toggleLike($post);
 
-        return redirect()->back();
+        return back();
     }
 
     public function destroy($id)
@@ -138,7 +124,7 @@ class PostController extends Controller
 
         $post->delete();
 
-        return redirect()->back();
+        return back();
     }
 
     public function report(Request $request, $id)
@@ -149,10 +135,12 @@ class PostController extends Controller
         $report->post_id = $id;
         $report->save();
 
-        $user = \App\User::where('role_id', '=', 1)->first();
+        $users = User::role('super-admin')->get();
 
-        $user->notify(new ReportingPost($report));
+        foreach($users as $user) {
+            $user->notify(new ReportingPost($report));
+        }
 
-        return redirect()->back()->with('thanks_report', 'Merci pour votre signalement, nous allons traiter votre demande');
+        return back();
     }
 }

@@ -9,16 +9,26 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    /**
+     * @var \App\Models\User
+     */
+    private User $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     public function index()
     {
-        $users = User::all()->paginate(10);
+        $users = $this->user::all()->paginate(10);
 
         return view('admin.user.index', compact('users'));
     }
 
     public function store(UserRequest $request)
     {
-        $user = User::create([
+        $user = $this->user->create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,

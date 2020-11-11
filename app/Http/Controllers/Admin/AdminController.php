@@ -8,6 +8,13 @@ use App\Notifications\ReportingPost;
 
 class AdminController extends Controller
 {
+    private User $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     /**
      * Page d'administration
      *
@@ -15,7 +22,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = $this->user::all();
 
         /*$users = $users
             ->whereNotNull('created_at')
@@ -37,7 +44,7 @@ class AdminController extends Controller
 
     public function reports()
     {
-        $user = User::find(1);
+        $user = $this->user::find(1);
 
         $notifications = $user->notifications->where('type', '=', ReportingPost::class);
 

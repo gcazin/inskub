@@ -4,28 +4,59 @@ namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProject;
-use App\Mail\CreatingStudent;
+use App\Jobs\SendEmailStudentClassroom;
+use App\Models\Classroom;
+use App\Models\Professor;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
+use Musonza\Chat\Chat;
 use Musonza\Chat\Facades\ChatFacade;
 use Musonza\Chat\Models\Conversation;
 
 class ProjectController extends Controller
 {
-    public function __construct()
+    /**
+     * @var Project
+     */
+    private Project $project;
+
+    /**
+     * @var Professor
+     */
+    private Professor $professor;
+
+    /**
+     * @var Classroom
+     */
+    private Classroom $classroom;
+
+    /**
+     * @var User
+     */
+    private User $user;
+    /**
+     * @var \Musonza\Chat\Chat
+     */
+    private Chat $chat;
+
+    public function __construct(Project $project, Professor $professor, Classroom $classroom, User $user, Chat $chat)
     {
+        $this->project = $project;
+        $this->professor = $professor;
+        $this->classroom = $classroom;
+        $this->user = $user;
+
         $this->middleware('auth');
+        $this->chat = $chat;
     }
 
     public function index()
     {
         $project = auth()->user()->projects;
+
         $project_user = ProjectUser::all()->map(static function($user) {
             if($user->user_id === auth()->id()) {
                 return Project::where('id', '=', $user->project_id)->get();
@@ -33,9 +64,13 @@ class ProjectController extends Controller
         });
         $projects = $project->merge($project_user->collapse());
 
+        $classrooms = $this->professor->where('professor_id', auth()->id())->get()->map(function($classroom) {
+            return $classroom->classrooms;
+        })->collapse();
+
         $carbon = new Carbon();
 
-        return view('project.index', compact('projects', 'carbon'));
+        return view('project.index', compact('projects', 'carbon', 'classrooms'));
     }
 
     public function show($id)
@@ -88,60 +123,50 @@ class ProjectController extends Controller
         $project = Project::create($request->validated());
 
         if($request->filled('participants')) {
-            if(auth()->user()->getRoleNames()->contains('school')) {
-                $participants = json_decode($request->participants);
-                $users = [];
+            $users = [];
 
-                foreach($participants as $email) {
-                    if(User::whereEmail($email->value)->exists()) {
-                        return redirect()->back();
+            if(auth()->user()->can('classroom.*')) {
+                $participants = $request->participants;
+
+                foreach($participants as $participant) {
+                    $students = $this->classroom->find($participant)->students;
+
+                    foreach($students as $student) {
+                        $users[] = User::find($student->student_id);
+                        $project->addParticipant($student->student_id);
+
+                        SendEmailStudentClassroom::dispatch($student, $project, auth()->user());
                     }
-                    $name = trim(explode('@', $email->value)[0]);
-                    $plain_password = Str::random(8);
-                    $password = Hash::make($plain_password);
-
-                    $user = User::create([
-                        'first_name' => $name,
-                        'last_name' => $name,
-                        'email' => trim($email->value),
-                        'password' => $password,
-                        'department' => null,
-                        'tel' => null,
-                        'adresse' => null,
-                        'company' => null,
-                        'created_at' => now(),
-                    ]);
-                    $user->assignRole('student');
-
-                    $users[] = User::find($user->id);
-
-                    $project->addParticipant($user->id);
-
-                    Mail::to($user->email)->send(new CreatingStudent($user, $plain_password, $project->id));
                 }
 
                 $chat = ChatFacade::createConversation($users);
                 $chat->data = ['title' => $project->title];
                 $chat->project_id = $project->id;
                 $chat->update();
-            }
-
-            else {
+            } else {
                 foreach ($request->get('participants') as $participant) {
+                    $users[] = User::find($participant);
                     $project->addParticipant($participant);
                 }
 
-                $participants = collect($request->participants)->map(static function($participant) {
-                    return User::find($participant);
-                });
+                $users[] = auth()->user();
 
-                $chat = ChatFacade::createConversation([User::find(auth()->id()), ...$participants]);
+                $chat = $this->chat->createConversation($users);
                 $chat->project_id = $project->id;
-                $chat->update();
+                $chat->save();
             }
         }
 
         return redirect()->route('project.index')->with('project-created', 'Projet crée avec succès');
+    }
+
+    public function updateParticipants(int $id)
+    {
+        $project = $this->project->find($id);
+
+        /*dd($project->participants->map(function($participant) {
+            return $participant->user_id;
+        }));*/
     }
 
     public function destroy($id)

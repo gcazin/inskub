@@ -1,4 +1,4 @@
-<x-page>
+<x-page title="Projets">
     <x-slot name="head">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.20.0/dist/tagify.min.css">
     </x-slot>
@@ -52,7 +52,7 @@
                                 <div class="col">
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" id="pro" value="1" name="private" class="custom-control-input">
-                                        <label class="custom-control-label" for="pro">{{ auth()->user()->role_id === 4 ? 'Classe' : 'Professionnel' }}</label>
+                                        <label class="custom-control-label" for="pro">{{ auth()->user()->can('classroom.*') ? 'Classe' : 'Professionnel' }}</label>
                                     </div>
                                 </div>
                             </div>
@@ -70,27 +70,30 @@
 
                         <!-- Participants -->
                         <div class="form-group" id="participants-container">
-                            <label for="participants">Participant</label>
-                            @if(auth()->user()->getRoleNames()->contains('school'))
-                                <x-form.textarea
-                                    name="participants"
-                                    help="Vous pouvez ajouter l'adresse email des élèves en appuyant sur la touche entrée"
-                                    rows="5"></x-form.textarea>
+                            <label for="participants">Participants</label>
+                            @if(auth()->user()->can('classroom.*'))
+
+                                <!-- Salle de classe -->
+                                @foreach($classrooms as $classroom)
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" id="classroom_id-{{ $classroom->id }}" name="participants[]" class="custom-control-input" value="{{ $classroom->id }}">
+                                        <label class="custom-control-label" for="classroom_id-{{ $classroom->id }}">{{ $classroom->name }}</label>
+                                    </div>
+                                @endforeach
                             @else
-                                @if(count(auth()->user()->followings) > 0)
-                                    @foreach(auth()->user()->followings as $following)
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" name="participants[]" class="custom-control-input" id="following-{{ $following->id }}" value="{{ $following->id }}">
-                                            <label class="custom-control-label" for="following-{{ $following->id }}">{{ $following->first_name }} {{ $following->last_name }}</label>
-                                        </div>
-                                    @endforeach
-                                @else
+                                <!-- Professionel -->
+                                @forelse(auth()->user()->followings as $following)
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" name="participants[]" class="custom-control-input" id="following-{{ $following->id }}" value="{{ $following->id }}">
+                                        <label class="custom-control-label" for="following-{{ $following->id }}">{{ $following->first_name }} {{ $following->last_name }}</label>
+                                    </div>
+                                @empty
                                     <x-element.alert type="warning">
                                         <x-slot name="title">
                                             Vous ne suivez personne pour l'instant
                                         </x-slot>
                                     </x-element.alert>
-                                @endif
+                                @endforelse
                             @endif
                         </div>
 

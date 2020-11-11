@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -27,7 +27,7 @@ class LoginControllerTest extends TestCase
      */
     public function test_cant_view_login_form_if_user_is_logged(): void
     {
-        $user = factory(User::class)->make();
+        $user = User::factory()->create();
 
         $response = $this->be($user)->get(route('login'));
 
@@ -41,7 +41,7 @@ class LoginControllerTest extends TestCase
      */
     public function test_can_login(): void
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'password' => Hash::make($password = Str::random(10))
         ]);
 
@@ -64,7 +64,7 @@ class LoginControllerTest extends TestCase
      */
     public function test_cant_login_with_wrong_credentials(): void
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'password' => Hash::make(Str::random(10))
         ]);
 

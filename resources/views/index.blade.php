@@ -1,9 +1,7 @@
-<x-page>
+<x-page title="Fil d'actualité">
     @if(session()->has('thanks_report'))
         <x-element.toast title="Signalement envoyé" type="success" name="thanks_report">Merci de votre signalement</x-element.toast>
     @endif
-
-    <x-slot name="title">Fil d'actualité</x-slot>
 
     <x-header>
         <x-slot name="title">Fil d'actualité</x-slot>

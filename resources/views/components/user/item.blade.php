@@ -62,6 +62,7 @@
                 </x-element.modal>
             </div>
         @else
+            <livewire:follow-user :member="$user"></livewire:follow-user>
             <x-element.link-button :url="route('user.profile', $user->id)" type="outline-primary">Voir le profil</x-element.link-button>
         @endif
     </div>

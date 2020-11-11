@@ -11,6 +11,4 @@
         </x-section>
 
     </x-container>
-
-    <x-right-sidebar-message></x-right-sidebar-message>
 @endsection

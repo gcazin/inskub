@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\ReportPost;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
@@ -9,14 +10,14 @@ class ReportingPost extends Notification
 {
     use Queueable;
 
-    protected $reportPost;
+    protected ReportPost $reportPost;
 
     /**
      * Create a new notification instance.
      *
-     * @param \App\ReportPost $reportPost
+     * @param \App\Models\ReportPost $reportPost
      */
-    public function __construct(\App\ReportPost $reportPost)
+    public function __construct(ReportPost $reportPost)
     {
         $this->reportPost = $reportPost;
     }

@@ -1,5 +1,4 @@
-@extends('layouts.base')
-@section('content')
+<x-page title="Foire aux questions">
     <x-header>
         <x-slot name="title">FAQ</x-slot>
         <x-slot name="subtitle">Pour répondre aux questions</x-slot>
@@ -15,12 +14,12 @@
         </x-slot>
         <x-slot name="content">
             <div class="row">
-                <div class="col-10">
+                <div class="col">
                     <input id="search-users" type="search" placeholder="Rechercher parmis les utilisateurs..." class="form-control" name="search">
                 </div>
                 @auth
-                    @role('Super-admin')
-                        <div class="col">
+                    @role('super-admin')
+                        <div class="col-2">
                             <x-element.link-button size="block" :url="route('admin.faq.index')">Créer une FAQ</x-element.link-button>
                         </div>
                     @endrole
@@ -56,4 +55,4 @@
             </div>
         </x-section>
     </x-container>
-@endsection
+</x-page>

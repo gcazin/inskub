@@ -13,7 +13,7 @@ class CreateRolesAndPermissions extends Command
      *
      * @var string
      */
-    protected $signature = 'roles:create';
+    protected $signature = 'roles-permissions:create';
 
     /**
      * The console command description.
@@ -35,28 +35,24 @@ class CreateRolesAndPermissions extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return int
      */
     public function handle()
     {
+        // Rôles et permissions
+        Permission::create(['name' => '*.*']);
+        Role::create(['name' => 'super-admin']);
+
         Permission::create(['name' => 'admin.*']);
-        $super_admin = Role::create(['name' => 'super-admin']);
-
-        /**
-         * Admins
-         */
-        Permission::create(['name' => '*.create,update,view']);
         $admin = Role::create(['name' => 'admin']);
-        $admin->givePermissionTo('*.create,update,view');
+        $admin->givePermissionTo('admin.*');
 
-        /**
-         * Écoles
-         */
-        Permission::create(['name' => 'professor.create,update,view']);
-        Permission::create(['name' => 'classroom.create,update,view']);
+        Permission::create(['name' => 'professor.*']);
+        Permission::create(['name' => 'class.*']);
+        Permission::create(['name' => 'classroom.*']);
         $school = Role::create(['name' => 'school']);
-        $school->givePermissionTo('professor.create,update,view');
-        $school->givePermissionTo('classroom.create,update,view');
+        $school->givePermissionTo('professor.*');
+        $school->givePermissionTo('class.*');
 
 
         Role::create(['name' => 'company']);
@@ -65,6 +61,8 @@ class CreateRolesAndPermissions extends Command
         Role::create(['name' => 'person']);
         Role::create(['name' => 'other']);
 
-        $this->info('Les rôles et les permissions ont bien été crées !');
+        $this->info('Les rôles et les permissions ont été générés.');
+
+        return 0;
     }
 }

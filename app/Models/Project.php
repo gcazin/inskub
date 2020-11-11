@@ -4,10 +4,13 @@ namespace App\Models;
 
 use App\Observers\ProjectObserver;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
+    use HasFactory;
+
     protected $dispatchesEvents = [
         'saved' => ProjectObserver::class
     ];
@@ -30,7 +33,7 @@ class Project extends Model
 
     public function participants()
     {
-        return $this->hasMany(ProjectUser::class);
+        return $this->belongsToMany(User::class, 'project_user');
     }
 
     public function posts()
@@ -75,7 +78,7 @@ class Project extends Model
      */
     public function addParticipant(int $id): void
     {
-        $this->participants()->create([
+        $this->participants()->attach($this->id, [
             'user_id' => $id,
             'project_id' => $this->id,
             'created_at' => now(),
@@ -83,10 +86,14 @@ class Project extends Model
     }
 
     /**
-     * Vérifie que l'utilisateur connecté est bien un participant du projet
+     * Vérifie que l'utilisateur connecté est bien un participant du projet ou le créateur
+     *
+     * @param null $id
+     *
+     * @return bool
      */
-    public function selfParticipant()
+    public function checkParticipant($id)
     {
-        return $this->participants()->get()->contains('user_id', '=', auth()->id());
+        return $this->participants()->get()->contains('user_id', $id);
     }
 }

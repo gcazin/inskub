@@ -1,4 +1,5 @@
-<x-page>
+<x-page title="Découvrir">
+
     <x-header>
         <x-slot name="title">Découvrir</x-slot>
         <x-slot name="subtitle">Espace permettant à quiconque de pouvoir créer et partager ses projets</x-slot>

@@ -1,4 +1,4 @@
-<x-page>
+<x-page title="Messagerie">
     <x-header>
         <x-slot name="title">Chat</x-slot>
     </x-header>
@@ -19,12 +19,12 @@
                                     <div class="row align-items-center {{ ! $loop->last ? 'pb-3' : null }}">
 
                                         <div class="col-1 px-2">
-                                            <img class="rounded-circle" style="height: 50px" src="{{ \App\Models\User::find($following->id)::getAvatar($following->id) }}" alt="">
+                                            <img class="rounded-circle" style="height: 50px" src="{{ $following::getAvatar($following->id) }}" alt="">
                                         </div>
                                         <div class="col">
                                             <a href="{{ route('user.profile', $following->id) }}" class="h4">{{ $following->first_name }} {{ $following->last_name }}</a>
                                             <p class="text-muted mb-0">
-                                                {{ \App\Models\User::find($following->id)->followers()->count() }} abonnés
+                                                {{ $following->followers()->count() }} abonnés
                                             </p>
                                         </div>
                                         <div class="col-1 text-center">
@@ -64,7 +64,7 @@
                             <div class="menu-item border-bottom px-2 position-relative">
                                 <div class="position-relative">
                                     <div class="mb-3">
-                                        <img class="img-fluid mr-2 rounded-circle" src="{{ \App\Models\User::find($participant->id)->avatar }}" style="height: 40px" alt="">
+                                        <img class="img-fluid mr-2 rounded-circle" src="{{ $participant::getAvatar($participant->id) }}" style="height: 40px" alt="">
                                         <span class="font-weight-bold h6">{{ $conversation->type_id === 0 ? \App\Models\User::find($participant->id)->first_name
 .' '.\App\Models\User::find($participant->id)->last_name : json_decode($conversation->data)->title }}</span>
                                     </div>

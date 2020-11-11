@@ -1,4 +1,4 @@
-<div class="alert alert-{{ $type }} d-flex align-items-center rounded-lg px-3 py-3 mb-3 {{ $class ?? null }}">
+<div class="alert alert-{{ $type }} d-flex align-items-center rounded-lg px-3 py-3 mb-3 {{ $class ?? null }}" @isset($id) id="{{ $id }}" @endisset>
     <div class="icon-container mx-3">
         <ion-icon
             class="align-text-top h4 mb-0"

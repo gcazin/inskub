@@ -13,20 +13,21 @@ class ProjectPolicy
     /**
      * Determine whether the user can view the project.
      *
-     * @param  \App\User  $user
-     * @param  \App\Project  $project
+     * @param  User  $user
+     * @param  Project  $project
      * @return mixed
      */
     public function view(User $user, Project $project)
     {
-        return true;
+        return $project->checkParticipant($user->id) || $project->user->id === auth()->id();
     }
 
     /**
      * Determine whether the user can update the project.
      *
-     * @param  \App\User  $user
-     * @param  \App\Project  $project
+     * @param User    $user
+     * @param Project $project
+     *
      * @return mixed
      */
     public function update(User $user, Project $project)
@@ -37,8 +38,9 @@ class ProjectPolicy
     /**
      * Determine whether the user can delete the project.
      *
-     * @param  \App\User  $user
-     * @param  \App\Project  $project
+     * @param User    $user
+     * @param Project $project
+     *
      * @return mixed
      */
     public function delete(User $user, Project $project)
