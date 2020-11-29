@@ -57,8 +57,26 @@ class RegisterController extends Controller
             'first_name' => ['required', 'string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'department_id' => [Rule::requiredIf($data['role_name'] === "intermediate")],
-            'company_id' => [],
+            'department_id' => [
+                Rule::requiredIf($data['role_name'] === "expert"),
+                'exists:departments,id'
+            ],
+            'postal_code' => [
+                Rule::requiredIf($data['role_name'] === "expert"),
+                'exists:cities,zip_code'
+            ],
+            'city_id' => [
+                Rule::requiredIf($data['role_name'] === "expert"),
+                'exists:cities,id'
+            ],
+            'perimeter' => [
+                Rule::requiredIf($data['role_name'] === "expert"),
+                'integer'
+            ],
+            'company_id' => ['exists:companies,id'],
+            'siret_number' => [
+                Rule::requiredIf($data['role_name'] === 'intermediate'),
+            ]
         ]);
     }
 
@@ -77,7 +95,10 @@ class RegisterController extends Controller
         $user->email = $data['email'];
         $user->password = Hash::make($data['password']);
         $user->department_id = $data['department_id'] ?? null;
+        $user->postal_code = $data['postal_code'] ?? null;
+        $user->city_id = $data['city_id'] ?? null;
         $user->company_id = $data['company_id'] ?? null;
+        $user->siret_number = $data['siret_number'] ?? null;
         $user->save();
 
         $user->assignRole($data['role_name']);

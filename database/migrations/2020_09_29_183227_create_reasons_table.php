@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateReasonsTable extends Migration
@@ -32,7 +33,7 @@ class CreateReasonsTable extends Migration
         ];
 
         foreach($reasons as $reason) {
-            \Illuminate\Support\Facades\DB::table('reasons')->insert([
+            DB::table('reasons')->insert([
                 'title' => $reason
             ]);
         }

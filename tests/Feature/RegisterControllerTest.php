@@ -4,25 +4,16 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\PermissionRegistrar;
 use Tests\TestCase;
 
 class RegisterControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->app->make(PermissionRegistrar::class)->registerPermissions();
-    }
-
     /**
-     * On peut accéder au formulaire d'inscription
+     * @test
      */
-    public function test_can_view_register_form(): void
+    public function it_can_view_register_form(): void
     {
         $response = $this->get(route('register'));
 
@@ -30,9 +21,9 @@ class RegisterControllerTest extends TestCase
     }
 
     /**
-     * On est redirigé si on est connecté
+     * @test
      */
-    public function test_cant_view_register_form_if_user_is_logged(): void
+    public function it_cant_view_register_form_if_user_is_logged(): void
     {
         $user = User::factory()->make();
 
@@ -44,69 +35,13 @@ class RegisterControllerTest extends TestCase
     /**
      * Un utilisateur peut s'enregister
      *
-     * @return void
-     */
-    public function test_can_create_account(): void
-    {
-        $role = Role::create(['name' => 'intermediate']);
-
-        $user = User::factory()->create();
-        $user->assignRole($role);
-
-        $response = $this->post(route('register'), [
-            'role_name' => $user->role_name,
-            'last_name' => $user->last_name,
-            'first_name' => $user->first_name,
-            'email' => $user->email,
-            'password' => $user->password,
-            'password_confirmation' => $user->password,
-            'company_id' => 1,
-            'department' => 1,
-        ]);
-
-        $response
-            ->assertRedirect('/')
-            ->assertStatus(302);
-    }
-
-    /**
-     * Un utilisateur peut s'enregister
-     *
      * @test
      *
      * @return void
      */
-    public function it_should_fill_department_and_company_in_role_intermediate(): void
+    public function it_can_create_account(): void
     {
-        $user = User::factory()->create();
-
-        $response = $this->post(route('register'), [
-            'role_name' => 'intermediate',
-            'last_name' => $user->last_name,
-            'first_name' => $user->first_name,
-            'email' => $user->email,
-            'password' => $user->password,
-            'password_confirmation' => $user->password,
-            'company_id' => 1,
-            'department_id' => 1,
-        ]);
-
-        $response
-            ->assertRedirect('/')
-            ->assertStatus(302);
-    }
-
-    /**
-     * Un utilisateur peut s'enregister
-     *
-     * @test
-     *
-     * @return void
-     */
-    public function it_can_fill_blank_department_and_company_in_other_role_than_intermediate(): void
-    {
-        Role::create(['name' => 'person']);
-        $user = User::factory()->create();
+        $user = User::factory()->make();
 
         $response = $this->post(route('register'), [
             'role_name' => 'person',
@@ -118,16 +53,16 @@ class RegisterControllerTest extends TestCase
         ]);
 
         $response
-            ->assertRedirect('/')
+            ->assertRedirect(route('index'))
             ->assertStatus(302);
     }
 
     /**
-     * Les mots de passe doivent être identiques
+     * @test
      *
      * @return void
      */
-    public function test_password_should_be_identical(): void
+    public function it_password_should_be_identical(): void
     {
         $user = User::factory()->make();
 
@@ -146,11 +81,158 @@ class RegisterControllerTest extends TestCase
     }
 
     /**
-     * On ne peut pas s'inscrire en tant que super-admin
+     * @test
      *
      * @return void
      */
-    public function test_cant_register_in_super_admin(): void
+    public function it_must_department_exists(): void
+    {
+        $user = User::factory()->make();
+
+        $response = $this->post(route('register'), [
+            'role_name' => 'intermediate',
+            'last_name' => $user->last_name,
+            'first_name' => $user->first_name,
+            'email' => $user->email,
+            'password' => $user->password,
+            'password_confirmation' => $user->password,
+            'department_id' => 9000,
+            'siret_number' => 12345678911111
+        ]);
+
+        $response
+            ->assertSessionHasErrors('department_id')
+            ->assertStatus(302);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function it_must_siret_number_has_exactly_14_digits(): void
+    {
+        $user = User::factory()->make();
+
+        $response = $this->post(route('register'), [
+            'role_name' => 'intermediate',
+            'last_name' => $user->last_name,
+            'first_name' => $user->first_name,
+            'email' => $user->email,
+            'password' => $user->password,
+            'password_confirmation' => $user->password,
+            'department_id' => 1,
+            'siret_number' => 1234
+        ]);
+
+        $response
+            ->assertSessionHasErrors('siret_number')
+            ->assertStatus(302);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function it_should_fill_department_and_company_in_role_expert(): void
+    {
+        $user = User::factory()->make();
+
+        $response = $this->post(route('register'), [
+            'role_name' => 'expert',
+            'last_name' => $user->last_name,
+            'first_name' => $user->first_name,
+            'email' => $user->email,
+            'password' => $user->password,
+            'password_confirmation' => $user->password,
+            'company_id' => 1,
+            'department_id' => 1,
+        ]);
+
+        $response
+            ->assertSessionDoesntHaveErrors()
+            ->assertRedirect(route('index'))
+            ->assertStatus(302);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function it_should_fill_department_and_fill_blank_company_in_role_expert(): void
+    {
+        $user = User::factory()->make();
+
+        $response = $this->post(route('register'), [
+            'role_name' => 'expert',
+            'last_name' => $user->last_name,
+            'first_name' => $user->first_name,
+            'email' => $user->email,
+            'password' => $user->password,
+            'password_confirmation' => $user->password,
+            'department_id' => 1,
+        ]);
+
+        $response
+            ->assertSessionDoesntHaveErrors()
+            ->assertRedirect(route('index'))
+            ->assertStatus(302);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function it_can_fill_blank_department_and_company_in_other_role_than_expert(): void
+    {
+        $user = User::factory()->make();
+
+        $response = $this->post(route('register'), [
+            'role_name' => 'person',
+            'last_name' => $user->last_name,
+            'first_name' => $user->first_name,
+            'email' => $user->email,
+            'password' => $user->password,
+            'password_confirmation' => $user->password,
+        ]);
+
+        $response
+            ->assertSessionDoesntHaveErrors()
+            ->assertRedirect(route('index'))
+            ->assertStatus(302);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function it_should_fill_siret_number_in_intermediate_role(): void
+    {
+        $user = User::factory()->make();
+
+        $response = $this->post(route('register'), [
+            'role_name' => 'intermediate',
+            'last_name' => $user->last_name,
+            'first_name' => $user->first_name,
+            'email' => $user->email,
+            'password' => $user->password,
+            'password_confirmation' => $user->password,
+        ]);
+
+        $response
+            ->assertSessionHasErrors('siret_number');
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function it_cant_register_in_super_admin(): void
     {
         $user = User::factory()->make();
 
@@ -169,11 +251,11 @@ class RegisterControllerTest extends TestCase
     }
 
     /**
-     * On ne peut pas s'inscrire en tant que admin
+     * @test
      *
      * @return void
      */
-    public function test_cant_register_in_admin(): void
+    public function it_cant_register_in_admin(): void
     {
         $user = User::factory()->make();
 

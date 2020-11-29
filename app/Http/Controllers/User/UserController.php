@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\Post;
 use App\Models\User;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Contracts\View\Factory;
@@ -52,9 +51,11 @@ class UserController extends Controller
     public function index($id)
     {
         $user = User::findOrFail($id);
-        $posts = Post::where('user_id', $id)->take(5)->get();
-        $formations = $user->formations();
-        return view('user.profile', compact('user', 'posts', 'formations'));
+        $posts = $user->posts()->take(5)->get();
+        $formations = $user->formations;
+        $skills = $user->skills;
+
+        return view('user.profile', compact('user', 'posts', 'formations', 'skills'));
     }
 
     public function follower($id)

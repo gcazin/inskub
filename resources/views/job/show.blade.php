@@ -1,50 +1,39 @@
-@extends('layouts.base')
+<x-section class="position-relative">
+    <div class="mb-3">
+        <img width="100" class="rounded-lg shadow-sm" src="{{ $job->user::getAvatar($job->user_id) }}" alt="">
+    </div>
+    <div class="row mb-4">
+        <div class="col">
+            <p class="h3">{{ $job->title }}</p>
+        </div>
+    </div>
+    <div class="row no-gutters mb-3">
+        <div class="col">
+            <a class="mr-1" href="{{ route('user.profile', $job->user->id) }}">{{ $job->user->last_name }} </a> | <span class="ml-1"> {{ $job->location }}</span>
+        </div>
+        <div class="col text-right">
+            <span class="text-muted">{{ $job->created_at->diffForHumans() }}</span>
+        </div>
+    </div>
+    <div class="row no-gutters mb-3">
+        <div class="col border px-3 py-2">
+            <p class="text-muted">Salaire</p>
+            <span>{{ $job->salary ?? 'Non spécifié' }}</span>
+        </div>
+    </div>
 
-@section('content')
+    <div>
+        <p class="h5 text-black-50">Description de l'offre d'emploi</p>
+        <p>{{ $job->description }}</p>
+    </div>
 
-    <x-container>
+    <div class="row py-3">
+        <div class="col-lg-4">
+            <span class="text-muted">Prendre contact</span>
+        </div>
+        <div class="col-lg-6">
+            <a target="_blank" class="btn btn-primary" href="mailto:{{ $job->user->email }}">Postuler</a>
+        </div>
+    </div>
+</x-section>
 
-        <x-header title="Détails" description="Informations détaillés à propos de cet emploi"></x-header>
-
-        <x-section>
-
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                    <p class="text-muted">Intitulé du poste</p>
-                    <span>{{ $job->title }}</span>
-                </li>
-                <li class="list-group-item">
-                    <p class="text-muted">Entreprise</p>
-                    <span>{{ ucfirst(\App\User::find($job->user_id)->last_name) }}</span>
-                </li>
-                <li class="list-group-item">
-                    <p class="text-muted">Salaire</p>
-                    <span>{{ $job->salary ?? 'Salaire non spécifié' }}€</span>
-                </li>
-                <li class="list-group-item">
-                    <p class="text-muted">Description</p>
-                    <span>{{ $job->description }}</span>
-                </li>
-                <li class="list-group-item">
-                    <p class="text-muted">Contact</p>
-                    <ul>
-                        <li>Prendre contact sur le site
-                            <br><a href="{{ route('chat.createConversation', $job->user_id) }}" class="btn btn-primary btn-sm my-2">
-                                Envoyer un message privé
-                            </a>
-                        </li>
-
-                        <li>Prendre contact par mail
-                            <br><a target="_blank" href="mailto:{{ \App\User::find($job->user_id)->email }}" class="btn btn-outline-primary btn-sm my-2">
-                                Envoyer un mail
-                            </a>
-                        </li>
-
-                    </ul>
-                </li>
-            </ul>
-
-        </x-section>
-
-    </x-container>
-@endsection

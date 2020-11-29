@@ -14,10 +14,14 @@
             @endif
         </div>
 
-        <div class="mb-4">
+        <div class="mb-3">
             <a href="{{ route('user.profile', $user->id) }}" class="h5 text-primary">
                 {{ $user->first_name }} {{ $user->last_name }}
             </a>
+        </div>
+
+        <div class="mb-3">
+            <p class="text-muted text-truncate">{{ $user->about }}</p>
         </div>
 
         <div class="mb-4">
@@ -49,12 +53,8 @@
                         <!-- Brève description du sinistre -->
                         <x-form.textarea label="Description" name="short_description" rows="3" placeholder="Veuillez inclure ici une brève description de votre demande."></x-form.textarea>
 
-                        <!--Information client -->
-                        <x-form.textarea label="Vos informations" name="detailed_description" rows="3" placeholder="Renseigné à l'expert des informations complémentaires tel que votre ville ou tout autre information qui pourrait vous semblait utile pour traiter au mieux votre demande."></x-form.textarea>
-
-                        <div class="form-group">
-
-                        </div>
+                        {{--<!--Information client -->
+                        <x-form.textarea label="Vos informations" name="detailed_description" rows="3" placeholder="Renseigné à l'expert des informations complémentaires tel que votre ville ou tout autre information qui pourrait vous semblait utile pour traiter au mieux votre demande."></x-form.textarea>--}}
 
                         <hr>
                         <x-form.submit>Envoyer la demande</x-form.submit>

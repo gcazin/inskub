@@ -17,10 +17,8 @@ class CreateClassroomsTable extends Migration
             $table->id();
             $table->string('name');
             $table->longText('description')->nullable();
-            $table->unsignedBigInteger('school_id');
+            $table->foreignId('school_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('school_id')->references('id')->on('users')->cascadeOnDelete();
         });
     }
 
@@ -31,6 +29,7 @@ class CreateClassroomsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('classrooms');
     }
 }

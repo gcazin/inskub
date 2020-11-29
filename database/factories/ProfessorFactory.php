@@ -23,7 +23,7 @@ class ProfessorFactory extends Factory
     public function definition()
     {
         return [
-            'professor_id' => User::factory()->create()->givePermissionTo('classroom.*'),
+            'professor_id' => User::factory()->create()->assignRole('person')->givePermissionTo('classroom.*'),
             'school_id' => User::role('school')->get()->random()->id
         ];
     }

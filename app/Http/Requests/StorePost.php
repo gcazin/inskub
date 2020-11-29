@@ -34,7 +34,7 @@ class StorePost extends FormRequest
         return [
             'content' => ['max:255'],
             'visibility_id' => ['required'],
-            'media' => []
+            'media' => ['mimes:jpeg,bmp,png,gif,pdf,doc,docx,xlsx']
         ];
     }
 }

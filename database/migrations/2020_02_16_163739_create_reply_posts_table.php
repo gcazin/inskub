@@ -16,12 +16,9 @@ class CreateReplyPostsTable extends Migration
         Schema::create('reply_posts', function (Blueprint $table) {
             $table->id();
             $table->longText('message');
-            $table->unsignedBigInteger('post_id');
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('post_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

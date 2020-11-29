@@ -3,15 +3,17 @@
 namespace App\Http\Controllers\Discover;
 
 use App\Http\Controllers\Controller;
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Exceptions\RoleDoesNotExist;
+use Spatie\Permission\Models\Role;
 
 class DiscoverController extends Controller
 {
     public function discover()
     {
         $users = User::where('id', '<>', auth()->id())->orderBy('created_at')->paginate(8);
+        $roles = Role::all()->except([1,2]);
 
         if(\request()->ajax()) {
             $view = [];
@@ -23,7 +25,19 @@ class DiscoverController extends Controller
             return response()->json(['html' => $view]);
         }
 
-        return view('discover', compact('users'));
+        $role = \request()->role;
+        if($role) {
+            try {
+                $role = Role::findByName($role);
+            } catch(RoleDoesNotExist $exception) {
+                flash()->error("Ce rôle n'existe pas");
+                return view('discover', compact('users', 'roles'));
+            }
+
+            $users = User::role($role)->get()->paginate(8);
+        }
+
+        return view('discover', compact('users', 'roles'));
     }
 
     public function discoverAll($role_id)

@@ -17,15 +17,10 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->longText('content')->nullable();
             $table->string('media')->nullable()->default(null);
-
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('visibility_id');
-            $table->unsignedBigInteger('project_id')->nullable();
-
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('visibility_id')->constrained('visibility_posts')->cascadeOnDelete();
+            $table->foreignId('project_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('visibility_id')->references('id')->on('visibility_posts');
         });
     }
 

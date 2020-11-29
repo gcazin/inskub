@@ -17,4 +17,16 @@ class Rating extends Model
     {
         return $this->belongsTo(User::class, 'id');
     }
+
+    /**
+     * Permet de déterminer si l'intermédiaire a déjà noter l'expert ou non
+     *
+     * @param int $expertId
+     *
+     * @return bool
+     */
+    public static function isRated(int $expertId): bool
+    {
+        return self::where('expert_id', '=', $expertId)->where('rated_by', '=', auth()->id())->get()->isNotEmpty();
+    }
 }

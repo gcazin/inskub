@@ -25,8 +25,9 @@ class FormationFactory extends Factory
         return [
             'title' => $this->faker->sentence,
             'description' => $this->faker->realText(),
-            'location' => $this->faker->city,
-            'entry_price' => random_int(1100,2000),
+            'location' => $this->faker->address,
+            'entry_price' => $this->faker->numberBetween(1000,2000),
+            'level' => 'Bac +' . $this->faker->numberBetween(1,10),
             'user_id' => User::all()->random()->id
         ];
     }

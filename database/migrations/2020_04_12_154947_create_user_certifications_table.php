@@ -21,10 +21,8 @@ class CreateUserCertificationsTable extends Migration
             $table->year('finish_date');
             $table->longText('description')->nullable();
             $table->string('media')->nullable();
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

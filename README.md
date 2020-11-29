@@ -62,4 +62,4 @@ Attributs : Create, view, update, delete. L'astérix permet d'avoir la possibili
 
 ## License
 
-Ce projet n'a pas pour but d'être open-source, seules des fonctionnalités peuvent être extraite et mise sous forme de package pour mettre une ré-utilisation par un tiers.
+Ce projet n'a pas pour but d'être open-source, seules des fonctionnalités peuvent être extraite et mise sous forme de package pour permettre une ré-utilisation par un tiers.

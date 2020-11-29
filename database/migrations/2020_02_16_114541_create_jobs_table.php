@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateJobsTable extends Migration
 {
@@ -20,12 +20,9 @@ class CreateJobsTable extends Migration
             $table->integer('hours')->nullable();
             $table->integer('salary')->nullable();
 
-            $table->unsignedBigInteger('type_id');
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('type_id')->constrained('job_type')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('type_id')->references('id')->on('jobs_type');
         });
     }
 

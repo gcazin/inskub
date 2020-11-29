@@ -14,8 +14,10 @@ class LoginControllerTest extends TestCase
 
     /**
      * On peut accéder au formulaire d'inscription
+     *
+     * @test
      */
-    public function test_can_view_login_form(): void
+    public function it_can_view_login_form(): void
     {
         $response = $this->get(route('register'));
 
@@ -24,8 +26,10 @@ class LoginControllerTest extends TestCase
 
     /**
      * On est redirigé si on est connecté
+     *
+     * @test
      */
-    public function test_cant_view_login_form_if_user_is_logged(): void
+    public function it_cant_view_login_form_if_user_is_logged(): void
     {
         $user = User::factory()->create();
 
@@ -37,9 +41,11 @@ class LoginControllerTest extends TestCase
     /**
      * Un utilisateur peut se connecter
      *
+     * @test
+     *
      * @return void
      */
-    public function test_can_login(): void
+    public function it_can_login(): void
     {
         $user = User::factory()->create([
             'password' => Hash::make($password = Str::random(10))
@@ -60,9 +66,11 @@ class LoginControllerTest extends TestCase
     /**
      * Un utilisateur peut se connecter
      *
+     * @test
+     *
      * @return void
      */
-    public function test_cant_login_with_wrong_credentials(): void
+    public function it_cant_login_with_wrong_credentials(): void
     {
         $user = User::factory()->create([
             'password' => Hash::make(Str::random(10))

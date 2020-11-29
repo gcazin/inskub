@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Formation;
 use App\Http\Controllers\Controller;
 use App\Models\Formation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class FormationController extends Controller {
     /**
@@ -21,7 +20,7 @@ class FormationController extends Controller {
 
     public function index()
     {
-        $formations = DB::table('formations')->orderByDesc('created_at')->simplePaginate(10);
+        $formations = Formation::all()->sortByDesc('created_at')->paginate(5);
         return view('formation.index', compact('formations'));
     }
 
@@ -47,6 +46,9 @@ class FormationController extends Controller {
     public function show($id)
     {
         $formation = $this->formation::find($id);
-        return view('formation.show', compact('formation'));
+
+        $view = view('formation.show', compact('formation'))->render();
+
+        return response()->json(['html' => $view]);
     }
 }

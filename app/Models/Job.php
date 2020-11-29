@@ -6,9 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Job extends Model
 {
-    public function types()
+    public function user()
     {
-        return $this->hasOne(Job_type::class);
+        return $this->belongsTo(User::class);
     }
 
+    public function types()
+    {
+        return $this->belongsTo(JobType::class);
+    }
 }

@@ -18,12 +18,9 @@ class CreateNotesTable extends Migration
             $table->string('title');
             $table->longText('description');
 
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('project_id');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('project_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->foreign('project_id')->references('id')->on('projects')->cascadeOnDelete();
         });
     }
 

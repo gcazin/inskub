@@ -1,7 +1,11 @@
 <div class="px-3 py-4 shadow-sm rounded-lg position-relative bg-white">
     <div class="row align-items-center">
         <div class="col col-lg-1 text-center">
-            <ion-icon class="h2 mb-0 text-primary icon-container-primary" name="folder-open-outline"></ion-icon>
+            @if($project->type === $project::EXPERTISE)
+                <ion-icon class="h2 mb-0 text-info icon-container-info" name="briefcase-outline"></ion-icon>
+            @else
+                <ion-icon class="h2 mb-0 text-primary icon-container-primary" name="folder-open-outline"></ion-icon>
+            @endif
         </div>
         <div class="col col-lg-5 h5 text-secondary">
             {{ $project->title }}

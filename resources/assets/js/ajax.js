@@ -175,3 +175,42 @@ export function searchUsers(url, id) {
         });
     });
 }
+
+/**
+ * Permet d'afficher au clic l'item correspondant
+ * Utilisé pour les formations et les emplois
+ *
+ * @param model Url de l'action show du model correspondant (ex: formation)
+ */
+export function showItem(model) {
+    let imgContainer = $('.img-container')
+
+    let showItem = $(`#show-${model}`).show()
+    const show = (id) => {
+        $(showItem).show()
+        $.ajax({
+            type : 'GET',
+            url: `${model}/${id}`,
+            success : function(data) {
+                $(showItem).html(data.html)
+                console.log('succès')
+            },
+            /*complete: function() {
+                $(button).show()
+                $(loading).hide()
+            },*/
+            error: function(data){
+                console.log('Erreur: ' + data.html)
+            },
+        })
+    }
+
+    $(showItem).hide()
+    let items = $(`.${model}-item`)
+    $(items).each((key, value) => {
+        $(value).click(function() {
+            show(value.id)
+            $(imgContainer).addClass('mr-5')
+        });
+    })
+}

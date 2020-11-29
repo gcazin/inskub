@@ -37,6 +37,7 @@ class SetupInskubCommand extends Command
      */
     public function handle()
     {
+        $this->line('');
         $this->info('Commencement de la génération...');
 
         // Rôles et permissions
@@ -48,8 +49,8 @@ class SetupInskubCommand extends Command
         // Compétences pour les utilisateurs
         $this->call('user-skills:create');
 
-        // Département
-        $this->call('departments:create');
+        // Département et villes
+        $this->call('localisation:create');
 
         // Compagnies
         $this->call('companies:create');
@@ -58,7 +59,9 @@ class SetupInskubCommand extends Command
             $this->call('super-admin:create');
         }
 
+        $this->line('');
         $this->info('Génération terminée');
+        $this->line('');
 
         return 0;
     }

@@ -16,18 +16,15 @@ class CreateRequestExpertisesTable extends Migration
         Schema::create('request_expertises', function (Blueprint $table) {
             $table->id();
             $table->json('description');
-            $table->unsignedBigInteger('sender_id');
-            $table->unsignedBigInteger('expert_id');
-            $table->unsignedBigInteger('project_id')->nullable();
-            $table->unsignedBigInteger('conversation_id')->nullable();
+            $table->foreignId('sender_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('expert_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('project_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('conversation_id')->nullable()->constrained('chat_conversations')->cascadeOnDelete();
+            $table->string('further_information')->nullable();
+            $table->string('detailed_description')->nullable();
             $table->string('refuse_reason')->nullable();
             $table->boolean('status')->default(0);
             $table->timestamps();
-
-            $table->foreign('sender_id')->references('id')->on('users');
-            $table->foreign('expert_id')->references('id')->on('users');
-            $table->foreign('project_id')->references('id')->on('projects');
-            $table->foreign('conversation_id')->references('id')->on('chat_conversations');
         });
     }
 
@@ -38,6 +35,6 @@ class CreateRequestExpertisesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('request_expertise');
+        Schema::dropIfExists('request_expertises');
     }
 }

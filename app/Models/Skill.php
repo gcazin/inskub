@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Skill extends Model
 {
     protected $fillable = [
-        'name', 'description'
+        'title'
     ];
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

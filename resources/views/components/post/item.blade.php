@@ -63,7 +63,9 @@ $extension = File::extension($post->media)
             </p>
             @if($post->media !== null)
                 @if($extension === 'jpeg' || $extension === 'jpg' || $extension === 'png' || $extension ===  'gif')
-                    <img class="w-25 rounded-lg shadow-sm border border-light my-2 images" src="{{ asset('storage/' . $post->media) }}" alt="{{ $post->id }}" data-lightbox="image-{{ $post->id }}">
+                    <div class="text-center col col-lg-6 bg-light rounded-lg">
+                        <img class="w-100 rounded-lg shadow-sm border border-light my-2 images" src="{{ asset('storage/' . $post->media) }}" alt="{{ $post->id }}" data-lightbox="image-{{ $post->id }}">
+                    </div>
                 @else
                     <div class="mb-3 rounded-lg border border-primary px-3 py-2">
                         <a href="{{ \Illuminate\Support\Facades\Storage::url($post->media) }}">

@@ -1,4 +1,4 @@
-<x-page>
+<x-page title='Projet "{{ $project->title }}"'>
     <x-slot name="head">
         <link rel="stylesheet" href="https://unpkg.com/@fullcalendar/core@4.4.0/main.min.css">
         <link rel="stylesheet" href="https://unpkg.com/@fullcalendar/daygrid@4.4.0/main.min.css">
@@ -27,232 +27,6 @@
                 display: none !important;
             }
         </style>
-        <style>
-            .primary-color, ul.stepper li.active a .circle, ul.stepper li.completed a .circle {
-                background-color: #4285f4 !important;
-            }
-            ul.stepper {
-                overflow-x: hidden;
-                overflow-y: auto;
-                counter-reset: section;
-                margin: 0;
-                padding: 0;
-            }
-
-            ul.stepper li a {
-                padding-top: 0.5rem;
-                padding-bottom: 0.5rem;
-                text-align: center;
-                text-decoration: none;
-            }
-
-            ul.stepper li a .circle {
-                width: 1.75rem;
-                height: 1.75rem;
-                line-height: 1.7rem;
-                color: #fff;
-                text-align: center;
-                background: rgba(0,0,0,0.38);
-                border-radius: 50%;
-                display: block;
-                margin: 0 auto;
-            }
-
-            ul.stepper li a .label {
-                display: inline-block;
-                color: rgba(0,0,0,0.38)
-            }
-
-            ul.stepper li.active a .label,ul.stepper li.completed a .label {
-                font-weight: 600;
-                color: rgba(0,0,0,0.87)
-            }
-
-            .stepper-horizontal {
-                position: relative;
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-box-pack: justify;
-                -ms-flex-pack: justify;
-                justify-content: space-between;
-            }
-
-            .stepper-horizontal li {
-                position: relative;
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-box-flex: 1;
-                -ms-flex: 1;
-                flex: 1;
-                -webkit-box-align: center;
-                -ms-flex-align: center;
-                align-items: center;
-                -webkit-transition: .5s;
-                transition: .5s
-            }
-
-            .stepper-horizontal li a .label {
-                margin-top: .63rem
-            }
-
-            .stepper-horizontal li:not(:last-child):after {
-                position: relative;
-                -webkit-box-flex: 1;
-                -ms-flex: 1;
-                flex: 1;
-                height: 1px;
-                margin: .5rem 0 0 0;
-                content: "";
-                background-color: rgba(0,0,0,0.1)
-            }
-
-            .stepper-horizontal li:not(:first-child):before {
-                position: relative;
-                -webkit-box-flex: 1;
-                -ms-flex: 1;
-                flex: 1;
-                height: 1px;
-                margin: .5rem 0 0 0;
-                content: "";
-                background-color: rgba(0,0,0,0.1)
-            }
-
-            @media(max-width: 47.9375rem) {
-                .stepper-horizontal {
-                    -webkit-box-orient:vertical;
-                    -webkit-box-direction: normal;
-                    -ms-flex-direction: column;
-                    flex-direction: column
-                }
-
-                .stepper-horizontal li {
-                    -webkit-box-orient: vertical;
-                    -webkit-box-direction: normal;
-                    -ms-flex-direction: column;
-                    flex-direction: column;
-                    -webkit-box-align: start;
-                    -ms-flex-align: start;
-                    align-items: flex-start
-                }
-
-                .stepper-horizontal li a .label {
-                    -webkit-box-orient: vertical;
-                    -webkit-box-direction: normal;
-                    -ms-flex-flow: column nowrap;
-                    flex-flow: column nowrap;
-                    -webkit-box-ordinal-group: 3;
-                    -ms-flex-order: 2;
-                    order: 2;
-                    margin-top: .2rem
-                }
-
-                .stepper-horizontal li:not(:last-child):after {
-                    position: absolute;
-                    top: 3.75rem;
-                    left: 2.19rem;
-                    width: 1px;
-                    height: calc(100% - 40px);
-                    content: ""
-                }
-            }
-
-            .stepper-horizontal>li:not(:last-of-type) {
-                margin-bottom: 0 !important
-            }
-
-            .stepper-vertical {
-                position: relative;
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-box-orient: vertical;
-                -webkit-box-direction: normal;
-                -ms-flex-direction: column;
-                flex-direction: column;
-                -webkit-box-pack: justify;
-                -ms-flex-pack: justify;
-                justify-content: space-between
-            }
-
-            .stepper-vertical li {
-                position: relative;
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-box-flex: 1;
-                -ms-flex: 1;
-                flex: 1;
-                -webkit-box-orient: vertical;
-                -webkit-box-direction: normal;
-                -ms-flex-direction: column;
-                flex-direction: column;
-                -webkit-box-align: start;
-                -ms-flex-align: start;
-                align-items: flex-start
-            }
-
-            .stepper-vertical li a {
-                position: relative;
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -ms-flex-item-align: start;
-                align-self: flex-start
-            }
-
-            .stepper-vertical li a .circle {
-                -webkit-box-ordinal-group: 2;
-                -ms-flex-order: 1;
-                order: 1
-            }
-
-            .stepper-vertical li a .label {
-                -webkit-box-orient: vertical;
-                -webkit-box-direction: normal;
-                -ms-flex-flow: column nowrap;
-                flex-flow: column nowrap;
-                -webkit-box-ordinal-group: 3;
-                -ms-flex-order: 2;
-                order: 2;
-                margin-top: .2rem
-            }
-
-            .stepper-vertical li.completed a .label {
-                font-weight: 500
-            }
-
-            .stepper-vertical li .step-content {
-                display: block;
-                padding: .94rem;
-                margin-top: 0;
-                margin-left: 3.13rem
-            }
-
-            .stepper-vertical li .step-content p {
-                font-size: .88rem
-            }
-
-            .stepper-vertical li:not(:last-child):after {
-                position: absolute;
-                top: 3.44rem;
-                left: 2.19rem;
-                width: 1px;
-                height: calc(100% - 40px);
-                content: "";
-                background-color: rgba(0,0,0,0.1)
-            }
-
-            .spin {
-                -webkit-animation:spin 4s linear infinite;
-                -moz-animation:spin 4s linear infinite;
-                animation:spin 4s linear infinite;
-            }
-            @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-            @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-            @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
-        </style>
     </x-slot>
 
     <x-header>
@@ -265,81 +39,59 @@
 
     <x-container>
 
-        @if($project->type === 1 && $project->finish === 1)
-            @unlessrole('intermediate')
-            <x-section>
-                <div class="">
-                    <div class="text-center">
-                        <h4>Donner un avis sur l'expert</h4>
-                    </div>
-                    @if(\App\Models\Rating::where('expert_id', '=', $project->user_id)->where('rated_by', '=', auth()->id())->count() === 0)
-                        <x-form.item :action="route('expert.rating', $project->user_id)">
-                            <div class="form-group">
-                                <input id="rating" name="rating" class="kv-ltr-theme-fas-star rating-loading" value="1" dir="ltr" data-size="md">
+        @if($project->type === 1 && $project->finish === 1 && $rating::isRated($project->user_id) === false)
+            @role('intermediate')
+            <div class="modal" id="rate-expert" data-backdrop="static" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Expertise terminée</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>Ci-dessous un aperçu du compte-rendu fourni par l'expert. Si vous êtes satisfait, vous devrez noter l'expert et ainsi bénéficier du rapport complet de l'expertise, au contraire, si il n'est pas conforme à vos attentes, vous pouvez faire une ré-évaluation de votre expertise.</p>
+
+                            <div class="text-center">
+                                <img src="{{ asset('storage/expertise/preview/'.$filename) }}" width="50%" alt="preview">
                             </div>
-                            <x-form.input label="Description (optionnel)" name="description" placeholder="Expertise..."></x-form.input>
-                            <x-form.submit>Valider</x-form.submit>
-                        </x-form.item>
-                    @else
-                        <div class="mt-3">
-                            <x-element.alert type="success">
-                                <x-slot name="title">Merci d'avoir donné un avis sur cette expert !</x-slot>
-                            </x-element.alert>
-                        </div>
-                    @endif
-                </div>
-            </x-section>
-        @else
-            <div class="mt-3">
-                <x-element.alert type="success">
-                    <x-slot name="title">Expertise terminée</x-slot>
-                </x-element.alert>
-            </div>
-            @endunlessrole
-        @endif
 
-    <!-- Stepper de l'expertise -->
-        @if($project->type === 1)
-            <x-section class="mb-3">
-                <div class="steps">
-                    <!-- Horizontal Steppers -->
-                    <div class="row">
-                        <div class="col-md-12">
+                            <div class="mt-3">
+                                <div class="row">
+                                    <div class="col"><span>Ce document est-il conforme à vos attentes ?</span></div>
+                                    <div class="col text-right">
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" class="custom-control-input" name="check-doc" id="check-doc-yes">
+                                            <label class="custom-control-label" for="check-doc-yes">Oui</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" class="custom-control-input" name="check-doc" id="check-doc-no">
+                                            <label class="custom-control-label" for="check-doc-no">Non</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                            <!-- Stepers Wrapper -->
-                            <ul class="stepper stepper-horizontal">
+                            <div id="form-rating" class="mt-3">
+                                <x-form.item :action="route('expert.rating', $project->user_id)">
+                                    <div class="form-group">
+                                        <input id="rating" name="rating" class="kv-ltr-theme-fas-star rating-loading" value="1" dir="ltr" data-size="md">
+                                    </div>
+                                    <x-form.input label="Description (optionnel)" name="description" placeholder="Expertise..."></x-form.input>
+                                    <x-form.submit>Valider</x-form.submit>
+                                </x-form.item>
+                            </div>
 
-                                <!-- First Step -->
-                                <li class="completed">
-                                    <a href="#!">
-                                        <span class="circle"><ion-icon class="align-text-top h5" name="checkmark-outline"></ion-icon></span>
-                                        <span class="label">Demande d'expertise</span>
-                                    </a>
-                                </li>
-
-                                <!-- Second Step -->
-                                <li class="{{ $project->finish === 1 ? 'completed' : 'active' }}">
-                                    <a href="#!">
-                                        <span class="circle">{!! $project->finish === 1 ? '<ion-icon class="align-text-top h5" name="checkmark-outline"></ion-icon>' : '<ion-icon class="spin align-text-top h5" name="sync-outline"></ion-icon>' !!}</span>
-                                        <span class="label">Expertise en cours</span>
-                                    </a>
-                                </li>
-
-                                <!-- Third Step -->
-                                <li class="{{ $project->finish === 1 ? 'completed' : 'warning' }}">
-                                    <a href="#!">
-                                        <span class="circle"><ion-icon class="align-text-top h5" name="checkmark-outline"></ion-icon></span>
-                                        <span class="label">Expertise terminée</span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                            <!-- /.Stepers Wrapper -->
-
+                            <div id="form-renew" class="mt-3">
+                                <x-form.item :action="route('expert.renew', $project->id)">
+                                    <div class="text-center">
+                                        <button onclick="confirm('Cette action est définitive, êtes-vous sûr?')" type="submit" class="btn btn-warning">Ré-évaluer l'expertise</button>
+                                    </div>
+                                </x-form.item>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </x-section>
+            </div>
+            @endrole
         @endif
 
         <div class="row">
@@ -489,12 +241,23 @@
                                     <div class="col">
                                         <a class="btn btn-outline-primary btn-block" href="{{ route('chat.show', $conversation) }}">Conversation</a>
                                     </div>
-                                    @role('intermediate')
+                                    @role('expert')
                                     <div class="col">
                                         @if($project->type === 1 && $project->finish === 0)
-                                            <x-form.item :action="route('expert.finish', $project->id)">
-                                                <button type="submit" class="btn btn-danger btn-block">Finir l'expertise</button>
-                                            </x-form.item>
+                                            <button type="button" class="btn btn-warning btn-block" data-toggle="modal" data-target=".finish-expertise">
+                                                Finir l'expertise
+                                            </button>
+
+                                            <x-element.modal title="Finir l'expertise" name="finish-expertise">
+                                                <x-form.item :action="route('expert.finish', $project->id)" enctype>
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" accept="application/pdf" name="media" id="media">
+                                                        <label class="custom-file-label" for="media">Mettre en ligne le rapport d'expertise</label>
+                                                    </div>
+                                                    <hr>
+                                                    <x-form.submit>Finir l'expertise</x-form.submit>
+                                                </x-form.item>
+                                            </x-element.modal>
                                         @endif
                                     </div>
                                     @endrole
@@ -504,8 +267,57 @@
                     </div>
                 </x-section>
             </div>
-
         </div>
+
+        <!-- Stepper de l'expertise -->
+        @if($project->type === 1)
+            <x-section class="mb-3">
+                <div class="steps">
+                    <!-- Horizontal Steppers -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- Stepers Wrapper -->
+                            <ul class="stepper stepper-horizontal">
+
+                                <!-- First Step -->
+                                <li class="completed">
+                                    <a href="#!">
+                                        <span class="circle"><ion-icon class="align-text-top h5" name="checkmark-outline"></ion-icon></span>
+                                        <span class="label">Demande d'expertise</span>
+                                    </a>
+                                </li>
+
+                                <!-- Second Step -->
+                                <li class="{{ $project->finish === 1 ? 'completed' : 'active' }}">
+                                    <a href="#!">
+                                        <span class="circle">{!! $project->finish === 1 ? '<ion-icon class="align-text-top h5" name="checkmark-outline"></ion-icon>' : '<ion-icon class="spin align-text-top h5" name="sync-outline"></ion-icon>' !!}</span>
+                                        <span class="label">Expertise en cours</span>
+                                    </a>
+                                </li>
+
+                                <!-- Third Step -->
+                                <li class="{{ $project->finish === 1 ? 'completed' : 'warning' }}">
+                                    <a href="#!">
+                                        <span class="circle"><ion-icon class="align-text-top h5" name="checkmark-outline"></ion-icon></span>
+                                        <span class="label">Expertise terminée</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                            <!-- /.Stepers Wrapper -->
+                        </div>
+                    </div>
+                </div>
+
+                @if($rating::isRated($project->user_id))
+                    <hr>
+                    <div class="mt-3">
+                        <p>Rapport d'expertise</p>
+                        <a class="btn btn-primary" href="{{ asset('storage/' . \App\Models\ReportExpertise::where('project_id', $project->id)->first()->media) }}">Télécharger</a>
+                    </div>
+                @endif
+            </x-section>
+        @endif
 
         <x-element.modal title="Création d'une nouvelle tâche" name="new-todo">
             <x-form.item :action="route('project.todo.create', $project->id)">
@@ -555,41 +367,6 @@
 
         <x-post.list :model="$posts"></x-post.list>
     </x-container>
-
-    {{--<!-- Modal de création d'une tâche -->
-    <div class="modal fade new-todo" tabindex="-1" role="dialog" aria-labelledby="new-todo" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Création d'une nouvelle note</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <x-form :action="route('project.note.create', $project->id)">
-                        <div class="modal-body">
-                            <x-input label="Titre" name="title" placeholder="Ma super note" required></x-input>
-                            <input type="hidden" name="project_id" value="{{ $project->id }}">
-                            <x-textarea label="Description" name="description" rows="3" required></x-textarea>
-
-                            <div class="modal-footer">
-                                <div class="container-fluid px-0">
-                                    <div class="row">
-                                        <div class="col">
-                                            <button type="button" class="btn btn-light btn-block" data-dismiss="modal">Fermer</button>
-                                        </div>
-                                        <div class="col">
-                                            <button type="submit" class="btn btn-primary btn-block">Créer la note</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                    </x-form>
-                </div>
-            </div>
-        </div>
-    </div>--}}
 
     <x-slot name="script">
         @if($project->finish === 1)
@@ -769,6 +546,26 @@
                     });
                 });
             });
+        </script>
+        <script>
+            $('#rate-expert').modal('show')
+        </script>
+        <script type="text/javascript">
+            let check = $('input[name="check-doc"]')
+            let formRating = $('#form-rating')
+            let formRenew = $('#form-renew')
+
+            $(formRating).hide()
+            $(formRenew).hide()
+            $(check).change(function() {
+                if($('#check-doc-yes').is(':checked')) {
+                    $(formRating).show()
+                    $(formRenew).hide()
+                } else if($('#check-doc-no').is(':checked')) {
+                    $(formRenew).show()
+                    $(formRating).hide()
+                }
+            })
         </script>
     </x-slot>
 </x-page>

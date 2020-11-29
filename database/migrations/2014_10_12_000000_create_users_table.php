@@ -21,9 +21,15 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('avatar')->default('user.jpg');
-            $table->integer('department_id')->nullable();
-            $table->integer('company_id')->nullable();
             $table->longText('about')->nullable();
+
+            $table->integer('department_id')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->string('city_id')->nullable();
+            $table->integer('perimeter')->nullable();
+            $table->integer('company_id')->nullable();
+
+            $table->integer('siret_number')->nullable();
 
             $table->string('mollie_customer_id')->nullable();
             $table->string('mollie_mandate_id')->nullable();
@@ -44,6 +50,7 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('users');
     }
 }

@@ -85,11 +85,11 @@ class User extends \Illuminate\Foundation\Auth\User
     /**
      * Un utilisateur peut avoir plusieurs compétences
      *
-     * @return HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function skills()
     {
-        return $this->hasMany(UserSkillPivot::class, 'id');
+        return $this->belongsToMany(Skill::class);
     }
 
     /**

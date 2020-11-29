@@ -25,7 +25,7 @@ class StudentFactory extends Factory
     {
         $schoolId = User::role('school')->get()->random()->id;
         return [
-            'student_id' => User::factory()->create()->assignRole('student'),
+            'student_id' => User::factory()->create()->assignRole('person'),
             'classroom_id' => Classroom::all()->where('school_id', $schoolId)->random()->id,
             'school_id' => $schoolId
         ];

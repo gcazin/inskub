@@ -237,7 +237,7 @@
                 <div class="form-group">
                     <label>Domaine de compétence</label>
                     <select class="skills form-control" id="skills" name="skills[]" multiple style="width: 100%">
-                        @foreach(\App\Models\UserSkill::all() as $skill)
+                        @foreach(\App\Models\Skill::all() as $skill)
                             <option value="{{ $skill->id }}">{{ ucfirst($skill->title) }}</option>
                         @endforeach
                     </select>

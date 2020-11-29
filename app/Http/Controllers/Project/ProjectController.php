@@ -9,12 +9,15 @@ use App\Models\Classroom;
 use App\Models\Professor;
 use App\Models\Project;
 use App\Models\ProjectUser;
+use App\Models\Rating;
+use App\Models\ReportExpertise;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Musonza\Chat\Chat;
 use Musonza\Chat\Facades\ChatFacade;
 use Musonza\Chat\Models\Conversation;
+use Spatie\PdfToImage\Pdf;
 
 class ProjectController extends Controller
 {
@@ -86,11 +89,24 @@ class ProjectController extends Controller
             $conversation = Conversation::where('project_id', $project->id)->get()[0]->id;
         }
 
-        /*$user->newSubscription('plans', 'main')->create();
+        $rating = Rating::class;
+        $filename = '';
 
-        dd(User::find(10)->subscribed('plans', 'main'));*/
+        if($rating::isRated($project->user_id) === false && $project->finish === 1) {
+            $file = ReportExpertise::where('project_id', $project->id)->first()->media;
+            $pdf = new Pdf(public_path('storage/'. $file));
 
-        return view('project.show', compact('project', 'posts', 'conversation'));
+            $filename = public_path('storage/expertise/preview/'.explode('.', explode('/', $file)[1])[0].'.png');
+
+            if(! file_exists($filename)) {
+                $pdf->setOutputFormat('png')
+                    ->saveImage('preview/'.explode('.', explode('/', $file)[1])[0]);
+            }
+
+            $filename = explode('.', explode('/', $file)[1])[0].'.png';
+        }
+
+        return view('project.show', compact('project', 'posts', 'conversation', 'rating', 'filename'));
     }
 
     public function edit($id)
@@ -156,6 +172,8 @@ class ProjectController extends Controller
                 $chat->save();
             }
         }
+
+        flash()->success('Le projet à bien été crée');
 
         return redirect()->route('project.index')->with('project-created', 'Projet crée avec succès');
     }

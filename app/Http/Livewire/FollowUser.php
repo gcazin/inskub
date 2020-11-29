@@ -19,8 +19,6 @@ class FollowUser extends Component
         $user = User::find(auth()->user()->id);
 
         $user->toggleFollow($this->member);
-
-        session()->flash('follow', 'Vous suivez maintenant ' . $user->name);
     }
 
     public function render()

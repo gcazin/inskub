@@ -5,18 +5,23 @@ namespace App\Http\Controllers\Job;
 use App\Http\Controllers\Controller;
 use App\Models\Job;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class JobController extends Controller
 {
-    public function __construct()
+    /**
+     * @var Job
+     */
+    private Job $job;
+
+    public function __construct(Job $job)
     {
         $this->middleware('auth');
+        $this->job = $job;
     }
 
     public function index()
     {
-        $jobs = DB::table('jobs')->orderByDesc('created_at')->simplePaginate(10);
+        $jobs = Job::all()->sortByDesc('created_at')->paginate(10);
 
         return view('job.index', compact('jobs'));
     }
@@ -28,8 +33,11 @@ class JobController extends Controller
 
     public function show($id)
     {
-        $job = Job::find($id);
-        return view('job.show', compact('job'));
+        $job = $this->job::find($id);
+
+        $view = view('job.show', compact('job'))->render();
+
+        return response()->json(['html' => $view]);
     }
 
     public function store(Request $request)

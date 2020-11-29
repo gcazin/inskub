@@ -22,10 +22,8 @@ class CreateFormationsTable extends Migration
             $table->string('level')->nullable();
             //TODO: Se baser sur les formations de l'IFPASS
 
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

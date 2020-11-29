@@ -15,14 +15,10 @@ class CreateStudentsTable extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('student_id');
-            $table->unsignedBigInteger('classroom_id');
-            $table->unsignedBigInteger('school_id');
+            $table->foreignId('student_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('classroom_id')->constrained('classrooms')->cascadeOnDelete();
+            $table->foreignId('school_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('student_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->foreign('classroom_id')->references('id')->on('classrooms')->cascadeOnDelete();
-            $table->foreign('school_id')->references('id')->on('users')->cascadeOnDelete();
         });
     }
 

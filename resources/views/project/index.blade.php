@@ -9,15 +9,15 @@
         <x-slot name="description">
             <div class="container mx-0 px-0">
                 <div class="row no-gutters">
-                    <div class="col-2">
+                    <div class="col-4 col-lg-2">
                         <p class="h5 text-white-50">Total</p>
                         <p class="h1 text-white">{{ $projects->count() }}</p>
                     </div>
-                    <div class="col-2">
+                    <div class="col-4 col-lg-2">
                         <p class="h5 text-white-50">En cours</p>
                         <p class="h1 text-white">{{ $projects->where('finish', '0')->count() }}</p>
                     </div>
-                    <div class="col">
+                    <div class="col-4 col">
                         <p class="h5 text-white-50">Terminés</p>
                         <p class="h1 text-white">{{ $projects->where('finish', 1)->count() }}</p>
                     </div>
@@ -27,7 +27,7 @@
 
         <x-slot name="content">
             <div class="row">
-                <div class="col-10">
+                <div class="col-lg-10 mb-3 mb-lg-0">
                     <input id="search-users" type="search" placeholder="Rechercher parmis les projets..." class="form-control" name="search">
                 </div>
                 <div class="col text-center">

@@ -13,9 +13,6 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Mail;
 use Musonza\Chat\Facades\ChatFacade;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\PermissionRegistrar;
 use Tests\TestCase;
 
 class ProjectControllerTest extends TestCase
@@ -23,36 +20,13 @@ class ProjectControllerTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     /**
-     * @var Role
-     */
-    public Role $testIntermediateRole;
-
-    public Role $testProfessorRole;
-
-    public Role $testSchoolRole;
-
-    public Role $testStudentRole;
-
-    public Permission $testPermissionClassroom;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->testIntermediateRole = Role::create(['name' => 'intermediate']);
-        $this->testSchoolRole = Role::create(['name' => 'school']);
-        $this->testStudentRole = Role::create(['name' => 'student']);
-        $this->testProfessorRole = Role::create(['name' => 'other']);
-        $this->testPermissionClassroom = Permission::create(['name' => 'classroom.*']);
-
-        $this->app->make(PermissionRegistrar::class)->registerPermissions();
-    }
-
-    /**
      * Un utilisateur peut voir la page projet
+     *
+     * @test
      *
      * @return void
      */
-    public function test_can_view_projects_index()
+    public function it_can_view_projects_index()
     {
         $user = User::factory()->create();
 
@@ -64,9 +38,11 @@ class ProjectControllerTest extends TestCase
     /**
      * Un utilisateur peut voir la page projet
      *
+     * @test
+     *
      * @return void
      */
-    public function test_cant_view_projects_index_is_user_is_not_logged()
+    public function it_cant_view_projects_index_is_user_is_not_logged()
     {
         $response = $this->get(route('project.index'));
 
@@ -78,9 +54,11 @@ class ProjectControllerTest extends TestCase
     /**
      * Un utilisateur peut voir le détail d'un projet
      *
+     * @test
+     *
      * @return void
      */
-    public function test_can_view_project_index()
+    public function it_can_view_project_index()
     {
         $user = User::factory()->create();
         $project = factory(Project::class)->create([
@@ -96,9 +74,11 @@ class ProjectControllerTest extends TestCase
     /**
      * Un utilisateur qui ne participe pas au projet ne peut pas le voir
      *
+     * @test
+     *
      * @return void
      */
-    public function test_cant_view_project_index_where_user_is_not_participant()
+    public function it_cant_view_project_index_where_user_is_not_participant()
     {
         $user = User::factory()->create();
         $participant = User::factory()->create();
@@ -107,9 +87,8 @@ class ProjectControllerTest extends TestCase
 
         $project->addParticipant($participant->id);
 
-
         $this
-            ->actingAs($user)
+            ->be($user)
             ->get(route('project.show', $project->id))
             ->assertStatus(403);
     }
@@ -117,12 +96,14 @@ class ProjectControllerTest extends TestCase
     /**
      * Un utilisateur qui ne participe pas au projet ne peut pas le voir
      *
+     * @test
+     *
      * @return void
      */
-    public function test_can_create_professionnel_project_without_participants()
+    public function it_can_create_professionnel_project_without_participants()
     {
         $user = User::factory()->create();
-        $user->assignRole($this->testIntermediateRole);
+        $user->assignRole('intermediate');
 
         $response = $this->actingAs($user)->post(route('project.store'), [
             'title' => $this->faker->title,
@@ -140,12 +121,14 @@ class ProjectControllerTest extends TestCase
     /**
      * Un utilisateur peut créer un projet avec des participants
      *
+     * @test
+     *
      * @return void
      */
-    public function test_can_create_professionnel_project_with_participants()
+    public function it_can_create_professionnel_project_with_participants()
     {
         $user = User::factory()->create();
-        $user->assignRole($this->testIntermediateRole);
+        $user->assignRole('intermediate');
 
         $participants = User::factory()->count(3)->create()->map->only('id');
 
@@ -166,9 +149,11 @@ class ProjectControllerTest extends TestCase
     /**
      * Un professeur peut créer une salle de classe avec des participants
      *
+     * @test
+     *
      * @return void
      */
-    public function test_can_create_classroom_project_when_user_is_professor()
+    public function it_can_create_classroom_project_when_user_is_professor()
     {
         Mail::fake();
         Mail::assertNothingSent();
@@ -206,13 +191,16 @@ class ProjectControllerTest extends TestCase
             ->assertEquals(5, Project::find(1)->participants->count());
     }
 
-    public function test_cant_create_classroom_project_when_user_is_not_a_professor()
+    /**
+     * @test
+     */
+    public function it_cant_create_classroom_project_when_user_is_not_a_professor()
     {
         $user = User::factory()->create();
-        $user->assignRole($this->testIntermediateRole);
+        $user->assignRole('intermediate');
 
         $school = User::factory()->create();
-        $school->assignRole($this->testSchoolRole);
+        $school->assignRole('school');
 
         $classroom = Classroom::factory()->create();
         Student::factory()->count(5)->create();

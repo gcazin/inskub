@@ -17,14 +17,9 @@ class CreateRatingsTable extends Migration
             $table->id();
             $table->float('rating');
             $table->longText('description')->nullable();
-
-            $table->unsignedBigInteger('expert_id');
-            $table->unsignedBigInteger('rated_by');
-
+            $table->foreignId('expert_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('rated_by')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('expert_id')->references('id')->on('users');
-            $table->foreign('rated_by')->references('id')->on('users');
         });
     }
 

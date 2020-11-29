@@ -15,12 +15,9 @@ class CreateProfessorsTable extends Migration
     {
         Schema::create('professors', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('professor_id');
-            $table->unsignedBigInteger('school_id');
+            $table->foreignId('professor_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('school_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('professor_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->foreign('school_id')->references('id')->on('users')->cascadeOnDelete();
         });
     }
 

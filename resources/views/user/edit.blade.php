@@ -16,29 +16,12 @@
             <p class="h4">Modifier des éléments de votre profil</p>
             <hr>
             <!-- Message d'alerte -->
-            <div class="row">
-                @if ($message = session()->get('success'))
-                    <x-element.alert type="success">
-                        {{ $message }}
-                    </x-element.alert>
-                @endif
-
-                @if ($errors->any())
-                    <x-element.alert type="danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </x-element.alert>
-                @endif
-            </div>
 
             <!-- Formulaire -->
             <x-form.item :action="route('user.edit', auth()->id())" method="PUT" enctype>
                 <div class="row mb-4">
                     <div class="col-4 text-center">
-                        <img class="rounded-circle" src="{{ auth()->user()->getAvatar($user->id) }}" alt="Avatar">
+                        <img class="rounded-circle w-25" src="{{ auth()->user()->getAvatar($user->id) }}" alt="Avatar">
                     </div>
                     <div class="col">
                         <div class="custom-file">
@@ -54,9 +37,7 @@
                 <x-form.input type="password" label="Confirmation du nouveau mot de passe" name="password_confirmation"></x-form.input>
 
                 <hr>
-                <div class="text-right">
-                    <x-form.submit class="success">Sauvegarder</x-form.submit>
-                </div>
+                <x-form.submit>Sauvegarder</x-form.submit>
             </x-form.item>
         </x-section>
     </x-container>

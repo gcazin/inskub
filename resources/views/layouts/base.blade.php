@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name') }} - @yield('title')</title>
+    <title>@yield('title') - {{ config('app.name') }}</title>
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
@@ -12,9 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        ion-icon {
-            visibility: visible;
-        }
         #particles-js {
             position: absolute;
             left: 0;
@@ -31,9 +28,6 @@
 <body style="background: #81b7ff29">
 
 @include('partials.menu')
-
-@auth
-@endauth
 
 @yield('content')
 @auth
@@ -52,6 +46,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.16/js/bootstrap-select.min.js"></script>
 
 <!-- Script -->
+<script>
+    $('.toast').toast('show')
+</script>
 <script>
     let shareButton = document.querySelectorAll('.share-button');
 

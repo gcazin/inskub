@@ -2,34 +2,25 @@
 
     <x-header>
         <x-slot name="title">Découvrir</x-slot>
-        <x-slot name="subtitle">Espace permettant à quiconque de pouvoir créer et partager ses projets</x-slot>
+        <x-slot name="subtitle">Suivez les personnes qui vous intéressent</x-slot>
         <x-slot name="description">
-            <div class="row">
-                @role('super-admin') <!-- Admin -->
-                <div class="col-lg-2 mb-1 mb-lg-0">
-                    <a class="btn-outline-primary" href="{{route('admin.index')}}">Administration</a>
-                </div>
-                @endrole
-
-                <div class="col-lg-2 mb-1 mb-lg-0">
-                    <a class="btn btn-outline-light" href="{{route('job.index')}}">Trouver un emploi</a>
-                </div>
-                <div class="col-lg-2 mb-1 mb-lg-0">
-                    <a class="btn btn-outline-light" href="{{route('formation.index')}}">Trouver une formation</a>
-                </div>
+            <p class="text-white-50">A la recherche d'une alternance ou d'un emploi ?</p>
+            <div class="row no-gutters">
+                <a class="btn btn-light mr-2" href="{{route('job.index')}}">
+                    <x-element.icon name="business-outline"></x-element.icon>
+                    Espace emplois
+                </a>
+                <a class="btn btn-light mr-2" href="{{route('formation.index')}}">
+                    <x-element.icon name="school-outline"></x-element.icon>
+                    Espace formations
+                </a>
 
                 @role('company') <!-- Entreprise -->
-                <div class="col-lg-2 mb-1 mb-lg-0">
-                    <a class="btn btn-outline-light" href="{{route('job.create')}}">Proposer une offre d'emploi</a>
-                </div>
+                    <a class="btn btn-outline-light mr-2" href="{{route('job.create')}}">Proposer une offre d'emploi</a>
                 @endrole
 
                 @role('school') <!-- Ecole -->
-                <div class="col-lg-2">
-                    <a class="btn btn-outline-light" href="{{route('formation.create')}}">
-                        Proposer une formation
-                    </a>
-                </div>
+                <a class="btn btn-outline-light mr-2" href="{{route('formation.create')}}">Proposer une formation</a>
                 @endrole
             </div>
         </x-slot>
@@ -39,8 +30,16 @@
                     <input id="search-users" type="search" placeholder="Rechercher parmis les utilisateurs..." class="form-control" name="search">
                 </div>
                 <div class="col text-center">
-                    <button type="button" class="btn btn-link">Recherche avancée</button>
+                    <button id="advanced-search" type="button" class="btn btn-link">Recherche avancée</button>
                 </div>
+            </div>
+            <div class="mt-3" id="role-container">
+                <p class="text-muted">Trier par rôle</p>
+                @foreach($roles as $role)
+                        <a href="?role={{ $role->name }}" class="btn btn-outline-primary mr-1">
+                            {{ trans('roles.'.$role->name) }}
+                        </a>
+                @endforeach
             </div>
         </x-slot>
     </x-header>
@@ -88,6 +87,15 @@
                     },
                 })
             }
+        </script>
+        <script type="text/javascript">
+            let button = $('#advanced-search')
+            let container = $('#role-container')
+
+            $(container).hide()
+            $(button).click(function() {
+                $(container).toggle()
+            })
         </script>
         <script type="module">
             import { loadMoreData } from '{{ asset('js/ajax.js') }}'

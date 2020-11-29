@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\VisibilityPost;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 
 class CreateVisibilityPost extends Command
 {
@@ -44,7 +44,7 @@ class CreateVisibilityPost extends Command
             'Privée' => 'Votre publication ne sera visible que par vous'];
 
         foreach($visibilities as $type => $description) {
-            DB::table('visibility_posts')->insert([
+            VisibilityPost::create([
                 'type' => $type,
                 'description' => $description
             ]);

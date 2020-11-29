@@ -1,6 +1,6 @@
 <div class="form-group">
     @if($label ?? null)
-        <label class="{{ ($required ?? false) ? 'label label-required' : 'label' }}" for="{{ $name }}">
+        <label class="text-dark-400 {{ ($required ?? false) ? 'label label-required' : 'label' }}" for="{{ $name }}">
             {{ $label }}
         </label>
     @endif
@@ -32,7 +32,7 @@
         type="{{ $type ?? 'text' }}"
         name="{{ $name }}"
         id="{{ $name }}"
-        class="form-control shadow-sm"
+        class="form-control"
         placeholder="{{ $placeholder ?? '' }}"
         value="{{ old($name, $value ?? '') }}"
         {{ ($required ?? false) ? 'required' : '' }}

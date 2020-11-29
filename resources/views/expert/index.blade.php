@@ -14,8 +14,8 @@
         <x-slot name="content">
                 <div class="form-group">
                     <label>Domaine de compétence</label>
-                    <select class="skills form-control" id="skills" name="skills[]" multiple>
-                        @foreach(\App\Models\UserSkill::all() as $skill)
+                    <select class="skills form-control input" id="skills" name="skills[]" multiple>
+                        @foreach(\App\Models\Skill::all() as $skill)
                             <option value="{{ $skill->id }}">{{ ucfirst($skill->title) }}</option>
                         @endforeach
                     </select>
@@ -23,7 +23,7 @@
 
                 <div class="form-group">
                     <label for="departments">Localisation</label>
-                    <select class="departments form-control" id="departments" name="departments[]" multiple>
+                    <select class="departments form-control input" id="departments" name="departments[]" multiple>
                         @foreach(\App\Models\Department::all()->sortBy('code') as $department)
                             <option value="{{ $department->code }}">{{ $department->code .' - '. $department->name }}</option>
                         @endforeach
@@ -39,7 +39,7 @@
 
                 <div class="form-group" id="companies">
                     <label for="companies">Compagnies</label>
-                    <select name="companies" class="form-control" id="companies">
+                    <select name="companies" class="form-control input" id="companies">
                         @foreach(\App\Models\Company::all() as $company)
                             <option value="{{ $company->id }}">{{ $company->name }}</option>
                         @endforeach
@@ -105,7 +105,7 @@
         </script>
 
         <script type="text/javascript">
-            let input = $('#skills')
+            let input = $('.input')
             let btnSearch = $('#btn-search')
 
             $(input).change(function (e) {
@@ -133,7 +133,6 @@
                                 $('#load-more').html("Voir plus").attr('disabled', false)
                                 $('#experts-list').html(data.html);
                             } else {
-                                console.log('Salut : ' + data.html.length)
                                 let plural = data.html.length <= 1 ? '' : 's'
 
                                 $('#load-more').text(data.html.length + " résultat" + plural).attr('disabled', true)

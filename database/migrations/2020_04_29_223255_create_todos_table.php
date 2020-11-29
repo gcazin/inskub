@@ -19,14 +19,11 @@ class CreateTodosTable extends Migration
             $table->longText('description')->nullable();
             $table->date('deadline');
 
-            $table->unsignedBigInteger('project_id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('assigned_to');
-            $table->timestamps();
+            $table->foreignId('project_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('assigned_to')->constrained('users')->cascadeOnDelete();
 
-            $table->foreign('project_id')->references('id')->on('projects');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('assigned_to')->references('id')->on('users');
+            $table->timestamps();
         });
     }
 

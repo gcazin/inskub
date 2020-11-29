@@ -35,8 +35,8 @@
             <!-- Pending Requests Card Example -->
             <div class="col">
                 <x-section>
-                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Requests</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Requête en cours</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ \Illuminate\Support\Facades\Queue::size() }}</div>
                 </x-section>
             </div>
         </div>

@@ -11,6 +11,9 @@ class Project extends Model
 {
     use HasFactory;
 
+    public const PERSONAL = 0;
+    public const EXPERTISE = 1;
+
     protected $dispatchesEvents = [
         'saved' => ProjectObserver::class
     ];
@@ -94,6 +97,6 @@ class Project extends Model
      */
     public function checkParticipant($id)
     {
-        return $this->participants()->get()->contains('user_id', $id);
+        return $this->participants->contains('id', $id);
     }
 }

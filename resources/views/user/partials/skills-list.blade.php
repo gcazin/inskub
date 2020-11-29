@@ -1,14 +1,9 @@
-@forelse(\App\Models\UserSkillPivot::all()->where('user_id', request()->route('id')) as $experience)
+@forelse($skills as $skill)
     <div class="job-post border rounded p-3 mb-3">
         <div class="row">
             <div class="col">
                 <p class="font-bold ">
-                @forelse($experience->skills as $skill)
-                    {{ ucfirst($skill->title) }}{{ $loop->last ? '' : ','}}
-                @empty
-                    <p class="text-muted font-italic">Aucune compétence renseignée</p>
-                    @endforelse
-                    </p>
+                {{ ucfirst($skill->title) }}{{ $loop->last ? '' : ','}}
             </div>
         </div>
     </div>

@@ -15,12 +15,9 @@ class CreateClassroomProfessorTable extends Migration
     {
         Schema::create('classroom_professor', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('classroom_id');
-            $table->unsignedBigInteger('professor_id');
+            $table->foreignId('classroom_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('professor_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('classroom_id')->references('id')->on('classrooms')->cascadeOnDelete();
-            $table->foreign('professor_id')->references('id')->on('professors')->cascadeOnDelete();
         });
     }
 
@@ -31,6 +28,6 @@ class CreateClassroomProfessorTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('classrooms_professors');
+        Schema::dropIfExists('classroom_professor');
     }
 }

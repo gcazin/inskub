@@ -1,14 +1,11 @@
-@extends('layouts.base', ['full_width' => false])
+<x-page title="Activité">
+    <x-header>
+        <x-slot name="title">Activité</x-slot>
+    </x-header>
 
-@section('title')
-    Activité du compte
-@endsection
-
-@section('content')
     <x-container>
-        <p class="h3 mb-3 text-muted">Tableau de bord</p>
-        <hr>
         <h3 class="mb-4"><ion-icon class="align-text-top text-primary" name="newspaper-outline"></ion-icon> Publications</h3>
+        <hr>
         <div class="row text-center mb-4">
             <div class="col-lg-4">
                 <x-section>
@@ -24,13 +21,14 @@
             </div>
             <div class="col-lg-4">
                 <x-section>
-                    <p class="h2">{{ \App\Reply_post::where('user_id', auth()->id())->count() }}</p>
+                    <p class="h2">{{ \App\Models\Reply_post::where('user_id', auth()->id())->count() }}</p>
                     <span class="text-muted h4">commentaires postés</span>
                 </x-section>
             </div>
         </div>
 
         <h3 class="mb-3"><ion-icon class="align-text-top text-primary" name="list-outline"></ion-icon> Projets</h3>
+        <hr>
         <div class="row text-center mb-3">
             <div class="col-lg-4">
                 <x-section>
@@ -53,4 +51,4 @@
         </div>
 
     </x-container>
-@endsection
+</x-page>

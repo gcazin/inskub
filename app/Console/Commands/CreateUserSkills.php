@@ -58,7 +58,7 @@ class CreateUserSkills extends Command
         ];
 
         foreach($skills as $skill) {
-            DB::table('user_skills')->insert([
+            DB::table('skills')->insert([
                 'title' => $skill
             ]);
         }

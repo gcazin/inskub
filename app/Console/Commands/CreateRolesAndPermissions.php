@@ -40,24 +40,43 @@ class CreateRolesAndPermissions extends Command
     public function handle()
     {
         // Rôles et permissions
-        Permission::create(['name' => '*.*']);
-        Role::create(['name' => 'super-admin']);
-
-        Permission::create(['name' => 'admin.*']);
-        $admin = Role::create(['name' => 'admin']);
-        $admin->givePermissionTo('admin.*');
-
         Permission::create(['name' => 'professor.*']);
         Permission::create(['name' => 'class.*']);
         Permission::create(['name' => 'classroom.*']);
+        Permission::create(['name' => 'admin.*']);
+        Permission::create(['name' => 'sinister.*']);
+        Permission::create(['name' => 'expert.*']);
+
+        Role::create(['name' => 'super-admin']);
+
+        $admin = Role::create(['name' => 'admin']);
+        $admin->givePermissionTo('admin.*');
+
+        /**
+         * Une école à les droits suivants : * sur les professeurs et classes
+         */
         $school = Role::create(['name' => 'school']);
         $school->givePermissionTo('professor.*');
         $school->givePermissionTo('class.*');
 
+        /**
+         * Une compagnie à les droits suivants : Voir les experts
+         */
+        $company = Role::create(['name' => 'company']);
+        $company->givePermissionTo('expert.*');
 
-        Role::create(['name' => 'company']);
-        Role::create(['name' => 'intermediate']);
-        Role::create(['name' => 'student']);
+        /**
+         * Un expert à les droits suivants : * sur les sinistres
+         */
+        $expert = Role::create(['name' => 'expert']);
+        $expert->givePermissionTo('sinister.*');
+
+        /**
+         * Un intermédiaire à les droits suivants : Voir les experts
+         */
+        $intermediate = Role::create(['name' => 'intermediate']);
+        $intermediate->givePermissionTo('expert.*');
+
         Role::create(['name' => 'person']);
         Role::create(['name' => 'other']);
 

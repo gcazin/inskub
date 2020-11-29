@@ -17,7 +17,7 @@ class JobsTypeSeeder extends Seeder
         $types = ['CDI', 'CDD', 'Interim', 'Stage', 'Alternance'];
 
         foreach($types as $type) {
-            DB::table('jobs_type')->insert([
+            DB::table('job_type')->insert([
                 'title' => $type,
                 'description' => ''
             ]);

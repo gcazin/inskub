@@ -15,14 +15,10 @@ class CreateReportPostsTable extends Migration
     {
         Schema::create('report_posts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('reason_id');
-            $table->unsignedBigInteger('informant_id');
-            $table->unsignedBigInteger('post_id');
+            $table->foreignId('reason_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('informant_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('post_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('reason_id')->references('id')->on('reasons');
-            $table->foreign('informant_id')->references('id')->on('users');
-            $table->foreign('post_id')->references('id')->on('posts');
         });
     }
 

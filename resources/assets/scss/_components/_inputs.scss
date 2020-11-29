@@ -30,9 +30,10 @@
 }
 
 .checkbox.custom:checked + .card-body {
-    border: 1px solid rgba(129, 183, 255, 0.70);
+    border: 1px solid rgba($primary, 0.70);
     background: rgba(129, 183, 255, 0.10);
-    color: $blue;
+    color: $primary;
+    font-weight: bold;
 }
 
 .custom-file-label::after {

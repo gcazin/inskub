@@ -3,18 +3,16 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\UserSkillPivot;
 use Illuminate\Http\Request;
 
 class UserSkillController extends Controller
 {
     public function store(Request $request)
     {
-        foreach($request->skills as $skill_id) {
-            $skill = new UserSkillPivot();
-            $skill->skill_id = $skill_id;
-            $skill->user_id = auth()->id();
-            $skill->save();
+        $user = auth()->user();
+
+        foreach($request->skills as $skillId) {
+            $user->skills()->attach($skillId);
         }
 
         return redirect()->route('user.profile', auth()->id());

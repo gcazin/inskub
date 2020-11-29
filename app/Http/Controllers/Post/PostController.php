@@ -11,7 +11,6 @@ use App\Models\User;
 use App\Notifications\ReportingPost;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -66,13 +65,8 @@ class PostController extends Controller
         $post->content = $request->get('content');
         $post->user_id = auth()->id();
         $post->visibility_id = $request->get('visibility_id');
-        $post->project_id = $request->get('project_id') ?? null;
-        if($request->has('media')) {
-            $post->media = $request->file('media')
-                ->storeAs('posts',Str::random(40).'.'.$request->file('media')->extension(),
-                    ['disk' => 'public']
-                );
-        }
+        $post->project_id = $request->get('project_id');
+        $post->media = $request->has('media') ? $request->file('media')->store('posts') : null;
         $post->created_at = now();
         $post->save();
 
@@ -95,14 +89,9 @@ class PostController extends Controller
         $post = $this->post->find($id);
         $post->content = $request->get('content');
         $post->user_id = auth()->id();
-        $post->visibility_id = $request->get('visibility_id') ?? null;
-        $post->project_id = $request->get('project_id') ?? null;
-        if($request->has('media')) {
-            $post->media = $request->file('media')
-                ->storeAs('posts', Str::random(40).'.'.$request->file('media')->extension(),
-                    ['disk' => 'public']
-                );
-        }
+        $post->visibility_id = $request->get('visibility_id') ?? $post->visibility_id;
+        $post->project_id = $request->get('project_id') ?? $post->project_id;
+        $post->media = $request->has('media') ? $request->file('media')->store('posts') : $post->media;
         $post->updated_at = now();
         $post->update();
 

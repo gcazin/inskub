@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Observers\ProjectObserver;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+use Spatie\Flash\Flash;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,5 +32,12 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
 
         Project::observe(ProjectObserver::class);
+
+        Flash::levels([
+            'success' => 'success',
+            'warning' => 'warning',
+            'error' => 'danger',
+            'info' => 'info',
+        ]);
     }
 }

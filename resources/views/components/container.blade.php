@@ -1,3 +1,3 @@
-<main class="mx-lg-10 mx-2 mt-5 {{ $class ?? null }}">
+<main class="px-lg-10 mx-4 mx-lg-0 mt-5 {{ $class ?? null }}">
     {{ $slot }}
 </main>

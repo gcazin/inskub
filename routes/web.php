@@ -18,11 +18,14 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\Discover\DiscoverController;
 use App\Http\Controllers\Expert\ExpertController;
+use App\Http\Controllers\Expert\RateExpertController;
+use App\Http\Controllers\Expert\RequestExpertiseController;
 use App\Http\Controllers\Expert\SinisterController;
 use App\Http\Controllers\Faq\FaqController;
 use App\Http\Controllers\Follow\FollowerController;
 use App\Http\Controllers\Formation\FormationController;
 use App\Http\Controllers\Job\JobController;
+use App\Http\Controllers\Misc\CityController;
 use App\Http\Controllers\Notification\NotificationController;
 use App\Http\Controllers\Post\PostController;
 use App\Http\Controllers\Post\ReplyPostController;
@@ -72,12 +75,20 @@ Route::namespace('Expert')->group(function() {
             /**
              * Dashboard de l'expert
              */
-            Route::get('/missions', [ExpertController::class, 'missions'])->name('missions');
-            Route::post('/{id}/request', [ExpertController::class, 'requestExpertise'])->name('request');
-            Route::get('/{id}/accept', [ExpertController::class, 'acceptExpertise'])->name('accept');
-            Route::post('/{id}/refuse', [ExpertController::class, 'refuseExpertise'])->name('refuse');
-            Route::post('/{id}/finish', [ExpertController::class, 'finishExpertise'])->name('finish');
-            Route::post('/{id}/rating', [ExpertController::class, 'ratingExpert'])->name('rating');
+            Route::get('/missions', [RequestExpertiseController::class, 'missions'])->name('missions');
+            Route::post('/{id}/request', [RequestExpertiseController::class, 'requestExpertise'])->name('request');
+            Route::get('/{id}/accept', [RequestExpertiseController::class, 'acceptExpertise'])->name('accept');
+
+            // L'expert demande des informations supplémentaires
+            Route::post('/{id}/more-info', [RequestExpertiseController::class, 'moreInfoExpertise'])->name('moreInfo');
+
+            // L'intermédiaire précise sa demande lorsqu'il manque des informations pour l'expert
+            Route::post('/{id}/detailed-description', [RequestExpertiseController::class, 'detailedDescriptionExpertise'])->name('detailedDescriptionExpertise');
+
+            Route::post('/{id}/refuse', [RequestExpertiseController::class, 'refuseExpertise'])->name('refuse');
+            Route::post('/{id}/finish', [RequestExpertiseController::class, 'finishExpertise'])->name('finish');
+            Route::post('/{id}/rating', [RateExpertController::class, 'ratingExpert'])->name('rating');
+            Route::post('/{id}/renew', [RequestExpertiseController::class, 'renewExpertise'])->name('renew');
         });
     });
 
@@ -248,6 +259,10 @@ Route::namespace('Follow')->name('follower.')->group(function() {
 Route::namespace('Notification')->name('notification.')->group(function() {
     Route::get('/notifications', [NotificationController::class, 'index'])->name('index');
     Route::get('/notifications/mark-as-read', [NotificationController::class, 'markAllAsRead'])->name('markAllAsRead');
+});
+
+Route::namespace('Misc')->group(function() {
+    Route::get('/cities/{postal_code}', [CityController::class, 'cities'])->name('show');
 });
 
 /**

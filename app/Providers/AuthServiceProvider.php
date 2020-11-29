@@ -6,7 +6,6 @@ use App\Models\Project;
 use App\Policies\ProjectPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
-use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -30,11 +29,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::before(function ($user) {
-           if ($user->hasRole('Super-Admin')) {
-               return true;
-           }
+            return $user->hasRole('super-admin') ? true : null;
         });
-
-        Passport::routes();
     }
 }
