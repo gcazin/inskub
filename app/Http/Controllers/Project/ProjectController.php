@@ -58,7 +58,7 @@ class ProjectController extends Controller
 
     public function index()
     {
-        $project = auth()->user()->projects;
+        $project = auth()->user()->projects->where('type', '<>', 1);
 
         $project_user = ProjectUser::all()->map(static function($user) {
             if($user->user_id === auth()->id()) {

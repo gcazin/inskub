@@ -22,6 +22,7 @@ class CreateRequestExpertisesTable extends Migration
             $table->foreignId('conversation_id')->nullable()->constrained('chat_conversations')->cascadeOnDelete();
             $table->string('further_information')->nullable();
             $table->string('detailed_description')->nullable();
+            $table->string('media')->nullable();
             $table->string('refuse_reason')->nullable();
             $table->boolean('status')->default(0);
             $table->timestamps();

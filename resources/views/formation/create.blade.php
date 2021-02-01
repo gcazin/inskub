@@ -1,21 +1,19 @@
-@extends('layouts.base', ['full_width' => false, 'header' => false])
-
-@section('content')
-    <x-container>
-        <h1 class="text-xl text-gray-700 mb-2">Publier une formation</h1>
-        <x-section>
-            <x-form :action="route('formation.create')">
-                <x-input label="Titre de votre formation" name="title" placeholder="Chef de projet..." required></x-input>
+<x-page title="Publier une formation">
+    <x-header>
+        <x-slot name="title">Publier une formation</x-slot>
+        <x-slot name="content">
+            <x-form.item :action="route('formation.create')">
+                <x-form.input label="Titre de votre formation" name="title" placeholder="Chef de projet..." required></x-form.input>
 
 
-                <x-textarea label="Description" name="description" placeholder="..." required></x-textarea>
+                <x-form.textarea label="Description" name="description" placeholder="..." required></x-form.textarea>
 
-                <x-input label="Localisation" name="location" placeholder="Paris"></x-input>
+                <x-form.input label="Localisation" name="location" placeholder="Paris"></x-form.input>
 
-                <x-input type="number" label="Prix d'entrée" name="entry_price" placeholder="1300" required></x-input>
+                <x-form.input type="number" label="Prix d'entrée" name="entry_price" placeholder="1300" required></x-form.input>
 
-                <x-submit>Publier</x-submit>
-            </x-form>
-        </x-section>
-    </x-container>
-@endsection
+                <x-form.submit>Publier</x-form.submit>
+            </x-form.item>
+        </x-slot>
+    </x-header>
+</x-page>

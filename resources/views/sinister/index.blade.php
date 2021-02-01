@@ -34,12 +34,17 @@
                                     </span>
 
                                     <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target=".more-info-expertise">
-                                        Demande d'informations supplémentaire
+                                        Demande d'informations complémentaire
                                     </button>
                                     <div class="text-left">
                                         <x-element.modal title="Demande d'informations supplémentaire" name="more-info-expertise">
                                             <x-section class="d-block mb-3">
                                                 <small>{{ $sinister->further_information }}</small>
+                                                @if($sinister->media)
+                                                    <p class="mt-3">
+                                                        <a href="{{ asset('storage/'.$sinister->media) }}">Pièce jointe</a>
+                                                    </p>
+                                                @endif
                                             </x-section>
 
                                             <x-form.item :action="route('expert.detailedDescriptionExpertise', $sinister->id)">
@@ -53,6 +58,12 @@
                                     <span class="badge badge-danger">
                                         <ion-icon name="checkmark-outline" class="h5 mb-0 align-text-bottom"></ion-icon>
                                         L'expert à refusé votre demande
+                                    </span>
+                                @endif
+                                @if(! is_null(\App\Models\Project::find($sinister->project_id)) && \App\Models\Project::find($sinister->project_id)->finish === 1)
+                                    <span class="badge badge-primary">
+                                        <ion-icon name="checkmark-outline" class="h5 mb-0 align-text-bottom"></ion-icon>
+                                        Terminée
                                     </span>
                                 @endif
                             </h5>
@@ -87,9 +98,8 @@
 
                     @if($sinister->status === $sinister::ACCEPT_STATUS)
                         <div class="mt-3 text-right">
-                            <a href="{{ route('project.show', $sinister->project_id) }}">Projet</a>
-                            <span class="text-muted">|</span>
-                            <a href="{{ route('chat.show', $sinister->conversation_id .'?type=1' )}}">Conversation</a>
+                            <a class="btn btn-primary" href="{{ route('project.show', $sinister->project_id) }}">Workspace</a>
+                            <a class="btn btn-outline-primary" href="{{ route('chat.show', $sinister->conversation_id .'?type=1' )}}">Conversation</a>
                         </div>
                     @endif
 

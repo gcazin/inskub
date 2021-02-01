@@ -34,11 +34,19 @@ class RequestExpertiseController extends Controller
 
     /**
      * Dashboard de l'expert
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function missions()
+    public function missions(Request $request)
     {
         $requests = $this->requestExpertise::where('expert_id', auth()->id())->get();
         $requestExpertise = $this->requestExpertise;
+
+        if(! is_null($request->status)) {
+            $requests = $this->requestExpertise::where('expert_id', auth()->id())->where('status', $request->status)->get();
+        }
 
         return view('expert.missions', compact('requests', 'requestExpertise'));
     }
@@ -53,7 +61,7 @@ class RequestExpertiseController extends Controller
         $expertise->expert_id = $id;
         $expertise->save();
 
-        flash()->success('Votre demande d\'expertise à bien été envoyé. L\'expert à 15 jours pour traiter votre demande.');
+        flash()->success('Votre demande d\'expertise à bien été envoyé.');
 
         $user->notify(new RequestingExpertise($expertise));
 
@@ -124,6 +132,7 @@ class RequestExpertiseController extends Controller
         $expertise = $this->requestExpertise::find($id);
         $expertise->status = $this->requestExpertise::MORE_INFO_STATUS;
         $expertise->further_information = $request->get('further_information');
+        $expertise->media = $request->has('media') ? $request->file('media')->store('expertises') : null;
         $expertise->update();
 
         flash()->success("Votre demande d'informations complémentaires a bien été envoyé.");

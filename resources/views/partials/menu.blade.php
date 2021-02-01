@@ -44,11 +44,11 @@
                                             <ion-icon name="eye-outline" class="h5 mb-0 align-text-bottom mr-3 icon-container-primary"></ion-icon>
                                             Suivre un sinistre
                                         </a>
-                                        <!--<a class="dropdown-item d-flex align-items-center py-2" href="#">
-                                            <ion-icon name="search-outline" class="h5 mb-0 align-text-bottom mr-3 icon-container-primary"></ion-icon>
-                                            Retrouver un sinistre
-                                        </a>-->
                                     @endcan
+                                        <a class="dropdown-item d-flex align-items-center py-2" href="{{ route('project.sinister.index') }}">
+                                            <ion-icon name="briefcase-outline" class="h5 mb-0 align-text-bottom mr-3 icon-container-primary"></ion-icon>
+                                            Retrouver un sinistre
+                                        </a>
                                 </div>
                             </li>
                         @endif

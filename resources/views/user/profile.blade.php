@@ -10,33 +10,33 @@
             Profil de {{ ucfirst($user->first_name) }} {{ ucfirst($user->last_name) }}
         </x-slot>
         <x-slot name="content">
-                    <div class="row">
-                        <div class="col">
-                            <p class="h4">{{ ucfirst($user->first_name) }} {{ ucfirst($user->last_name) }}</p>
-                        </div>
+            <div class="row">
+                <div class="col">
+                    <p class="h4">{{ ucfirst($user->first_name) }} {{ ucfirst($user->last_name) }} @if($user->ratings->count() > 0) - <ion-icon name="star" class="text-yellow"></ion-icon> {{ $user->ratings()->avg('rating') }}@endif</p>
+                </div>
 
-                        <div class="col text-right">
-                            @if(auth()->id() === (int) $user->id)
-                                <a class="h4" href="{{ route('user.edit') }}">
-                                    <ion-icon class="icon-container-primary align-bottom" name="settings-outline"></ion-icon>
-                                </a>
-                            @else
-                                <livewire:follow-user :member="$user->id">
-                                    <a class="ml-1" href="{{ route('chat.createConversation', $user->id) }}">
-                                        <ion-icon class="icon-container align-text-bottom h5 mb-0" name="chatbubble-outline"></ion-icon>
-                                    </a>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="mt-3">
-                        <a href="{{ route('user.follower', $user->id) }}">
-                            {{ auth()->user()->followers->count() }} abonnés
-                        </a> -
-                        <a href="{{ route('user.following', $user->id) }}">
-                            {{ auth()->user()->followings->count() }} abonnements
+                <div class="col text-right">
+                    @if(auth()->id() === (int) $user->id)
+                        <a class="h4" href="{{ route('user.edit') }}">
+                            <ion-icon class="icon-container-primary align-bottom" name="settings-outline"></ion-icon>
                         </a>
-                    </div>
+                    @else
+                        <livewire:follow-user :member="$user->id">
+                            <a class="ml-1" href="{{ route('chat.createConversation', $user->id) }}">
+                                <ion-icon class="icon-container align-text-bottom h5 mb-0" name="chatbubble-outline"></ion-icon>
+                            </a>
+                    @endif
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <a href="{{ route('user.follower', $user->id) }}">
+                    {{ auth()->user()->followers->count() }} abonnés
+                </a> -
+                <a href="{{ route('user.following', $user->id) }}">
+                    {{ auth()->user()->followings->count() }} abonnements
+                </a>
+            </div>
 
         </x-slot>
     </x-header>

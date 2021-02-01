@@ -75,7 +75,7 @@
                                     <div class="form-group">
                                         <input id="rating" name="rating" class="kv-ltr-theme-fas-star rating-loading" value="1" dir="ltr" data-size="md">
                                     </div>
-                                    <x-form.input label="Description (optionnel)" name="description" placeholder="Expertise..."></x-form.input>
+                                    <x-form.input label="Description" name="description" placeholder="Expertise..."></x-form.input>
                                     <x-form.submit>Valider</x-form.submit>
                                 </x-form.item>
                             </div>
@@ -245,17 +245,17 @@
                                     <div class="col">
                                         @if($project->type === 1 && $project->finish === 0)
                                             <button type="button" class="btn btn-warning btn-block" data-toggle="modal" data-target=".finish-expertise">
-                                                Finir l'expertise
+                                                Cloturer l'expertise
                                             </button>
 
-                                            <x-element.modal title="Finir l'expertise" name="finish-expertise">
+                                            <x-element.modal title="Cloturer l'expertise" name="finish-expertise">
                                                 <x-form.item :action="route('expert.finish', $project->id)" enctype>
                                                     <div class="custom-file">
                                                         <input type="file" class="custom-file-input" accept="application/pdf" name="media" id="media">
                                                         <label class="custom-file-label" for="media">Mettre en ligne le rapport d'expertise</label>
                                                     </div>
                                                     <hr>
-                                                    <x-form.submit>Finir l'expertise</x-form.submit>
+                                                    <x-form.submit>Valider</x-form.submit>
                                                 </x-form.item>
                                             </x-element.modal>
                                         @endif
@@ -271,52 +271,15 @@
 
         <!-- Stepper de l'expertise -->
         @if($project->type === 1)
-            <x-section class="mb-3">
-                <div class="steps">
-                    <!-- Horizontal Steppers -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <!-- Stepers Wrapper -->
-                            <ul class="stepper stepper-horizontal">
-
-                                <!-- First Step -->
-                                <li class="completed">
-                                    <a href="#!">
-                                        <span class="circle"><ion-icon class="align-text-top h5" name="checkmark-outline"></ion-icon></span>
-                                        <span class="label">Demande d'expertise</span>
-                                    </a>
-                                </li>
-
-                                <!-- Second Step -->
-                                <li class="{{ $project->finish === 1 ? 'completed' : 'active' }}">
-                                    <a href="#!">
-                                        <span class="circle">{!! $project->finish === 1 ? '<ion-icon class="align-text-top h5" name="checkmark-outline"></ion-icon>' : '<ion-icon class="spin align-text-top h5" name="sync-outline"></ion-icon>' !!}</span>
-                                        <span class="label">Expertise en cours</span>
-                                    </a>
-                                </li>
-
-                                <!-- Third Step -->
-                                <li class="{{ $project->finish === 1 ? 'completed' : 'warning' }}">
-                                    <a href="#!">
-                                        <span class="circle"><ion-icon class="align-text-top h5" name="checkmark-outline"></ion-icon></span>
-                                        <span class="label">Expertise terminée</span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                            <!-- /.Stepers Wrapper -->
-                        </div>
-                    </div>
-                </div>
-
-                @if($rating::isRated($project->user_id))
+            @if($rating::isRated($project->user_id))
+                <x-section class="mb-3">
                     <hr>
                     <div class="mt-3">
                         <p>Rapport d'expertise</p>
-                        <a class="btn btn-primary" href="{{ asset('storage/' . \App\Models\ReportExpertise::where('project_id', $project->id)->first()->media) }}">Télécharger</a>
+                        <a target="_blank" class="btn btn-primary" href="{{ asset('storage/' . \App\Models\ReportExpertise::where('project_id', $project->id)->first()->media) }}">Télécharger</a>
                     </div>
-                @endif
-            </x-section>
+                </x-section>
+            @endif
         @endif
 
         <x-element.modal title="Création d'une nouvelle tâche" name="new-todo">

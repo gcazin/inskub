@@ -4,6 +4,18 @@
     </x-header>
 
     <x-container>
+        <div class="text-right mb-3">
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Filter par
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="?status=0">En cours</a>
+                    <a class="dropdown-item" href="?status=1">Acceptée</a>
+                    <a class="dropdown-item" href="?status=2">Refusée</a>
+                </div>
+            </div>
+        </div>
         @forelse($requests->sortByDesc('created_at') as $request)
             <x-section>
                 <div class="container-fluid">
@@ -20,16 +32,22 @@
                                 </button>
                                 @if($request->status !== $requestExpertise::MORE_INFO_STATUS && $request->status !== $request::REFUSE_STATUS && $request->detailed_description === null)
                                     <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target=".more-info-expertise">
-                                        Demande d'informations supplémentaire
+                                        Demande d'informations complémentaire
                                     </button>
                                 @endif
 
                                 <div class="text-left">
 
                                     <!-- Modal de demande d'infos supp. -->
-                                    <x-element.modal title="Demande d'informations supplémentaire" name="more-info-expertise">
-                                        <x-form.item :action="route('expert.moreInfo', $request->id)">
+                                    <x-element.modal title="Demande d'informations complémentaire" name="more-info-expertise">
+                                        <x-form.item :action="route('expert.moreInfo', $request->id)" enctype>
                                             <x-form.textarea name="further_information" label="Informations complémentaires" rows="3" placeholder="Veuillez marquer ici les informations qu'ils vous manquent pour au mieux traiter cette demande."></x-form.textarea>
+                                            <div class="custom-file bg-transparent">
+                                                <input type="file" name="media" class="custom-file-input" id="media" accept="image/png, image/jpeg, image/gif, application/pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                                                <label class="custom-file-label text-left border-0" for="img-input">
+                                                    <span class="btn btn-outline-primary">Joindre une image/document</span>
+                                                </label>
+                                            </div>
                                             <hr>
                                             <x-form.submit>Envoyer la demande</x-form.submit>
                                         </x-form.item>
@@ -84,9 +102,8 @@
 
                     @if($request->status === $requestExpertise::ACCEPT_STATUS)
                         <div class="mt-3 text-right">
-                            <a href="{{ route('project.show', $request->project_id) }}">Projet</a>
-                            <span class="text-muted">|</span>
-                            <a href="{{ route('chat.show', $request->conversation_id .'?type=1' )}}">Conversation</a>
+                            <a class="btn btn-primary" href="{{ route('project.show', $request->project_id) }}">Workspace</a>
+                            <a class="btn btn-outline-primary" href="{{ route('chat.show', $request->conversation_id .'?type=1' )}}">Conversation</a>
                         </div>
                     @endif
 
@@ -95,7 +112,7 @@
         @empty
             <x-element.alert type="info">
                 <x-slot name="title">
-                    Aucune mission en cours.
+                    Aucune mission a afficher.
                 </x-slot>
             </x-element.alert>
         @endforelse

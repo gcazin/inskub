@@ -10,14 +10,14 @@ $extension = File::extension($post->media)
 <x-section :class="e('post rounded-lg bg-white ') . e(isset($animate) === true ?  'animate__animated animate__fadeIn animate__slow' : null)">
     <div class="@if($extension === 'jpeg' || $extension === 'jpg' || $extension === 'png' || $extension ===  'gif') images @else documents @endif">
         <div class="row no-gutters">
-            <div class="col-lg-1 col-2 col-md-1">
+            <div style="width: 4%" class="pr-6 pr-lg-0">
                 <img class="rounded-circle" style="height: 40px" src="{{ $user::getAvatar($post->user_id) }}" alt="">
             </div>
-            <div class="col col-md-10 pl-2 pl-md-0">
-                <span class="text-dark font-weight-bold">{{ $user->first_name }} {{ $user->last_name }}</span>
+            <div class="col">
+                <a href="{{ route('user.profile', $post->user_id) }}" class="text-dark font-weight-bold">{{ $user->first_name }} {{ $user->last_name }}</a>
                 <p class="text-muted small">{{ \Carbon\Carbon::make($post->created_at)->diffForHumans() }}</p>
             </div>
-            <div class="col-lg-1 col-2 text-right">
+            <div class="col text-right">
                 <div class="dropdown dropdown-none">
                     <button class="btn rounded-circle dropdown-toggle"
                             type="button" id="dropdownMenuButton"
@@ -59,7 +59,7 @@ $extension = File::extension($post->media)
 
         <div class="py-3">
             <p id="content" class="mb-0">
-                {!! preg_replace('~(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![\.,:])~i', '<a href="$0" target="_blank" title="$0">$0</a>', $post->content) !!}
+                <?= preg_replace('~(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![\.,:])~i', '<a href="$0" target="_blank" title="$0">$0</a>', strip_tags($post->content)) ?>
             </p>
             @if($post->media !== null)
                 @if($extension === 'jpeg' || $extension === 'jpg' || $extension === 'png' || $extension ===  'gif')

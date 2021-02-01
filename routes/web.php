@@ -167,6 +167,12 @@ Route::namespace('User')->name('user.')->group(function() {
  */
 Route::get('/projects', [ProjectController::class, 'index'])->name('project.index');
 Route::post('/projects', [ProjectController::class, 'store'])->name('project.store');
+
+Route::name('project.sinister.')->group(function() {
+    Route::get('/projects/sinisters', [\App\Http\Controllers\Project\SinisterController::class, 'index'])->name('index');
+    Route::get('/projects/sinisters/pdfs', [\App\Http\Controllers\Project\SinisterController::class, 'pdfList'])->name('pdf-list');
+});
+
 Route::namespace('Project')->prefix('project')->name('project.')->group(function() {
     Route::get('/{id}', [ProjectController::class, 'show'])->name('show');
     Route::get('/edit/{id}', [ProjectController::class, 'edit'])->name('edit');

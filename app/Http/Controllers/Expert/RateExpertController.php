@@ -23,7 +23,7 @@ class RateExpertController extends Controller
         $rating = new Rating();
 
         $rating->rating = $request->rating;
-        $rating->description =  $request->description ?? null;
+        $rating->description =  $request->description;
         $rating->expert_id = $expert->id;
         $rating->rated_by = auth()->id();
 

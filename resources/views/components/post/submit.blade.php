@@ -17,19 +17,11 @@
                 @endforeach
             </select>
         </div>
-        <div class="col-2 col-lg-1">
+        <div class="col-6 col-lg-6">
             <div class="custom-file">
-                <input type="file" name="media" class="custom-file-input" id="media" accept="image/png, image/jpeg, image/gif">
+                <input type="file" name="media" class="custom-file-input" id="media" accept="image/png, image/jpeg, image/gif, application/pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
                 <label class="custom-file-label text-left border-0" for="img-input">
-                    <ion-icon class="align-text-bottom h3 text-muted" name="image-outline"></ion-icon>
-                </label>
-            </div>
-        </div>
-        <div class="col-6 col-lg-1 pl-lg-1">
-            <div class="custom-file">
-                <input type="file" name="media" class="custom-file-input" id="media" accept="application/pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
-                <label class="custom-file-label text-left border-0" for="img-input">
-                    <ion-icon class="align-text-bottom h3 text-muted" name="document-outline"></ion-icon>
+                    <span class="btn btn-outline-primary">Importer une image/document</span>
                 </label>
             </div>
         </div>
