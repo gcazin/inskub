@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Spatie\Sitemap\SitemapGenerator;
+
 class HomeController extends Controller
 {
     public function __construct()

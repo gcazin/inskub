@@ -27,6 +27,7 @@
         "spatie/laravel-collection-macros": "^7.0",
         "spatie/laravel-flash": "^1.7",
         "spatie/laravel-permission": "^3.17",
+        "spatie/laravel-sitemap": "^5.9",
         "spatie/pdf-to-image": "^2.1"
     },
     "require-dev": {

@@ -60,6 +60,50 @@ Création d'un utilisateur super-admin : ``php artisan super-admin:create``
 
 Attributs : Create, view, update, delete. L'astérix permet d'avoir la possibilité d'exécuter toutes ses commandes.
 
+## Plan du site
+
+Non connecté
+- Accueil | https://inskub.com/
+- Inscription | https://inskub.com/inscription
+- Connexion | https://inskub.com/connexion
+
+Connecté - commun à tous les profils
+- Fil d'actualité | https://inskub.com/index
+- Découvrir | https://inskub.com/discover
+    - Emplois | https://inskub.com/jobs
+    - Formations | https://inskub.com/formations
+- Projets | https://inskub.com/projects
+- Profil | https://inskub.com/profil/[id-utilisateur]
+    - Informations du compte | https://inskub.com/mon-compte
+    - Options du profil | https://inskub.com/mon-compte/options
+- Messagerie | https://inskub.com/chat
+- Activité | https://inskub.com/activity
+- Notifications | https://inskub.com/notifications
+- Déconnexion | https://inskub.com/deconnexion
+
+Connecté - commun aux experts & intermédiaires
+- Sinistres | https://inskub.com/projects/sinisters
+- Récapitulatif des compte-rendus d'expertises | https://inskub.com/projects/sinisters/pdfs
+
+Connecté - en tant qu'expert
+- Missions | https://inskub.com/expert/missions
+
+Connecté - en tant qu'intermédiaire
+- Rechercher un expert | https://inskub.com/experts
+- Suivre un sinistre | https://inskub.com/sinister/index
+
+Connecté - en tant qu'école
+- Gestion de l'école | https://inskub.com/school
+    - Gestion des classes | https://inskub.com/school/classroom
+    - Gestion des professeurs | https://inskub.com/school/professor
+    - Gestion des élèves | https://inskub.com/school/student
+
+Connecté - en tant que super-admin
+- Administration | https://inskub.com/admin
+    - Gestion des utilisateurs | https://inskub.com/admin/users
+    - Gestion des signalements | https://inskub.com/admin/reports
+    - Gestion des FAQs | https://inskub.com/admin/faqs
+
 ## License
 
 Ce projet n'a pas pour but d'être open-source, seules des fonctionnalités peuvent être extraite et mise sous forme de package pour permettre une ré-utilisation par un tiers.
